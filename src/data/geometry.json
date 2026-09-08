@@ -1,0 +1,316 @@
+{
+  "schemaVersion": "1.0",
+  "units": "mm",
+  "status": "conditional geometry; not measured survey",
+  "ceilingHeight": 2700,
+  "origin": "inside upper-left corner; x right, y toward windows, elevation up",
+  "floor": [
+    [
+      0,
+      0
+    ],
+    [
+      6400,
+      0
+    ],
+    [
+      6400,
+      7440
+    ],
+    [
+      3425,
+      7440
+    ],
+    [
+      3425,
+      6850
+    ],
+    [
+      3175,
+      6850
+    ],
+    [
+      3175,
+      8300
+    ],
+    [
+      0,
+      8300
+    ]
+  ],
+  "sourceDimensions": {
+    "innerWidth": 6400,
+    "leftWidth": 3175,
+    "pierWidth": 250,
+    "rightWidth": 2975,
+    "axisWidth": 6600,
+    "axisDepthChain": [
+      1300,
+      6850
+    ],
+    "verticalPier": [
+      1200,
+      250,
+      590
+    ],
+    "windowDatumStep": 640,
+    "leftWindowNominal": 3165,
+    "rightWindowNominal": 1683
+  },
+  "walls": [
+    {
+      "id": "outer-north",
+      "type": "wall",
+      "room": "architecture",
+      "x": -200,
+      "y": -200,
+      "width": 6800,
+      "depth": 200,
+      "height": 2700,
+      "rotation": 0,
+      "visible": true
+    },
+    {
+      "id": "outer-west",
+      "type": "wall",
+      "room": "architecture",
+      "x": -200,
+      "y": 0,
+      "width": 200,
+      "depth": 8550,
+      "height": 2700,
+      "rotation": 0,
+      "visible": true
+    },
+    {
+      "id": "outer-east-upper",
+      "type": "wall",
+      "room": "architecture",
+      "x": 6400,
+      "y": -200,
+      "width": 200,
+      "depth": 300,
+      "height": 2700,
+      "rotation": 0,
+      "visible": true
+    },
+    {
+      "id": "outer-east-lower",
+      "type": "wall",
+      "room": "architecture",
+      "x": 6400,
+      "y": 1100,
+      "width": 200,
+      "depth": 6540,
+      "height": 2700,
+      "rotation": 0,
+      "visible": true
+    },
+    {
+      "id": "adult-window-west",
+      "type": "wall",
+      "room": "architecture",
+      "x": 0,
+      "y": 8300,
+      "width": 260,
+      "depth": 250,
+      "height": 2700,
+      "rotation": 0,
+      "visible": true
+    },
+    {
+      "id": "adult-window-sill",
+      "type": "wall",
+      "room": "architecture",
+      "x": 260,
+      "y": 8300,
+      "width": 2915,
+      "depth": 250,
+      "height": 850,
+      "rotation": 0,
+      "visible": true,
+      "openingPart": true
+    },
+    {
+      "id": "adult-window-lintel",
+      "type": "wall",
+      "room": "architecture",
+      "x": 260,
+      "y": 8300,
+      "width": 2915,
+      "depth": 250,
+      "height": 350,
+      "rotation": 0,
+      "visible": true,
+      "elevation": 2350,
+      "openingPart": true
+    },
+    {
+      "id": "pier",
+      "type": "wall",
+      "room": "architecture",
+      "x": 3175,
+      "y": 6850,
+      "width": 250,
+      "depth": 1700,
+      "height": 2700,
+      "rotation": 0,
+      "visible": true
+    },
+    {
+      "id": "child-window-west",
+      "type": "wall",
+      "room": "architecture",
+      "x": 3425,
+      "y": 7440,
+      "width": 520,
+      "depth": 250,
+      "height": 2700,
+      "rotation": 0,
+      "visible": true
+    },
+    {
+      "id": "child-window-east",
+      "type": "wall",
+      "room": "architecture",
+      "x": 5628,
+      "y": 7440,
+      "width": 772,
+      "depth": 250,
+      "height": 2700,
+      "rotation": 0,
+      "visible": true
+    },
+    {
+      "id": "child-window-sill",
+      "type": "wall",
+      "room": "architecture",
+      "x": 3945,
+      "y": 7440,
+      "width": 1683,
+      "depth": 250,
+      "height": 850,
+      "rotation": 0,
+      "visible": true,
+      "openingPart": true
+    },
+    {
+      "id": "child-window-lintel",
+      "type": "wall",
+      "room": "architecture",
+      "x": 3945,
+      "y": 7440,
+      "width": 1683,
+      "depth": 250,
+      "height": 350,
+      "rotation": 0,
+      "visible": true,
+      "elevation": 2350,
+      "openingPart": true
+    },
+    {
+      "id": "entry-lintel",
+      "type": "wall",
+      "room": "architecture",
+      "x": 6400,
+      "y": 100,
+      "width": 200,
+      "depth": 1000,
+      "height": 550,
+      "rotation": 0,
+      "visible": true,
+      "elevation": 2150,
+      "openingPart": true
+    }
+  ],
+  "windows": [
+    {
+      "id": "window-adult",
+      "x": 260,
+      "y": 8400,
+      "width": 2915,
+      "height": 1500,
+      "sill": 850,
+      "nominalWidth": 3165,
+      "confidence": "unresolved frame/pier junction; clear width clipped at pier"
+    },
+    {
+      "id": "window-alice",
+      "x": 3945,
+      "y": 7540,
+      "width": 1683,
+      "height": 1500,
+      "sill": 850,
+      "confidence": "width labelled; horizontal position provisional"
+    }
+  ],
+  "entry": {
+    "id": "entry",
+    "x": 6400,
+    "y": 100,
+    "width": 1000,
+    "axis": "y",
+    "openX": 6400,
+    "openY": 100,
+    "openWidth": 1000,
+    "openDepth": 45,
+    "room": "entry",
+    "assumption": true
+  },
+  "materialSlots": [
+    "wall",
+    "floor",
+    "joinery",
+    "upholstery",
+    "worktop",
+    "metal",
+    "glass"
+  ],
+  "decor": [],
+  "lighting": {
+    "type": "neutral technical",
+    "designStage": 0
+  },
+  "assumptions": [
+    {
+      "id": "G01",
+      "severity": "critical",
+      "text": "Размерные цепочки не замыкаются. Контур условный, получен при осевой базе верхней стены; площадь около 50 м²."
+    },
+    {
+      "id": "G02",
+      "severity": "critical",
+      "text": "Стояки, канализация, вентшахты, мокрые зоны и тип плиты на плане отсутствуют. Кухня и санузел — условные места до инженерной проверки."
+    },
+    {
+      "id": "G03",
+      "severity": "high",
+      "text": "Высота 2700; новые перегородки 120–125; боковые/верхняя стены 200 мм — допущения, не заключение о конструкции."
+    },
+    {
+      "id": "G04",
+      "severity": "high",
+      "text": "Вход: проём 1000 мм, отступ 100 мм, высота 2150 мм, открывание наружу — схема по изображению."
+    },
+    {
+      "id": "G05",
+      "severity": "high",
+      "text": "Левое окно подписано 3165, но модель показывает 2915 до выступа; справа сохранено1683, остаток простенка772 вместо520. Нужен обмер."
+    },
+    {
+      "id": "G06",
+      "severity": "high",
+      "text": "Окна: подоконник850, верх2350 мм. Открывающиеся створки и радиаторы неизвестны; зарезервирован подход."
+    },
+    {
+      "id": "G07",
+      "severity": "medium",
+      "text": "Все мебельные размеры — проектные габариты; матрас1600×2000 помещён в каркас1700×2100. Фурнитуру проверять по выбранным изделиям."
+    },
+    {
+      "id": "G08",
+      "severity": "medium",
+      "text": "Общая зона без собственного окна. Возможны верхние светопрозрачные фрагменты перегородок, но они не заменяют проверку света и вентиляции."
+    }
+  ]
+}

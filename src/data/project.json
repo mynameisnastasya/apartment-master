@@ -1,0 +1,25 @@
+{
+  "title": "Лесная Поляна",
+  "stage": 1,
+  "recommendedLayout": "A",
+  "selectedLayout": "A",
+  "approvalStatus": "proposed — awaiting user selection",
+  "source": "IMG_3956 2.JPG",
+  "unit": "mm",
+  "design": {
+    "materials": "neutral placeholders",
+    "decor": [],
+    "lighting": "technical"
+  },
+  "futureStages": [
+    "furniture",
+    "interior concept",
+    "materials",
+    "lighting",
+    "real assets",
+    "decor",
+    "renders",
+    "walkthrough",
+    "specification"
+  ]
+}

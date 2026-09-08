@@ -1,0 +1,5 @@
+# Compiled third-party shader strings retain upstream whitespace.
+index.html -whitespace
+*.glb binary
+*.png binary
+*.JPG binary

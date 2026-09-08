@@ -1,0 +1,4 @@
+import {build} from 'esbuild';import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
+const dir=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const result=await build({entryPoints:[path.join(dir,'src/main.js')],bundle:true,minify:true,format:'iife',write:false,target:['es2022'],legalComments:'inline'});
+const js=result.outputFiles[0].text.replace(/<\/script/gi,'<\\/script');const css=fs.readFileSync(path.join(dir,'src/styles/app.css'),'utf8');const template=fs.readFileSync(path.join(dir,'index.template.html'),'utf8');fs.writeFileSync(path.join(dir,'index.html'),template.replace('/*STYLE*/',css).replace('/*SCRIPT*/',()=>js));console.log('Built offline index.html ('+Math.round(fs.statSync(path.join(dir,'index.html')).size/1024)+' KB)');

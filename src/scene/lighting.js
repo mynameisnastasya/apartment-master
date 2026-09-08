@@ -1,0 +1,2 @@
+import * as THREE from 'three';
+export function addLighting(scene){const g=new THREE.Group();g.name='LIGHTING_TECHNICAL';g.add(new THREE.HemisphereLight(0xffffff,0xb9bfbc,1.7));const key=new THREE.DirectionalLight(0xffffff,2.2);key.position.set(-5,12,7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);Object.assign(key.shadow.camera,{left:-10,right:10,top:10,bottom:-10,near:.1,far:35});key.shadow.normalBias=.035;key.shadow.bias=-.00015;g.add(key);const fill=new THREE.DirectionalLight(0xffffff,.7);fill.position.set(8,7,-5);g.add(fill);scene.add(g);return g;}

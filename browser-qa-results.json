@@ -1,0 +1,657 @@
+{
+  "errors": [],
+  "ui": [
+    "variant A camera views rendered",
+    "variant B camera views rendered",
+    "variant C camera views rendered",
+    "WASD moves camera",
+    "drag mouse look changes yaw and pitch",
+    "appliance opening toggle with collision leaf",
+    "comparison modal and route button"
+  ],
+  "walkthrough": [
+    {
+      "variant": "A",
+      "results": [
+        {
+          "eye": 1700,
+          "start": "entry",
+          "end": "storage",
+          "ok": true,
+          "steps": 60,
+          "distanceMm": 11.171672862401465,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "entry",
+          "end": "kitchen",
+          "ok": true,
+          "steps": 62,
+          "distanceMm": 3.418669527837314,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "kitchen",
+          "end": "bar",
+          "ok": true,
+          "steps": 137,
+          "distanceMm": 30.58021839617868,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "entry",
+          "end": "adult",
+          "ok": true,
+          "steps": 227,
+          "distanceMm": 6.813963972381316,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "entry",
+          "end": "alice",
+          "ok": true,
+          "steps": 204,
+          "distanceMm": 12.916636835750069,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "adultBed",
+          "end": "adultWardrobe",
+          "ok": true,
+          "steps": 68,
+          "distanceMm": 17.502744061231937,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "aliceBed",
+          "end": "aliceDesk",
+          "ok": true,
+          "steps": 30,
+          "distanceMm": 2.5,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "adult",
+          "end": "bathroom",
+          "ok": true,
+          "steps": 203,
+          "distanceMm": 17.56303104894598,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "kitchen",
+          "end": "fridge",
+          "ok": true,
+          "steps": 50,
+          "distanceMm": 20.80229881682912,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "kitchen",
+          "end": "dishwasher",
+          "ok": true,
+          "steps": 39,
+          "distanceMm": 17.87406715840665,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "sofa",
+          "end": "kitchen",
+          "ok": true,
+          "steps": 135,
+          "distanceMm": 14.511916945683012,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1200,
+          "start": "entry",
+          "end": "storage",
+          "ok": true,
+          "steps": 60,
+          "distanceMm": 11.171672862401465,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "entry",
+          "end": "kitchen",
+          "ok": true,
+          "steps": 62,
+          "distanceMm": 3.418669527837314,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "kitchen",
+          "end": "bar",
+          "ok": true,
+          "steps": 137,
+          "distanceMm": 30.58021839617868,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "entry",
+          "end": "adult",
+          "ok": true,
+          "steps": 227,
+          "distanceMm": 6.813963972381316,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "entry",
+          "end": "alice",
+          "ok": true,
+          "steps": 204,
+          "distanceMm": 12.916636835750069,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "adultBed",
+          "end": "adultWardrobe",
+          "ok": true,
+          "steps": 68,
+          "distanceMm": 17.502744061231937,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "aliceBed",
+          "end": "aliceDesk",
+          "ok": true,
+          "steps": 30,
+          "distanceMm": 2.5,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "adult",
+          "end": "bathroom",
+          "ok": true,
+          "steps": 203,
+          "distanceMm": 17.56303104894598,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "kitchen",
+          "end": "fridge",
+          "ok": true,
+          "steps": 50,
+          "distanceMm": 20.80229881682912,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "kitchen",
+          "end": "dishwasher",
+          "ok": true,
+          "steps": 39,
+          "distanceMm": 17.87406715840665,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "sofa",
+          "end": "kitchen",
+          "ok": true,
+          "steps": 135,
+          "distanceMm": 14.511916945683012,
+          "heightMm": 1200
+        }
+      ]
+    },
+    {
+      "variant": "B",
+      "results": [
+        {
+          "eye": 1700,
+          "start": "entry",
+          "end": "storage",
+          "ok": true,
+          "steps": 119,
+          "distanceMm": 25.63006727672655,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "entry",
+          "end": "kitchen",
+          "ok": true,
+          "steps": 62,
+          "distanceMm": 3.418669527837314,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "kitchen",
+          "end": "bar",
+          "ok": true,
+          "steps": 71,
+          "distanceMm": 13.319420015085598,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "entry",
+          "end": "adult",
+          "ok": true,
+          "steps": 228,
+          "distanceMm": 11.849954655735928,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "entry",
+          "end": "alice",
+          "ok": true,
+          "steps": 210,
+          "distanceMm": 6.244176422008422,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "adultBed",
+          "end": "adultWardrobe",
+          "ok": true,
+          "steps": 68,
+          "distanceMm": 17.502744061231937,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "aliceBed",
+          "end": "aliceDesk",
+          "ok": true,
+          "steps": 30,
+          "distanceMm": 2.5,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "adult",
+          "end": "bathroom",
+          "ok": true,
+          "steps": 223,
+          "distanceMm": 17.614509074621687,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "kitchen",
+          "end": "fridge",
+          "ok": true,
+          "steps": 50,
+          "distanceMm": 20.80229881682912,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "kitchen",
+          "end": "dishwasher",
+          "ok": true,
+          "steps": 32,
+          "distanceMm": 15.727534911951217,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "sofa",
+          "end": "kitchen",
+          "ok": true,
+          "steps": 177,
+          "distanceMm": 14.867168898288366,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1200,
+          "start": "entry",
+          "end": "storage",
+          "ok": true,
+          "steps": 119,
+          "distanceMm": 25.63006727672655,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "entry",
+          "end": "kitchen",
+          "ok": true,
+          "steps": 62,
+          "distanceMm": 3.418669527837314,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "kitchen",
+          "end": "bar",
+          "ok": true,
+          "steps": 71,
+          "distanceMm": 13.319420015085598,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "entry",
+          "end": "adult",
+          "ok": true,
+          "steps": 228,
+          "distanceMm": 11.849954655735928,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "entry",
+          "end": "alice",
+          "ok": true,
+          "steps": 210,
+          "distanceMm": 6.244176422008422,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "adultBed",
+          "end": "adultWardrobe",
+          "ok": true,
+          "steps": 68,
+          "distanceMm": 17.502744061231937,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "aliceBed",
+          "end": "aliceDesk",
+          "ok": true,
+          "steps": 30,
+          "distanceMm": 2.5,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "adult",
+          "end": "bathroom",
+          "ok": true,
+          "steps": 223,
+          "distanceMm": 17.614509074621687,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "kitchen",
+          "end": "fridge",
+          "ok": true,
+          "steps": 50,
+          "distanceMm": 20.80229881682912,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "kitchen",
+          "end": "dishwasher",
+          "ok": true,
+          "steps": 32,
+          "distanceMm": 15.727534911951217,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "sofa",
+          "end": "kitchen",
+          "ok": true,
+          "steps": 177,
+          "distanceMm": 14.867168898288366,
+          "heightMm": 1200
+        }
+      ]
+    },
+    {
+      "variant": "C",
+      "results": [
+        {
+          "eye": 1700,
+          "start": "entry",
+          "end": "storage",
+          "ok": true,
+          "steps": 60,
+          "distanceMm": 11.171672862401465,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "entry",
+          "end": "kitchen",
+          "ok": true,
+          "steps": 62,
+          "distanceMm": 3.418669527837314,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "kitchen",
+          "end": "bar",
+          "ok": true,
+          "steps": 150,
+          "distanceMm": 9.496087310612106,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "entry",
+          "end": "adult",
+          "ok": true,
+          "steps": 227,
+          "distanceMm": 6.813963972381316,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "entry",
+          "end": "alice",
+          "ok": true,
+          "steps": 252,
+          "distanceMm": 11.508281313718726,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "adultBed",
+          "end": "adultWardrobe",
+          "ok": true,
+          "steps": 68,
+          "distanceMm": 17.502744061231937,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "aliceBed",
+          "end": "aliceDesk",
+          "ok": true,
+          "steps": 30,
+          "distanceMm": 2.5,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "adult",
+          "end": "bathroom",
+          "ok": true,
+          "steps": 205,
+          "distanceMm": 17.60533052622708,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "kitchen",
+          "end": "fridge",
+          "ok": true,
+          "steps": 50,
+          "distanceMm": 20.80229881682912,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "kitchen",
+          "end": "dishwasher",
+          "ok": true,
+          "steps": 39,
+          "distanceMm": 17.87406715840665,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1700,
+          "start": "sofa",
+          "end": "kitchen",
+          "ok": true,
+          "steps": 96,
+          "distanceMm": 18.252531528343493,
+          "heightMm": 1700
+        },
+        {
+          "eye": 1200,
+          "start": "entry",
+          "end": "storage",
+          "ok": true,
+          "steps": 60,
+          "distanceMm": 11.171672862401465,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "entry",
+          "end": "kitchen",
+          "ok": true,
+          "steps": 62,
+          "distanceMm": 3.418669527837314,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "kitchen",
+          "end": "bar",
+          "ok": true,
+          "steps": 150,
+          "distanceMm": 9.496087310612106,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "entry",
+          "end": "adult",
+          "ok": true,
+          "steps": 227,
+          "distanceMm": 6.813963972381316,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "entry",
+          "end": "alice",
+          "ok": true,
+          "steps": 252,
+          "distanceMm": 11.508281313718726,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "adultBed",
+          "end": "adultWardrobe",
+          "ok": true,
+          "steps": 68,
+          "distanceMm": 17.502744061231937,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "aliceBed",
+          "end": "aliceDesk",
+          "ok": true,
+          "steps": 30,
+          "distanceMm": 2.5,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "adult",
+          "end": "bathroom",
+          "ok": true,
+          "steps": 205,
+          "distanceMm": 17.60533052622708,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "kitchen",
+          "end": "fridge",
+          "ok": true,
+          "steps": 50,
+          "distanceMm": 20.80229881682912,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "kitchen",
+          "end": "dishwasher",
+          "ok": true,
+          "steps": 39,
+          "distanceMm": 17.87406715840665,
+          "heightMm": 1200
+        },
+        {
+          "eye": 1200,
+          "start": "sofa",
+          "end": "kitchen",
+          "ok": true,
+          "steps": 96,
+          "distanceMm": 18.252531528343493,
+          "heightMm": 1200
+        }
+      ]
+    }
+  ],
+  "views": [
+    "viewer-desktop.png",
+    "A-orthographic.png",
+    "A-top.png",
+    "A-isometric.png",
+    "A-perspective-1.png",
+    "A-perspective-2.png",
+    "B-orthographic.png",
+    "B-top.png",
+    "B-isometric.png",
+    "B-perspective-1.png",
+    "B-perspective-2.png",
+    "C-orthographic.png",
+    "C-top.png",
+    "C-isometric.png",
+    "C-perspective-1.png",
+    "C-perspective-2.png",
+    "A-room-adult.png",
+    "A-room-alice.png",
+    "A-room-kitchen.png",
+    "A-room-living.png",
+    "A-room-bath.png",
+    "A-perspective-3.png",
+    "A-perspective-4.png",
+    "A-alice-adult-eye.png",
+    "A-alice-child-eye.png",
+    "A-operating-zones.png",
+    "A-open-dishwasher.png",
+    "viewer-desktop.png",
+    "viewer-mobile.png"
+  ],
+  "pointerLock": false,
+  "mobileOverflow": false,
+  "offline": true
+}

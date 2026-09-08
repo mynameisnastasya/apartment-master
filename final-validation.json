@@ -1,0 +1,18 @@
+{
+  "geometryStatus": "conditional reconstruction; survey and engineering missing",
+  "layoutStatus": "A recommended, user approval pending",
+  "routes": 33,
+  "adultAndChildWalkthroughs": 66,
+  "openApplianceCases": 11,
+  "javascriptErrors": 0,
+  "offlineViewer": true,
+  "mobileOverflow": false,
+  "pointerLockConfirmed": false,
+  "dragMouseLookConfirmed": true,
+  "finalPlanRendering": "shadow-free orthographic plan; dimension/name labels separated; overhead cabinets hidden in plan only",
+  "dataSha256": {
+    "src/data/geometry.json": "40d3e1fee61564fa15f8dac2a4df755a3bc427f30151c2272bde2a4ad1bdb99d",
+    "src/data/project.json": "2e48f79fd8a3ce048a6d2fb0bc1cd0a97bbb78e16b980ce19e1072434713a525",
+    "src/data/layouts.json": "286245b8ac8997fc70273dd262bdbbed9e838f57c56e0cab3ff4c3675b1ec0ab"
+  }
+}
