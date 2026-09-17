@@ -6,6 +6,7 @@ on:
     paths:
       - 'src/**'
       - 'index.template.html'
+      - 'project.template.html'
       - 'scripts/**'
       - 'package.json'
       - 'package-lock.json'
@@ -24,15 +25,15 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - name: Commit generated index
+      - name: Commit generated site
         shell: bash
         run: |
-          if git diff --quiet -- index.html LIZA.html views/D-floor-plan.svg MASTER-APARTMENT.json; then
-            echo "index.html is already current"
+          if git diff --quiet -- index.html model.html LIZA.html views/D-floor-plan.svg MASTER-APARTMENT.json; then
+            echo "generated site is already current"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html LIZA.html views/D-floor-plan.svg MASTER-APARTMENT.json
-          git commit -m "build: refresh standalone site"
+          git add index.html model.html LIZA.html views/D-floor-plan.svg MASTER-APARTMENT.json
+          git commit -m "build: publish design album and model"
           git push
