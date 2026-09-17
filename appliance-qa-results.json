@@ -29,19 +29,19 @@
         "id": "fridge-open",
         "x": 2400,
         "y": 650,
-        "width": 30,
+        "width": 35,
         "depth": 650,
         "height": 2000,
         "elevation": 50,
         "kind": "appliance-door"
       },
       "operatorPoint": [
-        2775,
+        2725,
         1025
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 3450
+      "routeLengthMm": 3525
     },
     {
       "variant": "A",
@@ -113,19 +113,19 @@
         "id": "fridge-open",
         "x": 2400,
         "y": 650,
-        "width": 30,
+        "width": 35,
         "depth": 650,
         "height": 2000,
         "elevation": 50,
         "kind": "appliance-door"
       },
       "operatorPoint": [
-        2775,
+        2725,
         1025
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 3450
+      "routeLengthMm": 3525
     },
     {
       "variant": "B",
@@ -176,19 +176,19 @@
         "id": "fridge-open",
         "x": 2400,
         "y": 650,
-        "width": 30,
+        "width": 35,
         "depth": 650,
         "height": 2000,
         "elevation": 50,
         "kind": "appliance-door"
       },
       "operatorPoint": [
-        2775,
+        2725,
         1025
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 3450
+      "routeLengthMm": 3525
     },
     {
       "variant": "C",

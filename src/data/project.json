@@ -4,12 +4,22 @@
   "recommendedLayout": "D",
   "selectedLayout": "D",
   "approvalStatus": "reference-based working layout — requires measurement and engineering validation",
-  "source": "IMG_3956 2.JPG + user reference layout screenshot",
+  "source": "Existing conditional survey geometry + two user images attached in current conversation",
   "unit": "mm",
   "design": {
-    "materials": "neutral placeholders",
-    "decor": [],
-    "lighting": "technical"
+    "palette": [
+      "Тёплый белый",
+      "Светлый дуб",
+      "Шалфей",
+      "Песочный текстиль"
+    ],
+    "lighting": [
+      "Мягкий общий свет в гостиной",
+      "Подсветка рабочей поверхности кухни",
+      "Отдельный свет над столом",
+      "Бра у кроватей и свет рабочего стола"
+    ],
+    "notes": "Закрытое хранение до потолка; спокойные плоскости фасадов; скруглённые углы обеденного стола. Палитра показана условными материалами, без подбора конкретных товаров."
   },
   "futureStages": [
     "measurement validation",

@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build.mjs",
+    "build": "node scripts/build.mjs && node scripts/reference-report.mjs",
     "start": "node scripts/serve.mjs",
-    "qa": "node scripts/qa.mjs"
+    "qa": "node scripts/qa.mjs && node scripts/reference-qa.mjs"
   },
   "dependencies": {
     "three": "0.185.1"

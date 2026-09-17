@@ -2,17 +2,29 @@
   "project": {
     "title": "Лесная Поляна",
     "stage": 1,
-    "recommendedLayout": "A",
-    "selectedLayout": "A",
-    "approvalStatus": "proposed — awaiting user selection",
-    "source": "IMG_3956 2.JPG",
+    "recommendedLayout": "D",
+    "selectedLayout": "D",
+    "approvalStatus": "reference-based working layout — requires measurement and engineering validation",
+    "source": "Existing conditional survey geometry + two user images attached in current conversation",
     "unit": "mm",
     "design": {
-      "materials": "neutral placeholders",
-      "decor": [],
-      "lighting": "technical"
+      "palette": [
+        "Тёплый белый",
+        "Светлый дуб",
+        "Шалфей",
+        "Песочный текстиль"
+      ],
+      "lighting": [
+        "Мягкий общий свет в гостиной",
+        "Подсветка рабочей поверхности кухни",
+        "Отдельный свет над столом",
+        "Бра у кроватей и свет рабочего стола"
+      ],
+      "notes": "Закрытое хранение до потолка; спокойные плоскости фасадов; скруглённые углы обеденного стола. Палитра показана условными материалами, без подбора конкретных товаров."
     },
     "futureStages": [
+      "measurement validation",
+      "engineering validation",
       "furniture",
       "interior concept",
       "materials",
@@ -341,6 +353,963 @@
     ]
   },
   "layouts": [
+    {
+      "id": "D",
+      "name": "Лиза · доработанный",
+      "subtitle": "Ваша схема · отдельные входы · свободнее проходы",
+      "recommended": true,
+      "partitions": [
+        {
+          "id": "d-bath-west",
+          "type": "wall",
+          "room": "architecture",
+          "x": 2320,
+          "y": 0,
+          "width": 120,
+          "depth": 1920,
+          "height": 2700,
+          "rotation": 0,
+          "visible": true,
+          "proposed": true
+        },
+        {
+          "id": "d-bath-east",
+          "type": "wall",
+          "room": "architecture",
+          "x": 4720,
+          "y": 0,
+          "width": 120,
+          "depth": 1920,
+          "height": 2700,
+          "rotation": 0,
+          "visible": true,
+          "proposed": true
+        },
+        {
+          "id": "d-bath-south-left",
+          "type": "wall",
+          "room": "architecture",
+          "x": 2320,
+          "y": 1920,
+          "width": 820,
+          "depth": 120,
+          "height": 2700,
+          "rotation": 0,
+          "visible": true,
+          "proposed": true
+        },
+        {
+          "id": "d-bath-south-right",
+          "type": "wall",
+          "room": "architecture",
+          "x": 3940,
+          "y": 1920,
+          "width": 900,
+          "depth": 120,
+          "height": 2700,
+          "rotation": 0,
+          "visible": true,
+          "proposed": true
+        },
+        {
+          "id": "d-adult-north",
+          "type": "wall",
+          "room": "architecture",
+          "x": 0,
+          "y": 4640,
+          "width": 2325,
+          "depth": 120,
+          "height": 2700,
+          "rotation": 0,
+          "visible": true,
+          "proposed": true
+        },
+        {
+          "id": "d-adult-divider",
+          "type": "wall",
+          "room": "architecture",
+          "x": 3175,
+          "y": 4640,
+          "width": 120,
+          "depth": 2210,
+          "height": 2700,
+          "rotation": 0,
+          "visible": true,
+          "proposed": true
+        },
+        {
+          "id": "d-child-north-right",
+          "type": "wall",
+          "room": "architecture",
+          "x": 4910,
+          "y": 3520,
+          "width": 1490,
+          "depth": 120,
+          "height": 2700,
+          "rotation": 0,
+          "visible": true,
+          "proposed": true
+        },
+        {
+          "id": "d-bath-door-lintel",
+          "type": "wall",
+          "room": "architecture",
+          "x": 3140,
+          "y": 1920,
+          "width": 800,
+          "depth": 120,
+          "height": 600,
+          "rotation": 0,
+          "visible": true,
+          "proposed": true,
+          "elevation": 2100,
+          "openingPart": true
+        },
+        {
+          "id": "d-adult-door-lintel",
+          "type": "wall",
+          "room": "architecture",
+          "x": 2325,
+          "y": 4640,
+          "width": 850,
+          "depth": 120,
+          "height": 600,
+          "rotation": 0,
+          "visible": true,
+          "proposed": true,
+          "elevation": 2100,
+          "openingPart": true
+        },
+        {
+          "id": "d-child-door-lintel",
+          "type": "wall",
+          "room": "architecture",
+          "x": 4060,
+          "y": 3520,
+          "width": 850,
+          "depth": 120,
+          "height": 600,
+          "rotation": 0,
+          "visible": true,
+          "proposed": true,
+          "elevation": 2100,
+          "openingPart": true
+        },
+        {
+          "id": "d-child-diagonal",
+          "type": "wall",
+          "room": "architecture",
+          "x": 2975.8927859232003,
+          "y": 4050,
+          "width": 1343.214428153599,
+          "depth": 120,
+          "height": 2700,
+          "rotation": -52.10631057760653,
+          "visible": true,
+          "proposed": true
+        }
+      ],
+      "doors": [
+        {
+          "id": "door-adult",
+          "x": 2325,
+          "y": 4640,
+          "width": 850,
+          "axis": "x",
+          "openX": 3135,
+          "openY": 4760,
+          "openWidth": 40,
+          "openDepth": 850,
+          "room": "adult",
+          "swing": "inward",
+          "hinge": [
+            3175,
+            4760
+          ],
+          "arcStart": 180,
+          "arcEnd": 90
+        },
+        {
+          "id": "door-child",
+          "x": 4060,
+          "y": 3520,
+          "width": 850,
+          "axis": "x",
+          "openX": 4910,
+          "openY": 3560,
+          "openWidth": 850,
+          "openDepth": 35,
+          "room": "alice",
+          "mechanism": "pocket-sliding"
+        },
+        {
+          "id": "door-bath",
+          "x": 3140,
+          "y": 1920,
+          "width": 800,
+          "axis": "x",
+          "openX": 3140,
+          "openY": 1120,
+          "openWidth": 40,
+          "openDepth": 800,
+          "room": "bath",
+          "swing": "inward",
+          "hinge": [
+            3140,
+            1920
+          ],
+          "arcStart": 0,
+          "arcEnd": -90
+        }
+      ],
+      "rooms": [
+        {
+          "id": "adult",
+          "name": "Спальня",
+          "x": 1350,
+          "y": 8150,
+          "polygon": [
+            [
+              0,
+              4760
+            ],
+            [
+              3175,
+              4760
+            ],
+            [
+              3175,
+              8300
+            ],
+            [
+              0,
+              8300
+            ]
+          ],
+          "area": 11.24
+        },
+        {
+          "id": "alice",
+          "name": "Вторая комната",
+          "x": 5550,
+          "y": 6350,
+          "polygon": [
+            [
+              3295,
+              4660.597412956626
+            ],
+            [
+              4089.3328921596376,
+              3640
+            ],
+            [
+              6400,
+              3640
+            ],
+            [
+              6400,
+              7440
+            ],
+            [
+              3425,
+              7440
+            ],
+            [
+              3425,
+              6850
+            ],
+            [
+              3295,
+              6850
+            ]
+          ],
+          "area": 11.32
+        },
+        {
+          "id": "bath",
+          "name": "Ванная",
+          "x": 3540,
+          "y": 1010,
+          "polygon": [
+            [
+              2440,
+              0
+            ],
+            [
+              4720,
+              0
+            ],
+            [
+              4720,
+              1920
+            ],
+            [
+              2440,
+              1920
+            ]
+          ],
+          "area": 4.38
+        },
+        {
+          "id": "living",
+          "name": "Кухня-гостиная",
+          "x": 1120,
+          "y": 3650
+        },
+        {
+          "id": "entry",
+          "name": "Прихожая",
+          "x": 5300,
+          "y": 2600
+        }
+      ],
+      "furniture": [
+        {
+          "id": "adult-bed",
+          "type": "bed",
+          "room": "adult",
+          "x": 1275,
+          "y": 5800,
+          "width": 1700,
+          "depth": 2100,
+          "height": 850,
+          "rotation": 90,
+          "visible": true,
+          "label": "Кровать · матрас 1600 × 2000",
+          "mattress": [
+            1600,
+            2000
+          ],
+          "front": "north",
+          "storage": "подъёмное основание"
+        },
+        {
+          "id": "adult-wardrobe",
+          "type": "wardrobe",
+          "room": "adult",
+          "x": 150,
+          "y": 4800,
+          "width": 1800,
+          "depth": 600,
+          "height": 2400,
+          "rotation": 0,
+          "visible": true,
+          "label": "Шкаф 1800 × 600 · купе",
+          "front": "south",
+          "opening": "sliding"
+        },
+        {
+          "id": "adult-dresser",
+          "type": "storage",
+          "room": "adult",
+          "x": 80,
+          "y": 6920,
+          "width": 350,
+          "depth": 1000,
+          "height": 750,
+          "rotation": 0,
+          "visible": true,
+          "label": "Неглубокий комод 1000 × 350",
+          "front": "east"
+        },
+        {
+          "id": "adult-nightstand",
+          "visible": true,
+          "rotation": 0,
+          "height": 450,
+          "x": 2725,
+          "y": 5650,
+          "width": 450,
+          "depth": 330,
+          "type": "storage",
+          "room": "adult",
+          "front": "south",
+          "label": "Прикроватная тумба 450"
+        },
+        {
+          "id": "adult-nightstand-2",
+          "visible": true,
+          "rotation": 0,
+          "height": 450,
+          "x": 2725,
+          "y": 7800,
+          "width": 450,
+          "depth": 350,
+          "type": "storage",
+          "room": "adult",
+          "front": "north",
+          "label": "Прикроватная тумба 450"
+        },
+        {
+          "id": "alice-bed",
+          "type": "bed",
+          "room": "alice",
+          "x": 4850,
+          "y": 4400,
+          "width": 1000,
+          "depth": 2100,
+          "height": 850,
+          "rotation": 90,
+          "visible": true,
+          "label": "Кровать · матрас 900 × 2000",
+          "mattress": [
+            900,
+            2000
+          ],
+          "front": "north"
+        },
+        {
+          "id": "alice-desk",
+          "type": "desk",
+          "room": "alice",
+          "x": 3745,
+          "y": 6620,
+          "width": 1400,
+          "depth": 600,
+          "height": 740,
+          "rotation": 0,
+          "visible": true,
+          "label": "Стол 1400 × 600 · у окна",
+          "front": "north"
+        },
+        {
+          "id": "alice-chair",
+          "type": "chair",
+          "room": "alice",
+          "x": 4195,
+          "y": 6070,
+          "width": 500,
+          "depth": 500,
+          "height": 850,
+          "rotation": 0,
+          "visible": true,
+          "label": "Рабочий стул",
+          "front": "south"
+        },
+        {
+          "id": "alice-wardrobe",
+          "type": "wardrobe",
+          "room": "alice",
+          "x": 4960,
+          "y": 3720,
+          "width": 1390,
+          "depth": 600,
+          "height": 2400,
+          "rotation": 0,
+          "visible": true,
+          "label": "Шкаф 1390 × 600 · купе",
+          "front": "south",
+          "opening": "sliding"
+        },
+        {
+          "id": "bath-tub",
+          "type": "tub",
+          "room": "bath",
+          "x": 3970,
+          "y": 110,
+          "width": 750,
+          "depth": 1700,
+          "height": 560,
+          "rotation": 0,
+          "visible": true,
+          "label": "Ванна 1700 × 750",
+          "front": "west"
+        },
+        {
+          "id": "wc",
+          "type": "wc",
+          "room": "bath",
+          "x": 2460,
+          "y": 40,
+          "width": 700,
+          "depth": 700,
+          "height": 1100,
+          "rotation": 0,
+          "visible": true,
+          "label": "Унитаз + инсталляция",
+          "front": "south"
+        },
+        {
+          "id": "washer",
+          "type": "washer",
+          "room": "bath",
+          "x": 3210,
+          "y": 40,
+          "width": 650,
+          "depth": 650,
+          "height": 900,
+          "rotation": 0,
+          "visible": true,
+          "label": "Стиральная машина · ниша 650 × 650",
+          "front": "south"
+        },
+        {
+          "id": "basin",
+          "type": "basin",
+          "room": "bath",
+          "x": 2440,
+          "y": 1420,
+          "width": 650,
+          "depth": 500,
+          "height": 850,
+          "rotation": 0,
+          "visible": true,
+          "label": "Раковина 650 × 500",
+          "front": "north"
+        },
+        {
+          "id": "fridge",
+          "type": "fridge",
+          "room": "kitchen",
+          "x": 1670,
+          "y": 0,
+          "width": 650,
+          "depth": 650,
+          "height": 2100,
+          "rotation": 0,
+          "visible": true,
+          "label": "Холодильник · 650",
+          "front": "south",
+          "hinge": "left"
+        },
+        {
+          "id": "k-base-corner",
+          "type": "base",
+          "room": "kitchen",
+          "x": 0,
+          "y": 0,
+          "width": 600,
+          "depth": 600,
+          "height": 900,
+          "rotation": 0,
+          "visible": true,
+          "label": "Угловой модуль 600 · доступ со стороны мойки",
+          "front": "south"
+        },
+        {
+          "id": "hob",
+          "type": "hob",
+          "room": "kitchen",
+          "x": 600,
+          "y": 0,
+          "width": 600,
+          "depth": 600,
+          "height": 900,
+          "rotation": 0,
+          "visible": true,
+          "label": "Варочная + духовка · 600",
+          "front": "south",
+          "oven": true
+        },
+        {
+          "id": "k-base-n",
+          "type": "base",
+          "room": "kitchen",
+          "x": 1200,
+          "y": 0,
+          "width": 470,
+          "depth": 600,
+          "height": 900,
+          "rotation": 0,
+          "visible": true,
+          "label": "Рабочая поверхность 470",
+          "front": "south"
+        },
+        {
+          "id": "sink",
+          "type": "sink",
+          "room": "kitchen",
+          "x": 0,
+          "y": 600,
+          "width": 600,
+          "depth": 600,
+          "height": 900,
+          "rotation": 0,
+          "visible": true,
+          "label": "Мойка · 600",
+          "front": "east"
+        },
+        {
+          "id": "dishwasher",
+          "type": "dishwasher",
+          "room": "kitchen",
+          "x": 0,
+          "y": 1200,
+          "width": 600,
+          "depth": 600,
+          "height": 900,
+          "rotation": 0,
+          "visible": true,
+          "label": "ПММ · 600",
+          "front": "east"
+        },
+        {
+          "id": "dining",
+          "type": "bar",
+          "room": "kitchen",
+          "x": 0,
+          "y": 1950,
+          "width": 1100,
+          "depth": 650,
+          "height": 750,
+          "rotation": 0,
+          "visible": true,
+          "label": "Стол 1100 × 650 · два места",
+          "front": "east",
+          "kneeDepth": 450
+        },
+        {
+          "id": "dining-chair-east",
+          "visible": true,
+          "rotation": 0,
+          "height": 820,
+          "x": 100,
+          "y": 2650,
+          "width": 400,
+          "depth": 400,
+          "type": "chair",
+          "room": "kitchen",
+          "front": "north",
+          "label": "Обеденный стул · первое место"
+        },
+        {
+          "id": "dining-chair-south",
+          "visible": true,
+          "rotation": 0,
+          "height": 820,
+          "x": 650,
+          "y": 2650,
+          "width": 400,
+          "depth": 400,
+          "type": "chair",
+          "room": "kitchen",
+          "front": "north",
+          "label": "Обеденный стул · второе место"
+        },
+        {
+          "id": "sofa",
+          "type": "sofa",
+          "room": "living",
+          "x": 1250,
+          "y": 3350,
+          "width": 1600,
+          "depth": 800,
+          "height": 820,
+          "rotation": 270,
+          "visible": true,
+          "label": "Диван 1600 × 800 · лицом к ТВ",
+          "front": "north"
+        },
+        {
+          "id": "media",
+          "type": "media",
+          "room": "living",
+          "x": 0,
+          "y": 3200,
+          "width": 250,
+          "depth": 950,
+          "height": 430,
+          "rotation": 0,
+          "visible": true,
+          "label": "Подвесная ТВ-консоль · глубина 250",
+          "front": "east"
+        },
+        {
+          "id": "tv",
+          "type": "tv",
+          "room": "living",
+          "x": 35,
+          "y": 3250,
+          "width": 45,
+          "depth": 900,
+          "height": 640,
+          "rotation": 0,
+          "visible": true,
+          "label": "ТВ · ориентир 40–43″",
+          "elevation": 950,
+          "front": "east",
+          "collidable": false
+        },
+        {
+          "id": "hall-wardrobe",
+          "type": "wardrobe",
+          "room": "entry",
+          "x": 5800,
+          "y": 1300,
+          "width": 600,
+          "depth": 2000,
+          "height": 2400,
+          "rotation": 0,
+          "visible": true,
+          "label": "Прихожая · шкаф 2000 × 600",
+          "front": "west",
+          "opening": "sliding",
+          "contents": [
+            "верхняя одежда",
+            "обувь",
+            "хозяйственные вещи"
+          ]
+        },
+        {
+          "id": "mirror",
+          "type": "mirror",
+          "room": "entry",
+          "x": 4870,
+          "y": 500,
+          "width": 25,
+          "depth": 750,
+          "height": 1800,
+          "rotation": 0,
+          "visible": true,
+          "label": "Зеркало у входа",
+          "elevation": 400,
+          "collidable": false,
+          "front": "east"
+        }
+      ],
+      "pros": [
+        "Входы в обе комнаты независимые: большая спальня больше не проходная через вторую.",
+        "Корпус санузла уже на 310 мм: перед шкафом остаётся 960 мм.",
+        "Кровати развёрнуты как на фото; шкаф спальни перенесён с узкого прохода на внутреннюю стену.",
+        "Диван смотрит на ТВ, у стола есть два реальных стула."
+      ],
+      "cons": [
+        "Спальня уменьшена до 11,24 м²: это освобождает 910 мм между ванной и диваном. За диваном у диагонали остаётся локальное сужение около 800 мм.",
+        "Обеденная зона рассчитана на двоих; для гостей нужен раскладной стол и временная перестановка.",
+        "Кухня компактная: основная поверхность 470 мм; для готовки вдвоём тесно.",
+        "Вторая комната сохраняет кровать 900 × 2000 из предыдущего проекта; двуспальная потребует отдельной проверки.",
+        "У общей зоны нет собственного окна: рассматриваем верхнее матовое остекление перегородок спален со шторами/экранами для приватности.",
+        "Контур, окна и коммуникации требуют обмера. Это концепция, не документация для стройки."
+      ],
+      "cost": "умеренная",
+      "score": [],
+      "clearances": [
+        {
+          "id": "entry-aisle",
+          "label": "Между ванной и шкафом",
+          "value": 960,
+          "unit": "мм",
+          "status": "good",
+          "x": 5320,
+          "y": 1500,
+          "axis": "x",
+          "length": 960
+        },
+        {
+          "id": "adult-door-clear",
+          "label": "Проём спальни до установки коробки",
+          "value": 850,
+          "unit": "мм",
+          "status": "good",
+          "x": 2750,
+          "y": 4700,
+          "axis": "x",
+          "length": 850
+        },
+        {
+          "id": "child-door-clear",
+          "label": "Проём второй комнаты до коробки",
+          "value": 850,
+          "unit": "мм",
+          "status": "good",
+          "x": 4485,
+          "y": 3580,
+          "axis": "x",
+          "length": 850
+        },
+        {
+          "id": "bath-door-clear",
+          "label": "Проём ванной до коробки",
+          "value": 800,
+          "unit": "мм",
+          "status": "good",
+          "x": 3540,
+          "y": 1980,
+          "axis": "x",
+          "length": 800
+        },
+        {
+          "id": "adult-foot",
+          "label": "Проход в изножье",
+          "value": 1075,
+          "unit": "мм",
+          "status": "good",
+          "x": 537.5,
+          "y": 6400,
+          "axis": "x",
+          "length": 1075
+        },
+        {
+          "id": "adult-window",
+          "label": "До оконной стены",
+          "value": 600,
+          "unit": "мм",
+          "status": "good",
+          "x": 1700,
+          "y": 8000,
+          "axis": "y",
+          "length": 600
+        },
+        {
+          "id": "child-foot",
+          "label": "Проход в изножье второй кровати",
+          "value": 1005,
+          "unit": "мм",
+          "status": "good",
+          "x": 3797.5,
+          "y": 5500,
+          "axis": "x",
+          "length": 1005
+        },
+        {
+          "id": "bath-use",
+          "label": "Перед унитазом до раковины",
+          "value": 680,
+          "unit": "мм",
+          "status": "compact",
+          "x": 2785,
+          "y": 1080,
+          "axis": "y",
+          "length": 680
+        },
+        {
+          "id": "kitchen-entry",
+          "label": "Между ванной и диваном",
+          "value": 910,
+          "length": 910,
+          "x": 2100,
+          "y": 2495,
+          "axis": "y",
+          "unit": "мм",
+          "status": "good"
+        }
+      ],
+      "routes": {
+        "entry": [
+          5400,
+          700
+        ],
+        "storage": [
+          5350,
+          2300
+        ],
+        "kitchen": [
+          1400,
+          1100
+        ],
+        "bar": [
+          1300,
+          2950
+        ],
+        "adult": [
+          2750,
+          5200
+        ],
+        "alice": [
+          4450,
+          4050
+        ],
+        "adultBed": [
+          750,
+          6200
+        ],
+        "adultWardrobe": [
+          1350,
+          5700
+        ],
+        "aliceBed": [
+          3875,
+          5350
+        ],
+        "aliceDesk": [
+          3820,
+          6280
+        ],
+        "bathroom": [
+          3540,
+          1150
+        ],
+        "fridge": [
+          1940,
+          1050
+        ],
+        "dishwasher": [
+          950,
+          1500
+        ],
+        "sofa": [
+          1150,
+          3550
+        ]
+      },
+      "routePairs": [
+        [
+          "entry",
+          "storage"
+        ],
+        [
+          "entry",
+          "kitchen"
+        ],
+        [
+          "entry",
+          "adult"
+        ],
+        [
+          "entry",
+          "alice"
+        ],
+        [
+          "entry",
+          "bathroom"
+        ],
+        [
+          "adultBed",
+          "adultWardrobe"
+        ],
+        [
+          "aliceBed",
+          "aliceDesk"
+        ],
+        [
+          "adult",
+          "bathroom"
+        ],
+        [
+          "kitchen",
+          "fridge"
+        ],
+        [
+          "kitchen",
+          "dishwasher"
+        ],
+        [
+          "sofa",
+          "kitchen"
+        ],
+        [
+          "entry",
+          "bar"
+        ]
+      ],
+      "revision": "2026-09-17",
+      "areaBasis": "Площади вычислены по полигонам условной модели, не перенесены со скриншота.",
+      "design": {
+        "palette": [
+          "Тёплый белый",
+          "Светлый дуб",
+          "Шалфей",
+          "Песочный текстиль"
+        ],
+        "lighting": [
+          "Мягкий общий свет в гостиной",
+          "Подсветка рабочей поверхности кухни",
+          "Отдельный свет над столом",
+          "Бра у кроватей и свет рабочего стола"
+        ],
+        "notes": "Закрытое хранение до потолка; спокойные плоскости фасадов; скруглённые углы обеденного стола. Палитра показана условными материалами, без подбора конкретных товаров."
+      }
+    },
     {
       "id": "A",
       "name": "Баланс",
@@ -3006,5 +3975,6 @@
         ]
       ]
     }
-  ]
+  ],
+  "selectedLayout": "D"
 }
