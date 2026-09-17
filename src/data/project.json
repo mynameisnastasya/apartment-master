@@ -1,10 +1,10 @@
 {
   "title": "Лесная Поляна",
   "stage": 1,
-  "recommendedLayout": "A",
-  "selectedLayout": "A",
-  "approvalStatus": "proposed — awaiting user selection",
-  "source": "IMG_3956 2.JPG",
+  "recommendedLayout": "D",
+  "selectedLayout": "D",
+  "approvalStatus": "reference-based working layout — requires measurement and engineering validation",
+  "source": "IMG_3956 2.JPG + user reference layout screenshot",
   "unit": "mm",
   "design": {
     "materials": "neutral placeholders",
@@ -12,6 +12,8 @@
     "lighting": "technical"
   },
   "futureStages": [
+    "measurement validation",
+    "engineering validation",
     "furniture",
     "interior concept",
     "materials",
