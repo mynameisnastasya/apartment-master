@@ -18,3 +18,4 @@ jobs:
       - run: npm run build
       - run: npm run qa
       - run: node scripts/appliance-qa.mjs
+      - run: node scripts/ergonomic-qa.mjs
