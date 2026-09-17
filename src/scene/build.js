@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {mm} from '../data/model.js';
-export function box(parent,m,x,y,w,d,h,e=0,name=''){const mesh=new THREE.Mesh(new THREE.BoxGeometry(mm(w),mm(h),mm(d)),m);mesh.position.set(mm(x+w/2),mm(e+h/2),mm(y+d/2));mesh.name=name;mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
+export function box(parent,m,x,y,w,d,h,e=0,name='',rotation=0){const mesh=new THREE.Mesh(new THREE.BoxGeometry(mm(w),mm(h),mm(d)),m);mesh.position.set(mm(x+w/2),mm(e+h/2),mm(y+d/2));mesh.rotation.y=-THREE.MathUtils.degToRad(rotation||0);mesh.name=name;mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
 function lineBox(mesh,m){const l=new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry,35),m);mesh.add(l);}
 export function createFurniture(o,m){const g=new THREE.Group();g.name=o.id;g.userData={...o,category:'furniture'};const x=o.x,y=o.y,w=o.width,d=o.depth,h=o.height,e=o.elevation||0;
  const b=(mat,xx=x,yy=y,ww=w,dd=d,hh=h,ee=e)=>box(g,mat,xx,yy,ww,dd,hh,ee,o.id);
@@ -17,18 +17,19 @@ export function createFurniture(o,m){const g=new THREE.Group();g.name=o.id;g.use
  else if(o.type==='hob'){counter();b(m.screen,x+40,y+60,w-80,d-120,14,h);for(const xx of[x+w*.28,x+w*.7])for(const yy of[y+d*.3,y+d*.68]){const ring=new THREE.Mesh(new THREE.TorusGeometry(.068,.004,6,24),m.metal);ring.rotation.x=Math.PI/2;ring.position.set(mm(xx),mm(h+17),mm(yy));g.add(ring);}if(o.oven!==false)b(m.screen,x+50,y+d-5,w-100,15,420,150);}
  else if(o.type==='washer'){b(m.fixture);const disc=new THREE.Mesh(new THREE.CylinderGeometry(.21,.21,.025,32),m.metal);disc.rotation.z=Math.PI/2;disc.position.set(mm(x-2),.46,mm(y+d/2));g.add(disc);}
  else if(o.type==='fridge'){b(m.joinery,x+2,y+2,w-4,d-4,h,e);front(25,h-90,35);b(m.metal,x+w-60,y+d-32,16,24,450,950);b(m.metal,x+15,y+d-28,w-30,4,8,750);}
- else if(['wardrobe','storage','upper','shelf'].includes(o.type)){b(m.joinery,x+2,y+2,w-4,d-4,h,e);if(o.type==='shelf'){for(let z=200;z<h;z+=330)b(m.worktop,x-3,y+20,w+6,d-20,25,z);}else{const frontMesh=front(18,h-80,e+40);const count=Math.max(2,Math.round(Math.max(w,d)/550));if(w>=d){for(let i=1;i<count;i++)b(m.metal,x+i*w/count,y+d-21,3,3,h-100,e+50);}else{for(let i=1;i<count;i++)b(m.metal,o.front==='east'?x+w-21:x+18,y+i*d/count,3,3,h-100,e+50);}}}
+ else if(['wardrobe','storage','upper','shelf'].includes(o.type)){b(m.joinery,x+2,y+2,w-4,d-4,h,e);if(o.type==='shelf'){for(let z=200;z<h;z+=330)b(m.worktop,x-3,y+20,w+6,d-20,25,z);}else{front(18,h-80,e+40);const count=Math.max(2,Math.round(Math.max(w,d)/550));if(w>=d){for(let i=1;i<count;i++)b(m.metal,x+i*w/count,y+d-21,3,3,h-100,e+50);}else{for(let i=1;i<count;i++)b(m.metal,o.front==='east'?x+w-21:x+18,y+i*d/count,3,3,h-100,e+50);}}}
  else if(o.type==='tv'||o.type==='mirror'){b(o.type==='tv'?m.screen:m.glass);}
  else {counter();if(o.type==='dishwasher')front(20,h-100,30);}
+ if(o.rotation){const cx=mm(x+w/2),cz=mm(y+d/2);for(const child of g.children){child.position.x-=cx;child.position.z-=cz;}g.position.set(cx,0,cz);g.rotation.y=-THREE.MathUtils.degToRad(o.rotation);}
  g.traverse(c=>{if(c.isMesh){c.userData={id:o.id};if(!['glass','screen'].includes(c.material.name))lineBox(c,m.line);}});return g;
 }
 export function createArchitecture(geometry,layout,m,{cut=true,plan=false,walls=true,doorsOpen=true}={}){
  const root=new THREE.Group();root.name='APARTMENT_GEOMETRY';
  const shape=new THREE.Shape();geometry.floor.forEach(([x,y],i)=>i?shape.lineTo(mm(x),mm(y)):shape.moveTo(mm(x),mm(y)));shape.closePath();const floorGeo=new THREE.ExtrudeGeometry(shape,{depth:.10,bevelEnabled:false});floorGeo.rotateX(Math.PI/2);const floor=new THREE.Mesh(floorGeo,m.floor);floor.name='floor';floor.receiveShadow=true;root.add(floor);
  const wallGroup=new THREE.Group();wallGroup.name='WALLS';root.add(wallGroup);wallGroup.visible=walls;
- for(const o of [...geometry.walls,...layout.partitions]){const max=plan?100:cut?1050:geometry.ceilingHeight;const elev=o.elevation||0;if(elev>=max)continue;const mesh=box(wallGroup,m.wall,o.x,o.y,o.width,o.depth,Math.min(o.height,max-elev),elev,o.id);lineBox(mesh,m.line);}
+ for(const o of [...geometry.walls,...layout.partitions]){const max=plan?100:cut?1050:geometry.ceilingHeight;const elev=o.elevation||0;if(elev>=max)continue;const mesh=box(wallGroup,m.wall,o.x,o.y,o.width,o.depth,Math.min(o.height,max-elev),elev,o.id,o.rotation||0);lineBox(mesh,m.line);}
  if(walls&&!plan){for(const win of geometry.windows){const gh=cut?Math.min(win.height,1050-win.sill):win.height;if(gh>0){box(wallGroup,m.glass,win.x,win.y,win.width,20,gh,win.sill,win.id);for(let i=0;i<=3;i++)box(wallGroup,m.worktop,win.x+i*win.width/3,win.y-10,25,40,gh,win.sill);box(wallGroup,m.worktop,win.x,win.y-10,win.width,40,25,win.sill);}}}
- const doorGroup=new THREE.Group();doorGroup.name='DOORS';root.add(doorGroup);for(const d of[geometry.entry,...layout.doors]){const op=doorsOpen?{x:d.openX,y:d.openY,w:d.openWidth,dep:d.openDepth}:{x:d.x,y:d.y,w:d.axis==='x'?d.width:40,dep:d.axis==='y'?d.width:40};const dh=plan?30:cut?900:2100;box(doorGroup,m.joinery,op.x,op.y,op.w,op.dep,dh,0,d.id);}
+ const doorGroup=new THREE.Group();doorGroup.name='DOORS';root.add(doorGroup);for(const d of[geometry.entry,...layout.doors]){const op=doorsOpen?{x:d.openX,y:d.openY,w:d.openWidth,dep:d.openDepth}:{x:d.x,y:d.y,w:d.axis==='x'?d.width:40,dep:d.axis==='y'?d.width:40};const dh=plan?30:cut?900:2100;box(doorGroup,m.joinery,op.x,op.y,op.w,op.dep,dh,0,d.id,d.openRotation||0);}
  return root;
 }
 export function dimensionLine(group,from,to,color=0x657d73){const mat=new THREE.LineBasicMaterial({color,depthTest:false});const pts=[new THREE.Vector3(mm(from[0]),.035,mm(from[1])),new THREE.Vector3(mm(to[0]),.035,mm(to[1]))];const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),mat);l.renderOrder=20;group.add(l);return l;}
