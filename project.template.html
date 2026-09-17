@@ -6,6 +6,14 @@
 <meta name="theme-color" content="#f3efe8">
 <title>Лесная Поляна · Дизайн-проект квартиры</title>
 <style>/*PROJECT_STYLE*/</style>
+<style>
+@media(max-width:620px){
+  .topbar{flex-wrap:wrap;overflow:hidden}
+  .topbar .grow{display:none}
+  .topbar .mode{max-width:calc(100vw - 68px);overflow-x:auto;overscroll-behavior-inline:contain}
+  .topbar .mode button{flex:0 0 auto}
+}
+</style>
 </head>
 <body>
 <div id="project-app"></div>
