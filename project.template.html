@@ -10,5 +10,10 @@
 <body>
 <div id="project-app"></div>
 <script>/*PROJECT_SCRIPT*/</script>
+<script>
+for(const node of document.querySelectorAll('.metric b')){
+  if(node.textContent.trim()==='50.199 м²') node.textContent='50,199 м²';
+}
+</script>
 </body>
 </html>
