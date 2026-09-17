@@ -10,7 +10,7 @@ try{
  const page=await browser.newPage({viewport:{width:1440,height:1050}});page.on('pageerror',e=>errors.push(e.message));
  await page.goto('http://127.0.0.1:4173/');
  await page.getByRole('heading',{name:'Лиза. Дизайн для реализации.'}).waitFor();
- assert.ok((await page.locator('body').innerText()).includes('50.199 м²'));
+ assert.ok((await page.locator('body').innerText()).includes('50,199 м²'));
  assert.ok((await page.locator('body').innerText()).includes('ТРЕБУЕТ ОБМЕРА'));
  assert.equal(await page.locator('[data-inspect^="E"]').count()>0,true);
  await page.screenshot({path:'browser-reference-artifacts/album-desktop.png',fullPage:true});
