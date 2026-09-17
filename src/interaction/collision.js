@@ -3,10 +3,10 @@ export function insidePolygon(x,y,p){let c=false;for(let i=0,j=p.length-1;i<p.le
 export function colliders(geometry,layout,{furniture=true,doorsOpen=true}={}){
  const walls=[...geometry.walls,...layout.partitions].filter(o=>(o.elevation||0)<1800).map(o=>({...o,kind:'wall'}));
  const objects=furniture?layout.furniture.filter(o=>o.collidable!==false&&(o.elevation||0)<1800).map(o=>({...o,kind:'furniture'})):[];
- const doors=[geometry.entry,...layout.doors].map(d=>doorsOpen?{id:d.id,x:d.openX,y:d.openY,width:d.openWidth,depth:d.openDepth,kind:'door'}:{id:d.id,x:d.x,y:d.y,width:d.axis==='x'?d.width:40,depth:d.axis==='y'?d.width:40,kind:'door'});
+ const doors=[geometry.entry,...layout.doors].map(d=>doorsOpen?{id:d.id,x:d.openX,y:d.openY,width:d.openWidth,depth:d.openDepth,rotation:d.openRotation||0,kind:'door'}:{id:d.id,x:d.x,y:d.y,width:d.axis==='x'?d.width:40,depth:d.axis==='y'?d.width:40,rotation:d.rotation||0,kind:'door'});
  return [...walls,...objects,...doors];
 }
-export function hitsRect(x,y,r,o){const px=Math.max(o.x,Math.min(x,o.x+o.width)),py=Math.max(o.y,Math.min(y,o.y+o.depth));return (x-px)**2+(y-py)**2<r*r-.01;}
+export function hitsRect(x,y,r,o){const a=(o.rotation||0)*Math.PI/180,c=Math.cos(a),s=Math.sin(a),cx=o.x+o.width/2,cy=o.y+o.depth/2,dx=x-cx,dy=y-cy,lx=dx*c+dy*s,ly=-dx*s+dy*c,hx=o.width/2,hy=o.depth/2,px=Math.max(-hx,Math.min(lx,hx)),py=Math.max(-hy,Math.min(ly,hy));return (lx-px)**2+(ly-py)**2<r*r-.01;}
 export function canStand(x,y,geometry,obstacles,r=250){return insidePolygon(x,y,geometry.floor)&&!obstacles.some(o=>hitsRect(x,y,r,o));}
 export function moveWithCollision(position,dx,dy,geometry,obstacles,r=250){let {x,y}=position;const n=Math.max(1,Math.ceil(Math.hypot(dx,dy)/50));for(let i=0;i<n;i++){if(canStand(x+dx/n,y,geometry,obstacles,r))x+=dx/n;if(canStand(x,y+dy/n,geometry,obstacles,r))y+=dy/n;}return{x,y};}
 export function findRoute(start,end,geometry,obstacles,{step=75,radius=250}={}){
