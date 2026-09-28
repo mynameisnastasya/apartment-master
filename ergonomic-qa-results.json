@@ -34,19 +34,19 @@
     },
     {
       "id": "bath-toilet-front",
-      "value": 762,
-      "min": 762,
-      "ok": true
-    },
-    {
-      "id": "bath-basin-front",
       "value": 910,
       "min": 762,
       "ok": true
     },
     {
+      "id": "bath-basin-front",
+      "value": 770,
+      "min": 762,
+      "ok": true
+    },
+    {
       "id": "wc-side",
-      "value": 468,
+      "value": 500,
       "min": 457,
       "ok": true
     },
@@ -68,13 +68,42 @@
       "ok": true
     },
     {
+      "id": "bath-fixture-clearances-derived",
+      "value": {
+        "basin": 770,
+        "toilet": 910,
+        "side": 500
+      },
+      "ok": true
+    },
+    {
       "id": "bath-door-mechanism",
       "value": "pocket-sliding",
       "ok": true
     },
     {
       "id": "all-reference-routes",
-      "value": 12,
+      "value": 16,
+      "ok": true
+    },
+    {
+      "id": "bath-access-bathBasin",
+      "value": 5850,
+      "ok": true
+    },
+    {
+      "id": "bath-access-bathToilet",
+      "value": 4575,
+      "ok": true
+    },
+    {
+      "id": "bath-access-bathWasher",
+      "value": 4875,
+      "ok": true
+    },
+    {
+      "id": "bath-access-bathTub",
+      "value": 4350,
       "ok": true
     }
   ],
@@ -82,8 +111,8 @@
     {
       "id": "washer",
       "operatorPoint": [
-        3535,
-        1105
+        3425,
+        1025
       ],
       "standing": true,
       "reachable": true

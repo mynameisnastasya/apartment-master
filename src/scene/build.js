@@ -36,7 +36,7 @@ export function createFurniture(o,m){const g=new THREE.Group();g.name=o.id;g.use
 export function createArchitecture(geometry,layout,m,{cut=true,plan=false,walls=true,doorsOpen=true}={}){
  const root=new THREE.Group();root.name='APARTMENT_GEOMETRY';
  const shape=new THREE.Shape();geometry.floor.forEach(([x,y],i)=>i?shape.lineTo(mm(x),mm(y)):shape.moveTo(mm(x),mm(y)));shape.closePath();const floorGeo=new THREE.ExtrudeGeometry(shape,{depth:.10,bevelEnabled:false});floorGeo.rotateX(Math.PI/2);const floor=new THREE.Mesh(floorGeo,m.floor);floor.name='floor';floor.receiveShadow=true;root.add(floor);
- if(layout.id==='D'&&!plan){
+ if(!plan){
   const bathTile=box(root,m.bathFloor,2440,0,2280,1920,10,1,'bath-tile');bathTile.castShadow=false;
   const livingRug=box(root,m.rug,390,2990,2020,1600,12,2,'living-rug');livingRug.castShadow=false;
  }
@@ -48,7 +48,8 @@ export function createArchitecture(geometry,layout,m,{cut=true,plan=false,walls=
 }
 const decorFinish={leaf:new THREE.MeshStandardMaterial({color:0x647a5c,roughness:.9,side:THREE.DoubleSide}),soil:new THREE.MeshStandardMaterial({color:0x594b39,roughness:1}),petal:new THREE.MeshStandardMaterial({color:0xe6c9b9,roughness:.85}),paper:new THREE.MeshStandardMaterial({color:0xf7f3e9,roughness:1}),mirror:new THREE.MeshStandardMaterial({color:0x9faeb0,metalness:.38,roughness:.12}),amber:new THREE.MeshStandardMaterial({color:0x775943,roughness:.25,transparent:true,opacity:.82})};
 export function createDecor(layout,m){
- const group=new THREE.Group();group.name='DECOR';if(layout.id!=='D')return group;
+ const group=new THREE.Group();group.name='DECOR';
+ const furniture=id=>layout.furniture.find(o=>o.id===id);
  const cylinder=(material,x,y,e,r,height,segments=20)=>{const mesh=new THREE.Mesh(new THREE.CylinderGeometry(r,r,height,segments),material);mesh.position.set(mm(x),mm(e)+height/2,mm(y));mesh.castShadow=true;group.add(mesh);return mesh;};
  const sphere=(material,x,y,e,r,scale=[1,1,1])=>{const mesh=new THREE.Mesh(new THREE.SphereGeometry(r,12,8),material);mesh.position.set(mm(x),mm(e),mm(y));mesh.scale.set(...scale);mesh.castShadow=true;group.add(mesh);return mesh;};
  const bouquet=(x,y,e,flowers=false)=>{
@@ -73,11 +74,14 @@ export function createDecor(layout,m){
  box(group,m.upholstery,2500,317,175,58,22,850,'folded-towel');
 
  // Everyday details occupy furniture tops, never the verified floor route.
- bouquet(535,2245,760,true);book(90,3380,430,120);bouquet(125,3920,430);
+ const dining=furniture('dining'),desk=furniture('alice-desk');
+ bouquet(dining.x+dining.width/2,dining.y+dining.depth/2,760,true);book(90,3380,430,120);bouquet(125,3920,430);
  book(1330,180,900,155);bottle(1540,180,900);
- bouquet(2890,5800,450);bouquet(3960,6860,740);
+ const bedside=furniture('adult-nightstand');
+ bouquet(bedside.x+bedside.width/2,bedside.y+bedside.depth/2,450);
+ bouquet(desk.x+desk.width/2-120,desk.y+desk.depth/2+90,740);
  const lamp=(x,y,e)=>{cylinder(m.metal,x,y,e,.045,.025);cylinder(m.metal,x,y,e+25,.006,.22);sphere(m.fixture,x,y,e+280,.075,[1,.68,1]);};
- lamp(2890,7950,450);lamp(4940,6840,740);
+ lamp(2890,7950,450);lamp(desk.x+desk.width/2+100,desk.y+desk.depth/2-80,740);
  return group;
 }
 export function dimensionLine(group,from,to,color=0x657d73){const mat=new THREE.LineBasicMaterial({color,depthTest:false});const pts=[new THREE.Vector3(mm(from[0]),.035,mm(from[1])),new THREE.Vector3(mm(to[0]),.035,mm(to[1]))];const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),mat);l.renderOrder=20;group.add(l);return l;}

@@ -1,8 +1,7 @@
 import geometry from './geometry.json';
-import baseLayouts from './layouts.json';
-import referenceLayout from './layout-reference.json';
+import {layouts} from './layout-variations.js';
 import project from './project.json';
-export const layouts=[referenceLayout,...baseLayouts.map(layout=>({...layout,recommended:false}))];
+export {layouts};
 export {geometry,project};
 export const mm = value => value / 1000;
 export const metersToMm = value => value * 1000;
