@@ -11,14 +11,21 @@ const min=(id,value,limit)=>{assert.ok(value>=limit,`${id}: ${value} < ${limit}`
 
 min('entry-aisle',c['entry-aisle'],914);
 min('kitchen-entry',c['kitchen-entry'],914);
-min('adult-door-clear',c['adult-door-clear'],813);
-min('child-door-clear',c['child-door-clear'],813);
-min('bath-door-clear',c['bath-door-clear'],813);
+// These are rough openings. Door frames reduce the finished clear width.
+for(const id of ['adult-door-clear','child-door-clear','bath-door-clear'])
+  min(id,c[id],850);
 min('bath-toilet-front',c['bath-toilet-front'],762);
 min('bath-basin-front',c['bath-basin-front'],762);
 min('wc-side',c['wc-side'],457);
 min('adult-window',c['adult-window'],600);
 min('dining-chair-back',c['dining-chair-back'],762);
+
+const sofa=d.furniture.find(x=>x.id==='sofa');
+const bathSouth=d.partitions.find(x=>x.id==='d-bath-south-left');
+const sofaNorth=sofa.y+sofa.depth/2-sofa.width/2; // 270° rotation
+assert.equal(sofa.rotation,270);
+assert.equal(c['kitchen-entry'],sofaNorth-(bathSouth.y+bathSouth.depth));
+checks.push({id:'kitchen-entry-derived-from-geometry',value:c['kitchen-entry'],ok:true});
 
 const bathDoor=d.doors.find(x=>x.id==='door-bath');
 assert.equal(bathDoor.mechanism,'pocket-sliding');
