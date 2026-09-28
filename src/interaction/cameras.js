@@ -11,7 +11,7 @@ export class Cameras{
  if(mode==='walk'){this.controls.enabled=false;this.camera.position.set(5.95,mm(this.eye),.85);this.yaw=Math.PI;this.pitch=0;}
  else if(mode==='plan'||mode==='top'){this.camera.position.set(3.2,mode==='top'?14:15,4.151);this.camera.up.set(0,0,-1);this.controls.enableRotate=false;}
  else if(mode==='perspective'){this.camera.position.set(10,9,13);}
- else{this.camera.position.set(13.2,10,14.15);}
+ else{this.camera.position.set(13.2,15.5,14.15);}
  this.camera.lookAt(this.controls.target);if(this.aspect)this.resize(this.canvas.clientWidth,this.canvas.clientHeight);this.camera.updateProjectionMatrix();this.controls.update();this.onChange?.();}
  setEye(v){this.eye=v;if(this.mode==='walk')this.camera.position.y=mm(v);}
  teleport(point,target){let p=point;if(!canStand(...p,this.geometry,this.getObstacles(),250))return false;this.camera.position.set(mm(p[0]),mm(this.eye),mm(p[1]));if(target){this.yaw=Math.atan2(-(target[0]-p[0]),-(target[1]-p[1]));this.pitch=-.06;}this.route=null;return true;}

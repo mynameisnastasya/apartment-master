@@ -31,8 +31,14 @@ try{
   await page.locator(`[data-style="${id}"]`).click();
   assert.equal(await page.evaluate(()=>window.apartment.state.style),id);
   assert.ok(await page.evaluate(()=>!!document.querySelector('canvas')),'Textured WebGL model mounted');
-  await page.screenshot({path:`browser-reference-artifacts/material-${id}.png`});
+  await page.locator('#canvas-container').screenshot({path:`browser-reference-artifacts/material-${id}.png`});
  }
+ await page.locator('[data-style="atelier"]').click();
+ for(const room of ['bath','kitchen','adult','alice']){
+  await page.locator('[data-room="'+room+'"]').click();
+  await page.locator('#canvas-container').screenshot({path:'browser-reference-artifacts/studio-'+room+'.png'});
+ }
+ await page.locator('[data-room="all"]').click();
  await page.screenshot({path:'browser-reference-artifacts/desktop.png'});
  await page.getByRole('button',{name:'План',exact:true}).click();await page.waitForTimeout(400);await page.screenshot({path:'browser-reference-artifacts/plan.png'});
  await page.getByRole('button',{name:'Решения и проходы →'}).click();await page.locator('#details').waitFor({state:'visible'});assert.equal(await page.locator('[data-route]').count(),16);assert.ok((await page.locator('#dialog-content').innerText()).includes('960 мм'));await page.locator('#close-dialog').click();
