@@ -356,7 +356,7 @@
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 4875
+      "routeLengthMm": 5475
     },
     {
       "variant": "H",
@@ -377,7 +377,7 @@
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 6300
+      "routeLengthMm": 6900
     },
     {
       "variant": "H",
@@ -398,7 +398,7 @@
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 6900
+      "routeLengthMm": 7500
     },
     {
       "variant": "H",
@@ -419,7 +419,7 @@
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 6300
+      "routeLengthMm": 6900
     }
   ]
 }

@@ -1,9 +1,9 @@
 {
   "title": "Лесная Поляна",
   "stage": 1,
-  "recommendedLayout": "D",
+  "recommendedLayout": null,
   "selectedLayout": "D",
-  "approvalStatus": "reference-based working layout — requires measurement and engineering validation",
+  "approvalStatus": "five architectural options for selection — requires measurement and engineering validation",
   "source": "Existing conditional survey geometry + two user images attached in current conversation",
   "unit": "mm",
   "design": {

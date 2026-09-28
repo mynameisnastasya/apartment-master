@@ -2,7 +2,7 @@
   "id": "D",
   "name": "Лиза · эргономика",
   "subtitle": "Ваша схема · проходы ≥ 914 мм · санузел без конфликтов",
-  "recommended": true,
+  "recommended": false,
   "partitions": [
     {
       "id": "d-bath-west",

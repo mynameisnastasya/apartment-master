@@ -9,7 +9,7 @@ try{
  browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
  const page=await browser.newPage({viewport:{width:1440,height:1050}});page.on('pageerror',e=>errors.push(e.message));
  await page.goto('http://127.0.0.1:4173/');
- await page.getByRole('heading',{name:'Лиза. Дизайн для реализации.'}).waitFor();
+ await page.getByRole('heading',{name:'Лиза. Пять планировок для выбора.'}).waitFor();
  assert.ok((await page.locator('body').innerText()).includes('50,199 м²'));
  assert.ok((await page.locator('body').innerText()).includes('ТРЕБУЕТ ОБМЕРА'));
  assert.equal(await page.locator('[data-inspect^="E"]').count()>0,true);
@@ -36,6 +36,7 @@ try{
  await page.getByRole('button',{name:'Решения и проходы →'}).click();await page.locator('#details').waitFor({state:'visible'});assert.equal(await page.locator('[data-route]').count(),16);assert.ok((await page.locator('#dialog-content').innerText()).includes('960 мм'));await page.locator('#close-dialog').click();
  await page.getByRole('button',{name:'О проекте',exact:true}).click();assert.ok((await page.locator('#dialog-content').innerText()).includes('Лиза'));await page.locator('#close-dialog').click();
  assert.equal(await page.locator('.variant').count(),5);
+ assert.equal(await page.evaluate(()=>new Set(window.apartment.layouts.map(l=>JSON.stringify(l.partitions))).size),5);
  assert.equal(await page.locator('[data-variant="A"], [data-variant="B"], [data-variant="C"]').count(),0);
  for(const id of ['D','E','F','G','H']){
   await page.locator(`[data-variant="${id}"]`).click();
