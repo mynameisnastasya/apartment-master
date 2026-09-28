@@ -21,8 +21,9 @@ export function createFurniture(o,m){
  const b=(mat,xx,yy,ww,dd,hh,ee=0,r=0)=>box(g,mat,xx,yy,ww,dd,hh,ee,r);
  const front=o.front||'south';
  const face=(mat,inset,z,fw,fh,thickness=18,offset=0)=>{
-  if(front==='east'||front==='west')return b(mat,front==='east'?x+w-thickness-offset:x+offset,y+inset,thickness,fw,fh,z);
-  return b(mat,x+inset,front==='south'?y+d-thickness-offset:y+offset,fw,thickness,fh,z);
+  const finish=mesh=>{mesh.castShadow=false;mesh.receiveShadow=false;return mesh;};
+  if(front==='east'||front==='west')return finish(b(mat,front==='east'?x+w-thickness-offset:x+offset,y+inset,thickness,fw,fh,z));
+  return finish(b(mat,x+inset,front==='south'?y+d-thickness-offset:y+offset,fw,thickness,fh,z));
  };
  const facade=(height=h-95,start=e+80,paint=false)=>{
   const span=front==='east'||front==='west'?d:w,count=Math.max(1,Math.round(span/520)),step=span/count;
@@ -44,7 +45,7 @@ export function createFurniture(o,m){
   const duvet=b(m.bedding,mx-10,my+480,mw+20,md-505,100,490,35);
   const a=duvet.geometry.attributes.position;for(let i=0;i<a.count;i++){const px=a.getX(i),py=a.getY(i),pz=a.getZ(i);if(py>0)a.setY(i,py+Math.sin(px*31+pz*4)*.005+Math.sin(pz*14)*.004);}a.needsUpdate=true;duvet.geometry.computeVertexNormals();
   const n=mw>1100?2:1;for(let i=0;i<n;i++){const pillow=b(m.bedding,mx+50+i*(mw-100)/n,my+90,(mw-140)/n,350,125,510,42);pillow.rotation.y=(i?-.05:.035);}
-  const cloth=new THREE.PlaneGeometry(M(mw+24),.43,36,18);const cp=cloth.attributes.position;for(let i=0;i<cp.count;i++){const xx=cp.getX(i),yy=cp.getY(i),edge=Math.pow(Math.abs(xx)/(M(mw+24)/2),10);cp.setXYZ(i,xx,.605-edge*.1+Math.sin(xx*35+yy*9)*.009+Math.sin(yy*27)*.006,-yy);}cloth.computeVertexNormals();const throwMesh=new THREE.Mesh(cloth,m.accent);throwMesh.position.set(M(mx+mw/2),0,M(my+md-405));throwMesh.castShadow=throwMesh.receiveShadow=true;g.add(throwMesh);
+  const cloth=new THREE.PlaneGeometry(M(mw+24),.43,36,18);const cp=cloth.attributes.position;for(let i=0;i<cp.count;i++){const xx=cp.getX(i),yy=cp.getY(i),edge=Math.pow(Math.abs(xx)/(M(mw+24)/2),10);cp.setXYZ(i,xx,.617-edge*.007+Math.sin(xx*35+yy*9)*.004+Math.sin(yy*27)*.003,-yy);}cloth.computeVertexNormals();const throwMesh=new THREE.Mesh(cloth,m.accent);throwMesh.position.set(M(mx+mw/2),0,M(my+md-405));throwMesh.castShadow=throwMesh.receiveShadow=true;g.add(throwMesh);
  }
  else if(o.type==='sofa'){
   for(const xx of[x+80,x+w-100])for(const yy of[y+80,y+d-100])cylinder(g,m.metal,xx,yy,0,15,145);

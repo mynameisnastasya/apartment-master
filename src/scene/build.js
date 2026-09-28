@@ -61,10 +61,9 @@ export function createDecor(layout,m){
  // Bathroom: mirror, towel, soap, paper roll and flush plate stay above walking space.
  box(group,decorFinish.mirror,2500,8,520,12,820,1030,'basin-mirror');
  box(group,m.metal,2490,7,540,18,18,1030);box(group,m.metal,2490,7,540,18,18,1832);
- box(group,m.upholstery,2480,780,35,260,340,760,'hand-towel');
- box(group,m.metal,2455,1070,85,18,12,725,'paper-holder');
- const roll=cylinder(decorFinish.paper,2510,1079,700,.052,.105);roll.rotation.z=Math.PI/2;
- box(group,m.metal,2625,1375,9,90,45,855,'flush-plate');
+ box(group,m.metal,2480,401,200,14,10,815,'hand-towel-rail');box(group,m.upholstery,2500,404,160,10,220,585,'hand-towel');
+ const wc=furniture('wc');box(group,m.metal,wc.x+145,wc.y+wc.depth-80,95,18,12,675,'paper-holder');
+ const roll=cylinder(decorFinish.paper,wc.x+190,wc.y+wc.depth-70,650,.052,.105);roll.rotation.z=Math.PI/2;
  bottle(3000,330,860);bottle(3740,220,900);
  box(group,m.upholstery,2500,317,175,58,22,850,'folded-towel');
  // Recessed shelves, bottles and a narrow towel rail keep the washbasin clear.

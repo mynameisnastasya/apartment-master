@@ -66,5 +66,13 @@ try{
  await page.setViewportSize({width:390,height:844});await page.waitForTimeout(400);assert.ok(await page.locator('#selection').isVisible());assert.ok(await page.evaluate(()=>{const a=window.apartment;return a.geometry.floor.every(([x,y])=>{const p=a.camera.position.clone().set(x/1000,0,y/1000).project(a.camera);return Math.abs(p.x)<=1&&Math.abs(p.y)<=1;});}),'Entire floor should fit the mobile camera');assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:'browser-reference-artifacts/mobile.png',fullPage:true});
  await page.goto('http://127.0.0.1:4173/LIZA.html');await page.locator('.plan img').waitFor();assert.ok(await page.evaluate(()=>document.querySelector('.plan img').naturalWidth>0));assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:'browser-reference-artifacts/report-mobile.png',fullPage:true});
  await page.setViewportSize({width:1440,height:1050});await page.screenshot({path:'browser-reference-artifacts/report.png',fullPage:true});
+ await page.goto('http://127.0.0.1:4173/studio.html');
+ await page.getByRole('heading',{name:'Дом, который чувствуется.'}).waitFor();
+ for(const img of await page.locator('main img').all())await img.evaluate(i=>i.decode());
+ await page.getByRole('button',{name:'05 · Графичный contemporary'}).click();
+ await page.getByRole('button',{name:'Увеличить общий вид'}).click();
+ assert.ok(await page.locator('#zoom').isVisible());await page.getByRole('button',{name:'Закрыть увеличенный вид'}).click();
+ await page.setViewportSize({width:390,height:844});await page.screenshot({path:'browser-reference-artifacts/studio-gallery-mobile.png',fullPage:true});
+ assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
  assert.deepEqual(errors,[]);fs.writeFileSync('browser-reference-artifacts/results.json',JSON.stringify({ok:true,errors,visits,exportBytes:bytes},null,2));console.log('Design album desktop/mobile and preserved 3D reference checks passed.');
 }finally{await browser?.close();server.kill();}
