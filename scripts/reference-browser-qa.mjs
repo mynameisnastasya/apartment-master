@@ -7,7 +7,8 @@ const errors=[];fs.mkdirSync('browser-reference-artifacts',{recursive:true});
 try{
  for(let i=0;i<50;i++){try{const r=await fetch('http://127.0.0.1:4173');if(r.ok)break;}catch{}await new Promise(r=>setTimeout(r,100));}
  browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
- const page=await browser.newPage({viewport:{width:1440,height:1050}});page.on('pageerror',e=>errors.push(e.message));
+ const page=await browser.newPage({viewport:{width:1440,height:1050}});
+ const saveRender=async path=>{const data=await page.evaluate(()=>{window.apartment.render();return window.apartment.renderer.domElement.toDataURL('image/png');});fs.writeFileSync(path,Buffer.from(data.split(',')[1],'base64'));};page.on('pageerror',e=>errors.push(e.message));
  await page.goto('http://127.0.0.1:4173/');
  await page.getByRole('heading',{name:'Лиза. Пять планировок для выбора.'}).waitFor();
  assert.ok((await page.locator('body').innerText()).includes('50,199 м²'));
@@ -31,8 +32,14 @@ try{
   await page.locator(`[data-style="${id}"]`).click();
   assert.equal(await page.evaluate(()=>window.apartment.state.style),id);
   assert.ok(await page.evaluate(()=>!!document.querySelector('canvas')),'Textured WebGL model mounted');
-  await page.screenshot({path:`browser-reference-artifacts/material-${id}.png`});
+  await saveRender(`browser-reference-artifacts/material-${id}.png`);
  }
+ await page.locator('[data-style="atelier"]').click();
+ for(const room of ['bath','kitchen','adult','alice']){
+  await page.locator('[data-room="'+room+'"]').click();
+  await saveRender('browser-reference-artifacts/studio-'+room+'.png');
+ }
+ await page.locator('[data-room="all"]').click();
  await page.screenshot({path:'browser-reference-artifacts/desktop.png'});
  await page.getByRole('button',{name:'План',exact:true}).click();await page.waitForTimeout(400);await page.screenshot({path:'browser-reference-artifacts/plan.png'});
  await page.getByRole('button',{name:'Решения и проходы →'}).click();await page.locator('#details').waitFor({state:'visible'});assert.equal(await page.locator('[data-route]').count(),16);assert.ok((await page.locator('#dialog-content').innerText()).includes('960 мм'));await page.locator('#close-dialog').click();
@@ -56,8 +63,16 @@ try{
  const visits=await page.evaluate(()=>{const app=window.apartment;return ['adult','alice','kitchen','living','bath'].map(room=>{app.viewRoom(room);const p=app.camera.position;return {room,ok:app.canStand(p.x*1000,p.z*1000)};});});assert.ok(visits.every(v=>v.ok));
  const bytes=await page.evaluate(async()=>{const buf=await window.apartment.exportModel();return buf.byteLength;});assert.ok(bytes>10000);
  await page.evaluate(()=>{window.apartment.setMode('iso');window.apartment.setLayer('cut',true);window.apartment.selectObject('sofa');});
- await page.setViewportSize({width:390,height:844});await page.waitForTimeout(400);assert.ok(await page.locator('#selection').isVisible());assert.ok(await page.evaluate(()=>{const a=window.apartment;return a.geometry.floor.every(([x,y])=>{const p=a.camera.position.clone().set(x/1000,0,y/1000).project(a.camera);return Math.abs(p.x)<=1&&Math.abs(p.y)<=1;});}),'Entire floor should fit the mobile camera');assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:'browser-reference-artifacts/mobile.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});await page.waitForFunction(()=>{const a=window.apartment,c=a.renderer.domElement,b=document.querySelector('#canvas-container').getBoundingClientRect();return Math.abs(c.clientWidth-b.width)<1&&Math.abs(a.cameras.aspect-b.width/b.height)<.001&&a.geometry.floor.every(([x,y])=>{const p=a.camera.position.clone().set(x/1000,0,y/1000).project(a.camera);return Math.abs(p.x)<=1&&Math.abs(p.y)<=1;});},{},{timeout:30000});assert.ok(await page.locator('#selection').isVisible());assert.ok(await page.evaluate(()=>{const a=window.apartment;return a.geometry.floor.every(([x,y])=>{const p=a.camera.position.clone().set(x/1000,0,y/1000).project(a.camera);return Math.abs(p.x)<=1&&Math.abs(p.y)<=1;});}),'Entire floor should fit the mobile camera');assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await saveRender('browser-reference-artifacts/mobile.png');
  await page.goto('http://127.0.0.1:4173/LIZA.html');await page.locator('.plan img').waitFor();assert.ok(await page.evaluate(()=>document.querySelector('.plan img').naturalWidth>0));assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:'browser-reference-artifacts/report-mobile.png',fullPage:true});
  await page.setViewportSize({width:1440,height:1050});await page.screenshot({path:'browser-reference-artifacts/report.png',fullPage:true});
+ await page.goto('http://127.0.0.1:4173/studio.html');
+ await page.getByRole('heading',{name:'Дом, который чувствуется.'}).waitFor();
+ for(const img of await page.locator('main img').all()){await img.scrollIntoViewIfNeeded();await img.evaluate(i=>i.decode());}
+ await page.getByRole('button',{name:'05 · Графичный contemporary'}).click();
+ await page.getByRole('button',{name:'Увеличить общий вид'}).click();
+ assert.ok(await page.locator('#zoom').isVisible());await page.getByRole('button',{name:'Закрыть увеличенный вид'}).click();
+ await page.setViewportSize({width:390,height:844});await page.screenshot({path:'browser-reference-artifacts/studio-gallery-mobile.png',fullPage:true});
+ assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
  assert.deepEqual(errors,[]);fs.writeFileSync('browser-reference-artifacts/results.json',JSON.stringify({ok:true,errors,visits,exportBytes:bytes},null,2));console.log('Design album desktop/mobile and preserved 3D reference checks passed.');
 }finally{await browser?.close();server.kill();}
