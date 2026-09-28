@@ -2,32 +2,32 @@
   "scope": "one schematic appliance door open at a time; room doors open; avatar diameter500mm; final product hinges unknown",
   "results": [
     {
-      "variant": "A",
+      "variant": "D",
       "item": "washer",
       "leaf": {
         "id": "washer-open",
-        "x": 1070,
-        "y": 2105,
-        "width": 480,
-        "depth": 35,
+        "x": 3100,
+        "y": 650,
+        "width": 35,
+        "depth": 480,
         "height": 440,
         "elevation": 220,
         "kind": "appliance-door"
       },
       "operatorPoint": [
-        1175,
-        1725
+        3425,
+        1025
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 5700
+      "routeLengthMm": 4875
     },
     {
-      "variant": "A",
+      "variant": "D",
       "item": "fridge",
       "leaf": {
         "id": "fridge-open",
-        "x": 2400,
+        "x": 1670,
         "y": 650,
         "width": 35,
         "depth": 650,
@@ -36,19 +36,19 @@
         "kind": "appliance-door"
       },
       "operatorPoint": [
-        2725,
+        1995,
         1025
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 3525
+      "routeLengthMm": 6300
     },
     {
-      "variant": "A",
+      "variant": "D",
       "item": "hob",
       "leaf": {
         "id": "hob-open",
-        "x": 3350,
+        "x": 600,
         "y": 600,
         "width": 600,
         "depth": 650,
@@ -57,61 +57,61 @@
         "kind": "appliance-door"
       },
       "operatorPoint": [
-        3650,
+        900,
         1575
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 3075
+      "routeLengthMm": 6900
     },
     {
-      "variant": "A",
+      "variant": "D",
       "item": "dishwasher",
       "leaf": {
         "id": "dishwasher-open",
-        "x": 5250,
-        "y": 600,
-        "width": 450,
-        "depth": 650,
+        "x": 600,
+        "y": 1200,
+        "width": 650,
+        "depth": 600,
         "height": 30,
         "elevation": 140,
         "kind": "appliance-door"
       },
       "operatorPoint": [
-        5475,
-        1575
+        1575,
+        1500
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 1275
+      "routeLengthMm": 6300
     },
     {
-      "variant": "B",
+      "variant": "E",
       "item": "washer",
       "leaf": {
         "id": "washer-open",
-        "x": 1070,
-        "y": 2105,
-        "width": 480,
-        "depth": 35,
+        "x": 3100,
+        "y": 650,
+        "width": 35,
+        "depth": 480,
         "height": 440,
         "elevation": 220,
         "kind": "appliance-door"
       },
       "operatorPoint": [
-        1175,
-        1725
+        3425,
+        1025
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 5700
+      "routeLengthMm": 4875
     },
     {
-      "variant": "B",
+      "variant": "E",
       "item": "fridge",
       "leaf": {
         "id": "fridge-open",
-        "x": 2400,
+        "x": 1670,
         "y": 650,
         "width": 35,
         "depth": 650,
@@ -120,19 +120,19 @@
         "kind": "appliance-door"
       },
       "operatorPoint": [
-        2725,
+        1995,
         1025
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 3525
+      "routeLengthMm": 6300
     },
     {
-      "variant": "B",
+      "variant": "E",
       "item": "hob",
       "leaf": {
         "id": "hob-open",
-        "x": 3500,
+        "x": 600,
         "y": 600,
         "width": 600,
         "depth": 650,
@@ -141,40 +141,61 @@
         "kind": "appliance-door"
       },
       "operatorPoint": [
-        3800,
+        900,
         1575
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 2925
+      "routeLengthMm": 6900
     },
     {
-      "variant": "B",
+      "variant": "E",
       "item": "dishwasher",
       "leaf": {
         "id": "dishwasher-open",
-        "x": 4950,
-        "y": 600,
-        "width": 450,
-        "depth": 650,
+        "x": 600,
+        "y": 1200,
+        "width": 650,
+        "depth": 600,
         "height": 30,
         "elevation": 140,
         "kind": "appliance-door"
       },
       "operatorPoint": [
-        5175,
-        1575
+        1575,
+        1500
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 1575
+      "routeLengthMm": 6300
     },
     {
-      "variant": "C",
+      "variant": "F",
+      "item": "washer",
+      "leaf": {
+        "id": "washer-open",
+        "x": 3100,
+        "y": 650,
+        "width": 35,
+        "depth": 480,
+        "height": 440,
+        "elevation": 220,
+        "kind": "appliance-door"
+      },
+      "operatorPoint": [
+        3425,
+        1025
+      ],
+      "operatorClear": true,
+      "reachable": true,
+      "routeLengthMm": 4875
+    },
+    {
+      "variant": "F",
       "item": "fridge",
       "leaf": {
         "id": "fridge-open",
-        "x": 2400,
+        "x": 1670,
         "y": 650,
         "width": 35,
         "depth": 650,
@@ -183,54 +204,222 @@
         "kind": "appliance-door"
       },
       "operatorPoint": [
-        2725,
+        1995,
         1025
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 3525
+      "routeLengthMm": 6300
     },
     {
-      "variant": "C",
+      "variant": "F",
+      "item": "hob",
+      "leaf": {
+        "id": "hob-open",
+        "x": 600,
+        "y": 600,
+        "width": 600,
+        "depth": 650,
+        "height": 30,
+        "elevation": 400,
+        "kind": "appliance-door"
+      },
+      "operatorPoint": [
+        900,
+        1575
+      ],
+      "operatorClear": true,
+      "reachable": true,
+      "routeLengthMm": 6900
+    },
+    {
+      "variant": "F",
       "item": "dishwasher",
       "leaf": {
         "id": "dishwasher-open",
-        "x": 5250,
-        "y": 600,
-        "width": 450,
-        "depth": 650,
+        "x": 600,
+        "y": 1200,
+        "width": 650,
+        "depth": 600,
         "height": 30,
         "elevation": 140,
         "kind": "appliance-door"
       },
       "operatorPoint": [
-        5475,
-        1575
+        1575,
+        1500
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 1275
+      "routeLengthMm": 6300
     },
     {
-      "variant": "C",
+      "variant": "G",
       "item": "washer",
       "leaf": {
         "id": "washer-open",
-        "x": 1070,
-        "y": 2455,
-        "width": 480,
-        "depth": 35,
+        "x": 3100,
+        "y": 650,
+        "width": 35,
+        "depth": 480,
         "height": 440,
         "elevation": 220,
         "kind": "appliance-door"
       },
       "operatorPoint": [
-        1175,
-        2075
+        3425,
+        1025
       ],
       "operatorClear": true,
       "reachable": true,
-      "routeLengthMm": 6075
+      "routeLengthMm": 4875
+    },
+    {
+      "variant": "G",
+      "item": "fridge",
+      "leaf": {
+        "id": "fridge-open",
+        "x": 1670,
+        "y": 650,
+        "width": 35,
+        "depth": 650,
+        "height": 2000,
+        "elevation": 50,
+        "kind": "appliance-door"
+      },
+      "operatorPoint": [
+        1995,
+        1025
+      ],
+      "operatorClear": true,
+      "reachable": true,
+      "routeLengthMm": 6300
+    },
+    {
+      "variant": "G",
+      "item": "hob",
+      "leaf": {
+        "id": "hob-open",
+        "x": 600,
+        "y": 600,
+        "width": 600,
+        "depth": 650,
+        "height": 30,
+        "elevation": 400,
+        "kind": "appliance-door"
+      },
+      "operatorPoint": [
+        900,
+        1575
+      ],
+      "operatorClear": true,
+      "reachable": true,
+      "routeLengthMm": 6900
+    },
+    {
+      "variant": "G",
+      "item": "dishwasher",
+      "leaf": {
+        "id": "dishwasher-open",
+        "x": 600,
+        "y": 1200,
+        "width": 650,
+        "depth": 600,
+        "height": 30,
+        "elevation": 140,
+        "kind": "appliance-door"
+      },
+      "operatorPoint": [
+        1575,
+        1500
+      ],
+      "operatorClear": true,
+      "reachable": true,
+      "routeLengthMm": 6300
+    },
+    {
+      "variant": "H",
+      "item": "washer",
+      "leaf": {
+        "id": "washer-open",
+        "x": 3100,
+        "y": 650,
+        "width": 35,
+        "depth": 480,
+        "height": 440,
+        "elevation": 220,
+        "kind": "appliance-door"
+      },
+      "operatorPoint": [
+        3425,
+        1025
+      ],
+      "operatorClear": true,
+      "reachable": true,
+      "routeLengthMm": 4875
+    },
+    {
+      "variant": "H",
+      "item": "fridge",
+      "leaf": {
+        "id": "fridge-open",
+        "x": 1670,
+        "y": 650,
+        "width": 35,
+        "depth": 650,
+        "height": 2000,
+        "elevation": 50,
+        "kind": "appliance-door"
+      },
+      "operatorPoint": [
+        1995,
+        1025
+      ],
+      "operatorClear": true,
+      "reachable": true,
+      "routeLengthMm": 6300
+    },
+    {
+      "variant": "H",
+      "item": "hob",
+      "leaf": {
+        "id": "hob-open",
+        "x": 600,
+        "y": 600,
+        "width": 600,
+        "depth": 650,
+        "height": 30,
+        "elevation": 400,
+        "kind": "appliance-door"
+      },
+      "operatorPoint": [
+        900,
+        1575
+      ],
+      "operatorClear": true,
+      "reachable": true,
+      "routeLengthMm": 6900
+    },
+    {
+      "variant": "H",
+      "item": "dishwasher",
+      "leaf": {
+        "id": "dishwasher-open",
+        "x": 600,
+        "y": 1200,
+        "width": 650,
+        "depth": 600,
+        "height": 30,
+        "elevation": 140,
+        "kind": "appliance-door"
+      },
+      "operatorPoint": [
+        1575,
+        1500
+      ],
+      "operatorClear": true,
+      "reachable": true,
+      "routeLengthMm": 6300
     }
   ]
 }
