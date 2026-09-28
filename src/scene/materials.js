@@ -4,7 +4,7 @@ import {interiorStyles} from '../data/interior-styles.js';
 const hash=(x,y,seed=1)=>{let n=Math.imul(x+seed*37,374761393)+Math.imul(y+seed*101,668265263);n=Math.imul(n^(n>>>13),1274126177);return ((n^(n>>>16))>>>0)/4294967295;};
 function texture(kind,color,seed=1,pattern='oak'){
  const size=512,canvas=document.createElement('canvas');canvas.width=canvas.height=size;const ctx=canvas.getContext('2d');ctx.fillStyle=color;ctx.fillRect(0,0,size,size);
- const rgb=new THREE.Color(color),base=[rgb.r,rgb.g,rgb.b].map(v=>Math.round(THREE.MathUtils.linearToSRGB(v)*255));
+ const base=[1,3,5].map(i=>parseInt(color.slice(i,i+2),16));
  const pixels=ctx.getImageData(0,0,size,size),p=pixels.data;
  for(let y=0;y<size;y++)for(let x=0;x<size;x++){
   const i=(y*size+x)*4,grain=kind==='wood'?Math.sin(x*.13+Math.sin(y*.035+seed)*3)*4+Math.sin(x*.55+y*.008)*2:0;
