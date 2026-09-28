@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import {interiorStyles} from '../data/interior-styles.js';
 const hash=(x,y,s=1)=>{let n=Math.imul(x+s*37,374761393)+Math.imul(y+s*101,668265263);n=Math.imul(n^(n>>>13),1274126177);return ((n^(n>>>16))>>>0)/4294967295;};
+let timber=null;
+export async function prepareTextures(){timber=await new Promise(resolve=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>resolve(null);img.src='assets/textures/timber.jpg';});}
 const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
 const lerp=(a,b,t)=>a+(b-a)*t;
 function noise(x,y,s){const i=Math.floor(x),j=Math.floor(y),u=x-i,v=y-j,fx=u*u*(3-2*u),fy=v*v*(3-2*v);return lerp(lerp(hash(i,j,s),hash(i+1,j,s),fx),lerp(hash(i,j+1,s),hash(i+1,j+1,s),fx),fy);}
@@ -8,17 +10,18 @@ function canvas(w,h=w){const c=document.createElement('canvas');c.width=w;c.heig
 function map(c,repeat=[1,1],color=true){const t=new THREE.CanvasTexture(c);t.colorSpace=color?THREE.SRGBColorSpace:THREE.NoColorSpace;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(...repeat);t.anisotropy=8;return t;}
 function surface(kind,color,seed=1,size=512){
  const c=canvas(size),ctx=c.getContext('2d'),d=ctx.createImageData(size,size),p=d.data,base=rgb(color);
+ if(kind==='wood'&&timber){ctx.save();ctx.translate(size/2,size/2);ctx.rotate(Math.PI/2);ctx.drawImage(timber,30+(seed%3)*600,18+(seed%7)*128,520,95,-size/2,-size/2,size,size);ctx.restore();const img=ctx.getImageData(0,0,size,size);let total=0;for(let i=0;i<img.data.length;i+=4)total+=(img.data[i]+img.data[i+1]+img.data[i+2])/3;const mean=total/(size*size);for(let i=0;i<img.data.length;i+=4){const grain=((img.data[i]+img.data[i+1]+img.data[i+2])/3-mean)*.75;for(let k=0;k<3;k++)img.data[i+k]=Math.max(0,Math.min(255,base[k]+grain));}ctx.putImageData(img,0,0);return c;}
  for(let y=0;y<size;y++)for(let x=0;x<size;x++){
   const u=x/size,v=y/size,i=(y*size+x)*4,n=noise(u*7,v*7,seed),fine=(hash(x,y,seed)-.5);let delta=0;
   if(kind==='wood'){
    const drift=noise(u*5,v*2,seed)*.55;
    delta=(noise(u*230+drift*5,v*3,seed)-.5)*32+(noise(u*30,v*1.2,seed+3)-.5)*17+fine*5;
   }else if(kind==='marble'){
-   const warp=noise(u*6,v*6,seed)*.7+noise(u*19,v*19,seed+1)*.12;
+   const warp=noise(u*6,v*6,seed)*.9+noise(u*19,v*19,seed+1)*.3+noise(u*55,v*55,seed+2)*.12+noise(u*135,v*135,seed+3)*.035;
    const a=Math.abs(Math.sin((u*1.7+v*.75+warp)*Math.PI*2));
    const vein=Math.pow(Math.max(0,1-a/.13),2);
    const wisps=Math.pow(Math.max(0,1-a/.35),3);
-   delta=(n-.5)*9+fine*3-vein*100-wisps*25;
+   delta=(n-.5)*8+fine*3-vein*(100+80*noise(u*12,v*12,seed+7))-wisps*38;
   }else if(kind==='linen')delta=(x%4===0?-5:1)+(y%5===0?-4:1)+fine*10+(n-.5)*3;
   else delta=(n-.5)*(kind==='stone'?12:3)+fine*(kind==='stone'?5:2);
   for(let k=0;k<3;k++)p[i+k]=Math.max(0,Math.min(255,base[k]+delta));p[i+3]=255;
@@ -55,7 +58,7 @@ export function materials(style=interiorStyles[0]){
   worktop:new THREE.MeshStandardMaterial({map:marble,roughness:.28}),
   marble:new THREE.MeshStandardMaterial({map:marble,roughness:.3}),
   curtain:new THREE.MeshStandardMaterial({color:0xeee8df,roughness:1,transparent:true,opacity:.83,side:THREE.DoubleSide}),
-  bedding:new THREE.MeshStandardMaterial({color:0xe9e3d9,roughness:1}),
+  bedding:new THREE.MeshStandardMaterial({map:map(surface('linen','#e9e3d9',10)),roughness:1}),
   accent:new THREE.MeshStandardMaterial({color:style.id==='nordic'?0x718a8c:style.id==='japandi'?0x68715c:style.id==='atelier'?0x744b45:0x8c7965,roughness:.92}),
   lacquer:new THREE.MeshStandardMaterial({color:style.wall,roughness:.46}),
   shadow:new THREE.MeshStandardMaterial({color:0x302923,roughness:.85}),

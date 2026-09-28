@@ -8,7 +8,7 @@ export function roomSpec(layout,name){
  if(!polygon)return null;
  const xs=polygon.map(p=>p[0]),ys=polygon.map(p=>p[1]),bounds=[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)];
  const [x,y,x2,y2]=bounds,cx=(x+x2)/2000,cy=(y+y2)/2000;
- const pos=name==='adult'?[cx-4.8,4.3,cy+4.8]:name==='alice'?[cx-5,4.5,cy+5]:[cx+3.3,3.5,cy+3.8];
+ const pos=name==='bath'?[cx-3.0,3.3,cy+3.6]:name==='adult'?[cx-4.1,3.8,cy+4.1]:name==='alice'?[cx-5,4.5,cy+5]:[cx+3.3,3.5,cy+3.8];
  return{polygon,bounds,pos,target:[cx,.85,cy],name};
 }
 export function createStudio(geometry,layout,m,name){

@@ -7,7 +7,8 @@ const errors=[];fs.mkdirSync('browser-reference-artifacts',{recursive:true});
 try{
  for(let i=0;i<50;i++){try{const r=await fetch('http://127.0.0.1:4173');if(r.ok)break;}catch{}await new Promise(r=>setTimeout(r,100));}
  browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
- const page=await browser.newPage({viewport:{width:1440,height:1050}});page.on('pageerror',e=>errors.push(e.message));
+ const page=await browser.newPage({viewport:{width:1440,height:1050}});
+ const saveRender=async path=>{const data=await page.evaluate(()=>{window.apartment.render();return window.apartment.renderer.domElement.toDataURL('image/png');});fs.writeFileSync(path,Buffer.from(data.split(',')[1],'base64'));};page.on('pageerror',e=>errors.push(e.message));
  await page.goto('http://127.0.0.1:4173/');
  await page.getByRole('heading',{name:'Лиза. Пять планировок для выбора.'}).waitFor();
  assert.ok((await page.locator('body').innerText()).includes('50,199 м²'));
@@ -31,12 +32,12 @@ try{
   await page.locator(`[data-style="${id}"]`).click();
   assert.equal(await page.evaluate(()=>window.apartment.state.style),id);
   assert.ok(await page.evaluate(()=>!!document.querySelector('canvas')),'Textured WebGL model mounted');
-  await page.locator('#canvas-container').screenshot({path:`browser-reference-artifacts/material-${id}.png`});
+  await saveRender(`browser-reference-artifacts/material-${id}.png`);
  }
  await page.locator('[data-style="atelier"]').click();
  for(const room of ['bath','kitchen','adult','alice']){
   await page.locator('[data-room="'+room+'"]').click();
-  await page.locator('#canvas-container').screenshot({path:'browser-reference-artifacts/studio-'+room+'.png'});
+  await saveRender('browser-reference-artifacts/studio-'+room+'.png');
  }
  await page.locator('[data-room="all"]').click();
  await page.screenshot({path:'browser-reference-artifacts/desktop.png'});

@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
 import {geometry,layouts,project,mm,polygonArea,roomNames} from './data/model.js';
-import {materials,disposeMaterials} from './scene/materials.js';
+import {materials,disposeMaterials,prepareTextures} from './scene/materials.js';
 import {interiorStyles} from './data/interior-styles.js';
 import {addLighting} from './scene/lighting.js';
 import {createArchitecture,createFurniture,createDecor,box,dimensionLine} from './scene/build.js';
@@ -10,6 +10,8 @@ import {createStudio,roomSpec} from './scene/studio.js';
 import {Cameras} from './interaction/cameras.js';
 import {colliders,canStand,findRoute} from './interaction/collision.js';
 import {openingLeaf} from './interaction/appliances.js';
+async function main(){
+await prepareTextures();
 const $=s=>document.querySelector(s);
 const requestedStyle=new URLSearchParams(location.search).get('style');
 const requestedVariant=new URLSearchParams(location.search).get('variant');
@@ -17,10 +19,10 @@ const initialStyle=interiorStyles.find(s=>s.id===requestedStyle)||interiorStyles
 const initialLayout=layouts.find(l=>l.id===requestedVariant)||layouts[0];
 const state={variant:initialLayout.id,style:initialStyle.id,furniture:true,walls:true,cut:true,labels:false,focus:null,dimensions:false,zones:false,doors:true,mode:'iso',selected:null,applianceOpen:null};
 let layout=initialLayout,root,annotations=[],obstacles=[];const scene=new THREE.Scene();scene.background=new THREE.Color(initialStyle.background);let mats=materials(initialStyle);const lighting=addLighting(scene);
-let renderer;try{renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});}catch(e){$('#canvas-container').innerHTML='<p style="padding:100px 30px">WebGL недоступен. Откройте модель в Chrome или Safari с аппаратным ускорением. Планы доступны в папке views.</p>';throw e;}
+let renderer;try{renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});}catch(e){$('#canvas-container').innerHTML='<p style="padding:100px 30px">WebGL недоступен. Откройте модель в Chrome или Safari с аппаратным ускорением. <a href="studio.html">Открыть галерею рендеров ↗</a></p>';throw e;}
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=initialStyle.exposure;$('#canvas-container').append(renderer.domElement);
 const pmrem=new THREE.PMREMGenerator(renderer);const roomEnvironment=new RoomEnvironment();const environment=pmrem.fromScene(roomEnvironment,.04);scene.environment=environment.texture;scene.environmentIntensity=.45;roomEnvironment.dispose();pmrem.dispose();
-const ground=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:0xeeeae3,roughness:1}));ground.rotation.x=-Math.PI/2;ground.position.y=-.115;ground.receiveShadow=true;scene.add(ground);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:initialStyle.background,roughness:1}));ground.rotation.x=-Math.PI/2;ground.position.y=-.115;ground.receiveShadow=true;scene.add(ground);
 const cameras=new Cameras(renderer.domElement,geometry,()=>obstacles);
 const annotationLayer=$('#annotation-layer');let highlight=null;
 function dispose(group){group?.traverse(o=>{o.geometry?.dispose();});}
@@ -72,5 +74,8 @@ function exportModel(){const exportRoot=new THREE.Group();exportRoot.name='MASTE
 $('#export').onclick=async()=>{try{download(new Blob([await exportModel()],{type:'model/gltf-binary'}),'MASTER-'+layout.id+'.glb');toast('Полная модель '+layout.id+' сохранена.');}catch(e){toast('Ошибка экспорта: '+e.message);}};
 $('#snapshot').onclick=()=>{renderer.render(scene,cameras.camera);renderer.domElement.toBlob(blob=>download(blob,'apartment-'+layout.id+'-'+state.mode+'.png'));};
 new ResizeObserver(()=>{const {width,height}=$('#canvas-container').getBoundingClientRect();renderer.setSize(width,height);cameras.resize(width,height);}).observe($('#canvas-container'));
-const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);cameras.tick(clock.getDelta());for(const a of annotations){const p=a.p.clone().project(cameras.camera);a.el.style.left=(p.x*.5+.5)*renderer.domElement.clientWidth+'px';a.el.style.top=(-p.y*.5+.5)*renderer.domElement.clientHeight+'px';a.el.style.display=p.z<1&&p.z>-1?'':'none';}renderer.render(scene,cameras.camera);}rebuild();animate();
+const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);cameras.tick(clock.getDelta());for(const a of annotations){const p=a.p.clone().project(cameras.camera);a.el.style.left=(p.x*.5+.5)*renderer.domElement.clientWidth+'px';a.el.style.top=(-p.y*.5+.5)*renderer.domElement.clientHeight+'px';a.el.style.display=p.z<1&&p.z>-1?'':'none';}renderer.render(scene,cameras.camera);}rebuild();animate();const initialRoom=new URLSearchParams(location.search).get('room');if(['adult','alice','kitchen','living','bath'].includes(initialRoom))viewRoom(initialRoom);
 window.apartment={state,geometry,layouts,project,interiorStyles,setStyle,get layout(){return layout},get camera(){return cameras.camera},get renderer(){return renderer},cameras,setVariant,setMode,viewRoom,rebuild,selectObject,routeResult,startRoute,canStand:(x,y)=>canStand(x,y,geometry,obstacles,250),setLayer:(key,v)=>{state[key]=v;rebuild();},exportModel,serviceZone,render:()=>renderer.render(scene,cameras.camera),ready:true};
+
+}
+main().catch(console.error);

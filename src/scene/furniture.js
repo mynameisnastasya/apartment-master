@@ -28,8 +28,8 @@ export function createFurniture(o,m){
   const span=front==='east'||front==='west'?d:w,count=Math.max(1,Math.round(span/520)),step=span/count;
   for(let i=0;i<count;i++){
    face(paint?m.lacquer:m.joinery,i*step+3,start,step-6,height,19,0);
-   face(m.shadow,i*step+14,start+12,step-28,height-24,2,0);
-   face(paint?m.lacquer:m.joinery,i*step+17,start+15,step-34,height-30,5,-1);
+   face(m.shadow,i*step+14,start+12,step-28,height-24,2,-1);
+   face(paint?m.lacquer:m.joinery,i*step+17,start+15,step-34,height-30,5,-2);
    face(m.metal,i*step+step-44,start+Math.max(80,height*.44),7,Math.min(150,height*.3),7,-9);
   }
  };
@@ -44,8 +44,7 @@ export function createFurniture(o,m){
   const duvet=b(m.bedding,mx-10,my+480,mw+20,md-505,100,490,35);
   const a=duvet.geometry.attributes.position;for(let i=0;i<a.count;i++){const px=a.getX(i),py=a.getY(i),pz=a.getZ(i);if(py>0)a.setY(i,py+Math.sin(px*31+pz*4)*.005+Math.sin(pz*14)*.004);}a.needsUpdate=true;duvet.geometry.computeVertexNormals();
   const n=mw>1100?2:1;for(let i=0;i<n;i++){const pillow=b(m.bedding,mx+50+i*(mw-100)/n,my+90,(mw-140)/n,350,125,510,42);pillow.rotation.y=(i?-.05:.035);}
-  b(m.accent,mx-12,my+md-620,mw+24,430,35,580,14);
-  for(let i=0;i<6;i++)b(m.upholstery,mx+25+i*(mw-50)/6,my+md-600,2,390,2,614);
+  const cloth=new THREE.PlaneGeometry(M(mw+24),.43,36,18);const cp=cloth.attributes.position;for(let i=0;i<cp.count;i++){const xx=cp.getX(i),yy=cp.getY(i),edge=Math.pow(Math.abs(xx)/(M(mw+24)/2),10);cp.setXYZ(i,xx,.605-edge*.1+Math.sin(xx*35+yy*9)*.009+Math.sin(yy*27)*.006,-yy);}cloth.computeVertexNormals();const throwMesh=new THREE.Mesh(cloth,m.accent);throwMesh.position.set(M(mx+mw/2),0,M(my+md-405));throwMesh.castShadow=throwMesh.receiveShadow=true;g.add(throwMesh);
  }
  else if(o.type==='sofa'){
   for(const xx of[x+80,x+w-100])for(const yy of[y+80,y+d-100])cylinder(g,m.metal,xx,yy,0,15,145);
