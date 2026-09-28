@@ -13,6 +13,11 @@ try{
  assert.ok((await page.locator('body').innerText()).includes('50,199 м²'));
  assert.ok((await page.locator('body').innerText()).includes('ТРЕБУЕТ ОБМЕРА'));
  assert.equal(await page.locator('[data-inspect^="E"]').count()>0,true);
+ assert.equal(await page.locator('.design-card').count(),5);
+ for(const image of await page.locator('.design-card img').all()){
+  await image.scrollIntoViewIfNeeded();
+  await image.evaluate(img=>img.decode());
+ }
  await page.screenshot({path:'browser-reference-artifacts/album-desktop.png',fullPage:true});
  await page.setViewportSize({width:390,height:844});
  await page.locator('#mobile-nav').click();assert.ok(await page.locator('.side.open').isVisible());
@@ -20,6 +25,10 @@ try{
  await page.screenshot({path:'browser-reference-artifacts/album-mobile.png',fullPage:true});
  await page.setViewportSize({width:1440,height:1050});await page.goto('http://127.0.0.1:4173/model.html');await page.waitForFunction(()=>window.apartment?.ready);
  assert.equal(await page.evaluate(()=>window.apartment.layout.id),'D');
+ for(const id of ['linen','japandi','nordic','atelier','graphite']){
+  await page.locator(`[data-style="${id}"]`).click();
+  assert.equal(await page.evaluate(()=>window.apartment.state.style),id);
+ }
  await page.screenshot({path:'browser-reference-artifacts/desktop.png'});
  await page.getByRole('button',{name:'План',exact:true}).click();await page.waitForTimeout(400);await page.screenshot({path:'browser-reference-artifacts/plan.png'});
  await page.getByRole('button',{name:'Решения и проходы →'}).click();await page.locator('#details').waitFor({state:'visible'});assert.equal(await page.locator('[data-route]').count(),12);assert.ok((await page.locator('#dialog-content').innerText()).includes('960 мм'));await page.locator('#close-dialog').click();

@@ -26,6 +26,10 @@ export function createFurniture(o,m){const g=new THREE.Group();g.name=o.id;g.use
 export function createArchitecture(geometry,layout,m,{cut=true,plan=false,walls=true,doorsOpen=true}={}){
  const root=new THREE.Group();root.name='APARTMENT_GEOMETRY';
  const shape=new THREE.Shape();geometry.floor.forEach(([x,y],i)=>i?shape.lineTo(mm(x),mm(y)):shape.moveTo(mm(x),mm(y)));shape.closePath();const floorGeo=new THREE.ExtrudeGeometry(shape,{depth:.10,bevelEnabled:false});floorGeo.rotateX(Math.PI/2);const floor=new THREE.Mesh(floorGeo,m.floor);floor.name='floor';floor.receiveShadow=true;root.add(floor);
+ if(layout.id==='D'&&!plan){
+  const bathTile=box(root,m.bathFloor,2440,0,2280,1920,10,1,'bath-tile');bathTile.castShadow=false;
+  const livingRug=box(root,m.rug,390,2990,2020,1600,12,2,'living-rug');livingRug.castShadow=false;
+ }
  const wallGroup=new THREE.Group();wallGroup.name='WALLS';root.add(wallGroup);wallGroup.visible=walls;
  for(const o of [...geometry.walls,...layout.partitions]){const max=plan?100:cut?1050:geometry.ceilingHeight;const elev=o.elevation||0;if(elev>=max)continue;const mesh=box(wallGroup,m.wall,o.x,o.y,o.width,o.depth,Math.min(o.height,max-elev),elev,o.id,o.rotation||0);lineBox(mesh,m.line);}
  if(walls&&!plan){for(const win of geometry.windows){const gh=cut?Math.min(win.height,1050-win.sill):win.height;if(gh>0){box(wallGroup,m.glass,win.x,win.y,win.width,20,gh,win.sill,win.id);for(let i=0;i<=3;i++)box(wallGroup,m.worktop,win.x+i*win.width/3,win.y-10,25,40,gh,win.sill);box(wallGroup,m.worktop,win.x,win.y-10,win.width,40,25,win.sill);}}}
