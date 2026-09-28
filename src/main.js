@@ -4,7 +4,7 @@ import {geometry,layouts,project,mm,polygonArea,roomNames} from './data/model.js
 import {materials,disposeMaterials} from './scene/materials.js';
 import {interiorStyles} from './data/interior-styles.js';
 import {addLighting} from './scene/lighting.js';
-import {createArchitecture,createFurniture,box,dimensionLine} from './scene/build.js';
+import {createArchitecture,createFurniture,createDecor,box,dimensionLine} from './scene/build.js';
 import {Cameras} from './interaction/cameras.js';
 import {colliders,canStand,findRoute} from './interaction/collision.js';
 import {openingLeaf} from './interaction/appliances.js';
@@ -27,7 +27,7 @@ function serviceZone(o){const angle=(o.rotation||0)*Math.PI/180;const f=['north'
  if(f==='south'){zone.y+=o.depth;zone.depth=reach;}if(f==='north'){zone.y-=reach;zone.depth=reach;}if(f==='east'){zone.x+=o.width;zone.width=reach;}if(f==='west'){zone.x-=reach;zone.width=reach;}return zone;}
 function rebuild(){if(root){scene.remove(root);dispose(root);}root=new THREE.Group();root.name='MASTER_APARTMENT_'+layout.id;scene.add(root);const plan=state.mode==='plan';renderer.shadowMap.enabled=!plan;scene.traverse(o=>{if(o.isLight&&o.shadow)o.castShadow=!plan;});for(const mat of Object.values(mats))mat.needsUpdate=true;root.add(createArchitecture(geometry,layout,mats,{cut:state.cut,plan,walls:state.walls,doorsOpen:state.doors}));
  const furniture=new THREE.Group();furniture.name='FURNITURE_'+layout.id;furniture.visible=state.furniture;root.add(furniture);for(const o of layout.furniture){if(plan&&(o.elevation||0)>1200)continue;const obj=createFurniture(o,mats);furniture.add(obj);}
- const decor=new THREE.Group();decor.name='DECOR_FUTURE';root.add(decor);
+ const decor=createDecor(layout,mats);decor.visible=!plan;root.add(decor);
  const anno=new THREE.Group();anno.name='ANNOTATIONS';root.add(anno);annotations=[];annotationLayer.replaceChildren();
  if(state.labels&&state.mode!=='walk'){for(const r of layout.rooms){const p=state.dimensions&&layout.id!=='D'?({adult:[1550,6650],alice:[4750,5900],kitchen:[4950,1250]}[r.id]||[r.x,r.y]):[r.x,r.y];addAnnotation(r.name+(r.area?' · '+r.area.toFixed(1)+' м²':''),p[0],p[1],false,50);}}
  if(state.dimensions&&state.mode!=='walk'){dimensionLine(anno,[0,-420],[6400,-420]);addAnnotation('6400',3200,-450,true);dimensionLine(anno,[-430,0],[-430,8300]);addAnnotation('8300*',-430,4050,true);dimensionLine(anno,[6820,0],[6820,7440]);addAnnotation('7440*',6820,3700,true);for(const c of layout.clearances){const from=[c.x-(c.axis==='x'?c.length/2:0),c.y-(c.axis==='y'?c.length/2:0)],to=[c.x+(c.axis==='x'?c.length/2:0),c.y+(c.axis==='y'?c.length/2:0)];dimensionLine(anno,from,to);addAnnotation(c.value+' мм',c.x,c.y,true,55);}}
@@ -64,7 +64,7 @@ $('#compare').onclick=()=>{
 };
 function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000);}
 function downloadJSON(){download(new Blob([JSON.stringify({project,geometry,layouts,selectedLayout:layout.id},null,2)],{type:'application/json'}),'MASTER-APARTMENT.json');}
-function exportModel(){const exportRoot=new THREE.Group();exportRoot.name='MASTER_APARTMENT_'+layout.id;exportRoot.userData={units:'meters',sourceDataUnits:'mm',layout:layout.id,approvalStatus:project.approvalStatus};exportRoot.add(createArchitecture(geometry,layout,mats,{cut:false,plan:false,walls:true,doorsOpen:true}));for(const o of layout.furniture)exportRoot.add(createFurniture(o,mats));return new Promise((resolve,reject)=>new GLTFExporter().parse(exportRoot,resolve,reject,{binary:true,onlyVisible:true}));}
+function exportModel(){const exportRoot=new THREE.Group();exportRoot.name='MASTER_APARTMENT_'+layout.id;exportRoot.userData={units:'meters',sourceDataUnits:'mm',layout:layout.id,approvalStatus:project.approvalStatus};exportRoot.add(createArchitecture(geometry,layout,mats,{cut:false,plan:false,walls:true,doorsOpen:true}));for(const o of layout.furniture)exportRoot.add(createFurniture(o,mats));exportRoot.add(createDecor(layout,mats));return new Promise((resolve,reject)=>new GLTFExporter().parse(exportRoot,resolve,reject,{binary:true,onlyVisible:true}));}
 $('#export').onclick=async()=>{try{download(new Blob([await exportModel()],{type:'model/gltf-binary'}),'MASTER-'+layout.id+'.glb');toast('Полная модель '+layout.id+' сохранена.');}catch(e){toast('Ошибка экспорта: '+e.message);}};
 $('#snapshot').onclick=()=>{renderer.render(scene,cameras.camera);renderer.domElement.toBlob(blob=>download(blob,'apartment-'+layout.id+'-'+state.mode+'.png'));};
 new ResizeObserver(()=>{const {width,height}=$('#canvas-container').getBoundingClientRect();renderer.setSize(width,height);cameras.resize(width,height);}).observe($('#canvas-container'));

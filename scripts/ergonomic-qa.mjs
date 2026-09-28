@@ -27,6 +27,14 @@ assert.equal(sofa.rotation,270);
 assert.equal(c['kitchen-entry'],sofaNorth-(bathSouth.y+bathSouth.depth));
 checks.push({id:'kitchen-entry-derived-from-geometry',value:c['kitchen-entry'],ok:true});
 
+const fixture=id=>d.furniture.find(x=>x.id===id);
+const basin=fixture('basin'),wc=fixture('wc'),tub=fixture('bath-tub');
+assert.equal(basin.front,'south');assert.equal(wc.front,'east');
+assert.equal(c['bath-basin-front'],wc.y-(basin.y+basin.depth));
+assert.equal(c['bath-toilet-front'],tub.x-(wc.x+wc.width));
+assert.equal(c['wc-side'],1920-(wc.y+wc.depth/2));
+checks.push({id:'bath-fixture-clearances-derived',value:{basin:c['bath-basin-front'],toilet:c['bath-toilet-front'],side:c['wc-side']},ok:true});
+
 const bathDoor=d.doors.find(x=>x.id==='door-bath');
 assert.equal(bathDoor.mechanism,'pocket-sliding');
 checks.push({id:'bath-door-mechanism',value:bathDoor.mechanism,ok:true});
@@ -37,6 +45,11 @@ for(const [a,b] of d.routePairs){
   assert.ok(r.ok,`route ${a} → ${b}: ${r.reason||'blocked'}`);
 }
 checks.push({id:'all-reference-routes',value:d.routePairs.length,ok:true});
+for(const id of ['bathBasin','bathToilet','bathWasher','bathTub']){
+ const r=findRoute(d.routes.entry,d.routes[id],g,obstacles,{radius:250});
+ assert.ok(r.ok&&r.endpointSnapMm.every(mm=>mm<=150),`bath access ${id} blocked or snapped too far`);
+ checks.push({id:'bath-access-'+id,value:r.lengthMm,ok:true});
+}
 
 const appliances=[];
 for(const o of d.furniture){
