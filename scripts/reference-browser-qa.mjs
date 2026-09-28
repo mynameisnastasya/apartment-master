@@ -30,6 +30,8 @@ try{
  for(const id of ['linen','japandi','nordic','atelier','graphite']){
   await page.locator(`[data-style="${id}"]`).click();
   assert.equal(await page.evaluate(()=>window.apartment.state.style),id);
+  assert.ok(await page.evaluate(()=>!!document.querySelector('canvas')),'Textured WebGL model mounted');
+  await page.screenshot({path:`browser-reference-artifacts/material-${id}.png`});
  }
  await page.screenshot({path:'browser-reference-artifacts/desktop.png'});
  await page.getByRole('button',{name:'План',exact:true}).click();await page.waitForTimeout(400);await page.screenshot({path:'browser-reference-artifacts/plan.png'});
@@ -44,6 +46,7 @@ try{
   assert.equal(await page.evaluate(()=>window.apartment.routeResult('entry','bathBasin').ok),true);
   assert.equal(await page.evaluate(()=>window.apartment.routeResult('entry','aliceDesk').ok),true);
  }
+ assert.ok(await page.evaluate(()=>window.apartment.layout.rooms.find(r=>r.id==='bath').area>4.5),'Expanded H bathroom is present');
  await page.screenshot({path:'browser-reference-artifacts/plan-H.png'});
  await page.goto('http://127.0.0.1:4173/model.html?variant=F');await page.waitForFunction(()=>window.apartment?.ready);
  assert.equal(await page.evaluate(()=>window.apartment.layout.id),'F');
