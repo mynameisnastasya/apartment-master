@@ -1,0 +1,119 @@
+{
+  "layout": "D",
+  "scope": "Ergonomic design checks for the reference layout; recommendations, not local-code certification.",
+  "checks": [
+    {
+      "id": "entry-aisle",
+      "value": 960,
+      "min": 914,
+      "ok": true
+    },
+    {
+      "id": "kitchen-entry",
+      "value": 1014,
+      "min": 914,
+      "ok": true
+    },
+    {
+      "id": "adult-door-clear",
+      "value": 850,
+      "min": 850,
+      "ok": true
+    },
+    {
+      "id": "child-door-clear",
+      "value": 850,
+      "min": 850,
+      "ok": true
+    },
+    {
+      "id": "bath-door-clear",
+      "value": 850,
+      "min": 850,
+      "ok": true
+    },
+    {
+      "id": "bath-toilet-front",
+      "value": 762,
+      "min": 762,
+      "ok": true
+    },
+    {
+      "id": "bath-basin-front",
+      "value": 910,
+      "min": 762,
+      "ok": true
+    },
+    {
+      "id": "wc-side",
+      "value": 468,
+      "min": 457,
+      "ok": true
+    },
+    {
+      "id": "adult-window",
+      "value": 600,
+      "min": 600,
+      "ok": true
+    },
+    {
+      "id": "dining-chair-back",
+      "value": 770,
+      "min": 762,
+      "ok": true
+    },
+    {
+      "id": "kitchen-entry-derived-from-geometry",
+      "value": 1014,
+      "ok": true
+    },
+    {
+      "id": "bath-door-mechanism",
+      "value": "pocket-sliding",
+      "ok": true
+    },
+    {
+      "id": "all-reference-routes",
+      "value": 12,
+      "ok": true
+    }
+  ],
+  "appliances": [
+    {
+      "id": "washer",
+      "operatorPoint": [
+        3535,
+        1105
+      ],
+      "standing": true,
+      "reachable": true
+    },
+    {
+      "id": "fridge",
+      "operatorPoint": [
+        1995,
+        1025
+      ],
+      "standing": true,
+      "reachable": true
+    },
+    {
+      "id": "hob",
+      "operatorPoint": [
+        900,
+        1575
+      ],
+      "standing": true,
+      "reachable": true
+    },
+    {
+      "id": "dishwasher",
+      "operatorPoint": [
+        1575,
+        1500
+      ],
+      "standing": true,
+      "reachable": true
+    }
+  ]
+}
