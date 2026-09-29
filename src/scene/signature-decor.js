@@ -25,7 +25,7 @@ export function createSignatureDecor(layout,m){
  const wallX=layout.partitions.find(o=>o.id==='divider-lower')?.x||layout.partitions.find(o=>o.id==='d-adult-divider').x;
  const wallY=6810;
  // Two-metre sculpted moon: real displacement makes the craters catch grazing light.
- const N=116,R=965,cx=wallX-90,cy=wallY,cz=1510;
+ const N=116,R=965,cx=wallX-130,cy=wallY,cz=1510;
  const pits=[[.1,.07,.18],[-.46,.30,.13],[.46,.38,.11],[-.24,-.42,.19],[.45,-.39,.16],
   [-.57,-.2,.08],[.04,.64,.1],[.7,.02,.08],[-.1,-.05,.06],[.18,-.66,.09],
   [-.63,.55,.06],[.56,.67,.045],[-.39,-.65,.065],[.33,.15,.05]];
@@ -37,12 +37,12 @@ export function createSignatureDecor(layout,m){
  const positions=[],colors=[],uv=[],index=[];
  for(let j=0;j<=N;j++)for(let i=0;i<=N;i++){
   const u=i/N*2-1,v=j/N*2-1,rr=u*u+v*v;
-  let relief=6*Math.sin(u*31+v*18)*Math.sin(v*37-u*12)+4*Math.sin(u*73+v*51);
-  let shade=.83+.06*Math.sin(u*18)*Math.sin(v*22)+.035*Math.sin(u*84+v*61);
+  let relief=2.5*Math.sin(u*13+v*8)*Math.sin(v*17-u*6)+1.5*Math.sin(u*33+v*21);
+  let shade=.87+.035*Math.sin(u*18)*Math.sin(v*22)+.018*Math.sin(u*44+v*31);
   for(const [px,py,pr] of pits){
    const d=Math.hypot(u-px,v-py)/pr;
-   relief+=22*Math.exp(-Math.pow((d-1)/.18,2))-32*Math.exp(-d*d*2.8);
-   shade-=.105*Math.exp(-d*d*2.7);shade+=.045*Math.exp(-Math.pow((d-1)/.19,2));
+   relief+=17*Math.exp(-Math.pow((d-1)/.18,2))-24*Math.exp(-d*d*2.8);
+   shade-=.055*Math.exp(-d*d*2.7);shade+=.025*Math.exp(-Math.pow((d-1)/.19,2));
   }
   positions.push(mm(cx-relief),mm(cz+v*R),mm(cy+u*R));
   colors.push(shade,shade*.96,shade*.87);uv.push(i/N,j/N);
@@ -101,7 +101,8 @@ export function createSignatureDecor(layout,m){
    const arch=new THREE.Shape();
    arch.moveTo(-.67,.43);arch.lineTo(.67,.43);arch.lineTo(.67,1.65);
    arch.absarc(0,1.65,.67,0,Math.PI,false);arch.lineTo(-.67,.43);
-   const archMesh=new THREE.Mesh(new THREE.ShapeGeometry(arch,32),blush);
+   const archMesh=new THREE.Mesh(new THREE.ShapeGeometry(arch,32),blush.clone());
+   archMesh.material.side=THREE.DoubleSide;
    archMesh.rotation.y=Math.PI/2;archMesh.position.set(6.345,0,mm(y));archMesh.receiveShadow=true;g.add(archMesh);
    for(let i=0;i<15;i++){
     const yy=y-720+(i*271)%1440,zz=1120+(i*397)%1090;
