@@ -40,23 +40,20 @@ export function createArchitecture(geometry,layout,m,{cut=true,plan=false,walls=
   const bathSouth=layout.partitions.find(o=>o.id==='d-bath-south-left').y;
   const height=cut?1040:2350;
   box(wallGroup,m.marble,2440,7,bathEast-2440,8,height,0,'bath-slab-north');
-  box(wallGroup,m.darkStone,bathEast-8,10,8,bathSouth-30,height,0,'bath-dark-east');
+  box(wallGroup,m.marble,bathEast-8,10,8,bathSouth-30,height,0,'bath-slab-east');
   box(wallGroup,m.bathFloor,2440,15,8,bathSouth-35,height,0,'bath-mineral-west');
 
   box(wallGroup,m.marble,0,5,1665,10,cut?150:650,860,'kitchen-stone-field');
   box(wallGroup,m.marble,8,0,10,1800,cut?150:650,860,'kitchen-side-stone');
 
   if(!cut){
-   box(wallGroup,m.joinery,0,0,545,318,585,1840,'kitchen-upper-walnut');
-   box(wallGroup,m.shadow,18,304,509,8,525,1870,'kitchen-upper-walnut-reveal');
-
-   box(wallGroup,m.darkStone,675,8,410,110,690,1705,'kitchen-hood-monolith');
-   box(wallGroup,m.bronze,698,122,364,7,7,1730,'kitchen-hood-bronze-line');
-
-   box(wallGroup,m.lacquer,1235,0,430,318,820,1720,'kitchen-upper-recessive');
-   box(wallGroup,m.shadow,1253,304,394,8,760,1750,'kitchen-upper-reveal');
-
-   box(wallGroup,m.lamp,22,309,1620,7,7,1688,'kitchen-task-light');
+   // One calm upper volume with a recessed hood: architecture, not a row of floating boxes.
+   box(wallGroup,m.lacquer,0,0,1665,318,770,1730,'kitchen-upper-wall');
+   box(wallGroup,m.joinery,0,302,1665,24,42,1698,'kitchen-upper-walnut-datum');
+   box(wallGroup,m.shadow,1115,304,3,10,700,1762,'kitchen-upper-reveal');
+   box(wallGroup,m.darkStone,620,300,455,20,360,1805,'kitchen-hood-recess');
+   box(wallGroup,m.bronze,644,322,407,5,6,1785,'kitchen-hood-bronze-line');
+   box(wallGroup,m.lamp,22,329,1620,6,6,1678,'kitchen-task-light');
   }
  }
 
