@@ -16,6 +16,14 @@
 
 Для идей использованы приёмы [гибких зон и хранения IKEA](https://www.ikea.com/us/en/ideas/home-furnishings/open-for-adventure-a-studio-apartment-fit-for-a-family-pub64168580/), [обеденного модуля Studio Papaya](https://www.archdaily.com/1066275/sbc-apartment-studio-papaya) и [организации света Segur Flat](https://www.archdaily.com/1000126/segur-flat-faire). Эти квартиры — источники принципов, размеры и решения здесь сделаны под собственный контур.
 
+
+## Editorial interior direction
+
+Для текущего интерьерного прохода выбран **Walnut Ribbon / Stone Lantern**: тёмный орех работает как единая архитектурная лента, светлый выразительный камень — как один сильный фокус, а бронза, бордо и олива используются дозированно. Кухонный полуостров, ТВ-стена, изголовье и санузел переработаны как bespoke-объекты, а не как набор каталоговой мебели.
+
+Исследование 20 референсов, три разные концепции, аргументация выбора и дизайн-критика собраны в [docs/editorial-interior-direction.md](docs/editorial-interior-direction.md).
+
+
 ## Локальный запуск
 
 ```sh
