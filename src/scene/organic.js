@@ -33,7 +33,7 @@ function moon(g,m,x,z,e,r,yaw){
   const ox=r*Math.cos(angle),oy=r*Math.sin(angle),ix=a+R*Math.cos(inner),iy=b+R*Math.sin(inner);
   for(let k=0;k<=across;k++){const q=k/across;vs.push(ox+(ix-ox)*q,oy+(iy-oy)*q,0);uv.push(t,q);}
  }
- for(let j=0;j<along;j++)for(let k=0;k<across;k++){const i=j*(across+1)+k;idx.push(i,i+1,i+across+2,i,i+across+2,i+across+1);}
+ for(let j=0;j<along;j++)for(let k=0;k<across;k++){const i=j*(across+1)+k;idx.push(i,i+across+2,i+1,i,i+across+1,i+across+2);}
  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(vs,3));geo.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));const p=geo.attributes.position;
  const craters=[[-.51,.2,.12],[-.28,.53,.08],[-.68,-.12,.06],[-.43,-.45,.13],[-.12,-.64,.075],[-.72,.4,.04],[-.22,.72,.045]];
 
