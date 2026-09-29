@@ -71,8 +71,8 @@ const base=structuredClone(reference);
 // D geometry stays put; fitting the millwork to its walls makes the scheme buildable.
 move(base,'adult-wardrobe',{x:0,y:4760});
 move(base,'alice-wardrobe',{x:5010,y:3640});
-move(base,'adult-dresser',{type:'vanity',x:0,y:6810,width:420,depth:900,height:760,front:'east',label:'Туалетный / рабочий столик · таро и руны'});
-base.furniture.push({id:'alice-toys',type:'toy-storage',room:'alice',x:6080,y:6320,width:320,depth:740,height:780,rotation:0,visible:true,front:'west',label:'Низкая открытая полка · книги и игрушки'});
+move(base,'adult-dresser',{type:'vanity',x:0,y:6810,width:420,depth:900,height:760,front:'east',label:'Встроенная консоль / туалетный столик'});
+base.furniture.push({id:'alice-toys',type:'toy-storage',room:'alice',x:6080,y:6320,width:320,depth:740,height:780,rotation:0,visible:true,front:'west',label:'Встроенный открытый стеллаж · книги и объекты'});
 export const layouts=[base,...options.map(option=>{
  const layout=structuredClone(base);layout.id=option.id;layout.name=option.name;layout.subtitle=option.subtitle;layout.recommended=false;layout.pros=option.pros;layout.cons=option.cons;
  replanRooms(layout,option.replan);
