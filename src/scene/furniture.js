@@ -159,7 +159,7 @@ export function createFurniture(o,m){
   b(m.marble,x+2,y+3,w-4,d-6,22,350,7);
   b(m.bronze,x+w-14,y+60,8,d-120,7,292,2);
  }
- else if(o.type==='tv'){b(m.shadow,x,y,w,d,h,e,9);b(m.screen,x+w-2,y+12,4,d-24,h-24,e+12,2);}
+ else if(o.type==='tv'){const mount=organic?80:0;b(m.shadow,x+mount,y,w,d,h,e,9);b(m.screen,x+mount+w-2,y+12,4,d-24,h-24,e+12,2);}
  else if(o.type==='mirror'){b(m.bronze,x,y,w,d,h,e,5);b(m.glass,x+w,y+12,2,d-24,h-24,e+12);}
  else {
   cabinet();b(m.marble,x,y,w,d,28,h-28,5);

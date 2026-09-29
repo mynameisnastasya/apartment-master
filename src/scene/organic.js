@@ -22,16 +22,27 @@ function relief(g,m,w,h,x,z,e,yaw,name){
  }geo.computeVertexNormals();const o=mesh(g,geo,m,[x,e+h/2,z],name);o.rotation.y=yaw;return o;
 }
 function moon(g,m,x,z,e,r,yaw){
- const geo=new THREE.PlaneGeometry(r*2,r*2,112,112),p=geo.attributes.position,idx=[];
+ // Two analytic circular arcs share endpoints. A ruled mesh avoids the
+ // stair-stepped silhouette produced by clipping a rectangular grid.
+ const a=r*.55,b=r*.15,R=r*.89,d=Math.hypot(a,b),phi=Math.atan2(b,a);
+ const theta=Math.acos((r*r+d*d-R*R)/(2*r*d)),start=phi+theta,end=phi-theta+Math.PI*2;
+ const innerStart=Math.atan2(r*Math.sin(start)-b,r*Math.cos(start)-a);
+ let innerEnd=Math.atan2(r*Math.sin(end)-b,r*Math.cos(end)-a);while(innerEnd<innerStart)innerEnd+=Math.PI*2;
+ const vs=[],uv=[],idx=[],along=240,across=28;
+ for(let j=0;j<=along;j++){const t=j/along,angle=start+(end-start)*t,inner=innerStart+(innerEnd-innerStart)*t;
+  const ox=r*Math.cos(angle),oy=r*Math.sin(angle),ix=a+R*Math.cos(inner),iy=b+R*Math.sin(inner);
+  for(let k=0;k<=across;k++){const q=k/across;vs.push(ox+(ix-ox)*q,oy+(iy-oy)*q,0);uv.push(t,q);}
+ }
+ for(let j=0;j<along;j++)for(let k=0;k<across;k++){const i=j*(across+1)+k;idx.push(i,i+1,i+across+2,i,i+across+2,i+across+1);}
+ const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(vs,3));geo.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));const p=geo.attributes.position;
  const craters=[[-.51,.2,.12],[-.28,.53,.08],[-.68,-.12,.06],[-.43,-.45,.13],[-.12,-.64,.075],[-.72,.4,.04],[-.22,.72,.045]];
- const inside=(u,v)=>Math.hypot(u,v)<=r&&Math.hypot(u-r*.55,v-r*.15)>r*.89;
+
  for(let i=0;i<p.count;i++){
   const u=p.getX(i),v=p.getY(i);let d=.012+.006*Math.sin(u*75)*Math.sin(v*61)+.004*Math.sin(u*149+v*31);
   for(const [cx,cy,rr] of craters){const q=Math.hypot(u/r-cx,v/r-cy)/rr;d+=.018*Math.exp(-(((q-1)*4)**2))-.022*Math.exp(-((q*1.8)**2));}
   p.setZ(i,d);
  }
- const src=geo.index.array;
- for(let k=0;k<src.length;k+=3){const ids=[src[k],src[k+1],src[k+2]];if(ids.every(i=>inside(p.getX(i),p.getY(i))))idx.push(...ids);}
+
  geo.setIndex(idx);geo.computeVertexNormals();const o=mesh(g,geo,m.rock,[x,e,z],'sculpted-lunar-relief');o.rotation.y=yaw;
  const halo=new THREE.Mesh(geo.clone(),m.lamp);halo.scale.set(1.025,1.025,1);halo.position.set(x+Math.sin(yaw)*-.008,e,z+Math.cos(yaw)*-.008);halo.rotation.y=yaw;halo.name='moon-hidden-light';g.add(halo);
 }
