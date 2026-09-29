@@ -1,37 +1,51 @@
 {
   "title": "Лесная Поляна",
-  "stage": 1,
+  "stage": 4,
   "recommendedLayout": null,
   "selectedLayout": "D",
-  "approvalStatus": "five architectural options for selection — requires measurement and engineering validation",
-  "source": "Existing conditional survey geometry + two user images attached in current conversation",
+  "approvalStatus": "editorial interior concept implemented on conditional geometry — requires measurement and engineering validation",
+  "source": "Existing conditional survey geometry + user-provided visual references + editorial design research",
   "unit": "mm",
   "design": {
+    "concept": "Walnut Ribbon / Stone Lantern",
     "palette": [
-      "Тёплый белый",
-      "Светлый дуб",
-      "Шалфей",
-      "Песочный текстиль"
+      "Минеральный тёпло-серый",
+      "Тёмный орех",
+      "Светлый выразительный камень",
+      "Тёмная бронза",
+      "Редкий бордо",
+      "Редкий оливковый"
+    ],
+    "architecturalGestures": [
+      "Непрерывная ореховая лента: вход, хранение, кухня, ТВ-стена и спальня",
+      "Скульптурный каменный полуостров как главный объект общей зоны",
+      "Тонкая бронзовая линия и скрытая подсветка как повторяющийся графический слой"
+    ],
+    "customElements": [
+      "Каменный полуостров с монолитным торцом и утопленной деревянной опорой",
+      "Архитектурная ТВ-стена с каменным плинтом",
+      "Асимметричная стеновая композиция изголовья",
+      "Boutique-hotel ванная с большим зеркалом, каменной нишей и рифлёным стеклом"
     ],
     "lighting": [
-      "Мягкий общий свет в гостиной",
-      "Подсветка рабочей поверхности кухни",
-      "Отдельный свет над столом",
-      "Бра у кроватей и свет рабочего стола"
+      "Один мягкий дневной ключ",
+      "Акцентный свет по камню кухни",
+      "Тёплый свет ТВ-портала",
+      "Скрытая линия в изголовье",
+      "Отдельный свет зеркала в санузле"
     ],
-    "notes": "Закрытое хранение до потолка; спокойные плоскости фасадов; скруглённые углы обеденного стола. Палитра показана условными материалами, без подбора конкретных товаров."
+    "notes": "Интерьер строится на архитектурных объёмах, а не на наборе мебели. Видимые стыки сокращены; хранение читается как стены; декор подчинён материалу, свету и пропорциям. Research and rationale: docs/editorial-interior-direction.md"
   },
   "futureStages": [
     "measurement validation",
     "engineering validation",
-    "furniture",
-    "interior concept",
-    "materials",
-    "lighting",
-    "real assets",
-    "decor",
-    "renders",
+    "MEP coordination",
+    "joinery detailing",
+    "stone slab mapping",
+    "lighting specification",
+    "real furniture assets",
+    "final renders",
     "walkthrough",
-    "specification"
+    "construction documentation"
   ]
 }
