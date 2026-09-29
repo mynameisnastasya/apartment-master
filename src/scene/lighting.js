@@ -33,3 +33,13 @@ export function addLighting(scene){
 
  scene.add(g);return g;
 }
+
+// Named scenarios retain the broad daylight direction and use only compositional accents.
+export function setLightingMode(group,evening=false){
+ group.children.forEach(light=>{
+  if(!light.isLight)return;
+  if(light.userData.dayIntensity===undefined)light.userData.dayIntensity=light.intensity;
+  const factor=light.isHemisphereLight?(evening?.40:1):light.isDirectionalLight?(evening?.18:1):(evening?1:.48);
+  light.intensity=light.userData.dayIntensity*factor;
+ });
+}

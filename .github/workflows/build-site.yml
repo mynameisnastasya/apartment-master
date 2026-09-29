@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'src/**'
+      - 'docs/quiet-geology.md'
       - 'index.template.html'
       - 'project.template.html'
       - 'scripts/**'
@@ -28,7 +29,7 @@ jobs:
       - name: Commit generated site
         shell: bash
         run: |
-          git add index.html model.html LIZA.html views/[D-H]-floor-plan.svg MASTER-APARTMENT.json
+          git add design.html index.html model.html LIZA.html views/[D-H]-floor-plan.svg MASTER-APARTMENT.json
           if git diff --cached --quiet; then
             echo "generated site is already current"
             exit 0

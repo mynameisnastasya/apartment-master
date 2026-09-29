@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {createOrganicDecor} from './organic.js';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 const M=v=>v/1000;
@@ -34,6 +35,7 @@ function bookStack(g,m,x,y,e){
 }
 
 export function createSignatureDecor(layout,m){
+ if(m.wall.userData.organic)return createOrganicDecor(layout,m);
  const g=new THREE.Group();g.name='EDITORIAL_ARCHITECTURE';
  const byId=id=>layout.furniture.find(o=>o.id===id);
  const divider=layout.partitions.find(o=>o.id==='divider-lower')||layout.partitions.find(o=>o.id==='d-adult-divider');

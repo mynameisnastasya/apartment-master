@@ -27,7 +27,7 @@ export function createStudio(geometry,layout,m,name){
 
  const walls=new THREE.Group();walls.name='WALLS';root.add(walls);
  if(name==='bath'){
-  box(walls,m.marble,x-80,y-80,x2-x+160,80,2450,0,'studio-north');
+  box(walls,m.wall.userData.organic?m.slate:m.marble,x-80,y-80,x2-x+160,80,2450,0,'studio-north');
   box(walls,m.marble,x2,y,80,y2-y,2450,0,'studio-east');
   box(walls,m.bathFloor,x-80,y,80,y2-y,2450,0,'studio-west');
   box(walls,m.bronze,x-25,y+12,x2-x+50,6,7,950,'bath-bronze-datum');
