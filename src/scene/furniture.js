@@ -34,7 +34,7 @@ export function createFurniture(o,m){
    face(m.shadow,i*step+7,start+8,2,height-16,2,-1);
   }
  };
- const cabinet=()=>{b(m.shadow,x+24,y+24,w-48,d-48,58,e);b(m.joinery,x+4,y+4,w-8,d-8,h-58,e+58,10);facade(h-80,e+66);};
+ const cabinet=()=>{b(m.shadow,x+24,y+24,w-48,d-48,58,e);b(m.joinery,x+4,y+4,w-8,d-8,h-86,e+58,10);facade(h-110,e+66);};
  if(o.type==='bed'){
   b(m.shadow,x+50,y+70,w-100,d-120,68,48,22);
   b(m.upholstery,x+18,y+26,w-36,d-52,165,102,32);
@@ -50,7 +50,7 @@ export function createFurniture(o,m){
  else if(o.id.startsWith('adult-nightstand')){
   // Bedside function is absorbed into the headboard composition: a thin floating ledge, not a box.
   b(m.shadow,x+22,y+22,w-44,d-44,18,500,10);
-  b(m.marble,x+6,y+6,w-12,d-12,36,522,10);
+  b(organic?m.joinery:m.marble,x+6,y+6,w-12,d-12,36,522,10);
   b(m.bronze,x+w-18,y+24,7,d-48,6,510,2);
  }
  else if(o.type==='sofa'){

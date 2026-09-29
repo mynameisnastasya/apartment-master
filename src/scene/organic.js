@@ -8,17 +8,17 @@ function box(g,m,x,z,w,d,h,e=0,r=.012,name='joinery'){return mesh(g,new RoundedB
 function wall(g,m,w,h,x,z,e,yaw,name){const o=mesh(g,new THREE.PlaneGeometry(w,h),m,[x,e+h/2,z],name);o.rotation.y=yaw;return o;}
 export function liveEdgeSlab(g,m,x,z,w,d,h,e,name='live-edge-slab'){
  const s=new THREE.Shape();const n=40;
- for(let i=0;i<=n;i++){const t=i/n,edge=.012*Math.sin(t*22)+.007*Math.sin(t*53);const px=t*w,pz=.022+edge;i?s.lineTo(px,pz):s.moveTo(px,pz);}
- for(let i=n;i>=0;i--){const t=i/n,edge=.013*Math.sin(t*17+2)+.005*Math.sin(t*47);s.lineTo(t*w,d-.023+edge);}s.closePath();
+ for(let i=0;i<=n;i++){const t=i/n,edge=.007*Math.sin(t*13)+.003*Math.sin(t*29);const px=t*w,pz=.022+edge;i?s.lineTo(px,pz):s.moveTo(px,pz);}
+ for(let i=n;i>=0;i--){const t=i/n,edge=.008*Math.sin(t*11+2)+.003*Math.sin(t*31);s.lineTo(t*w,d-.023+edge);}s.closePath();
  const geo=new THREE.ExtrudeGeometry(s,{depth:h,steps:1,bevelEnabled:true,bevelSegments:2,bevelSize:.003,bevelThickness:.003,curveSegments:16});geo.rotateX(Math.PI/2);return mesh(g,geo,m,[x,e+h,z],name);
 }
 function relief(g,m,w,h,x,z,e,yaw,name){
  const geo=new THREE.PlaneGeometry(w,h,72,84),p=geo.attributes.position;
  for(let i=0;i<p.count;i++){
   const u=p.getX(i),v=p.getY(i),edge=Math.min(1,(w/2-Math.abs(u))*18,(h/2-Math.abs(v))*18);
-  const ridge=Math.abs(Math.sin(u*13-v*7+.65*Math.sin(v*5)))**.55;
+  const ridge=Math.abs(Math.sin(u*8-v*11+.65*Math.sin(v*3)+.8*Math.sin(u*4)))**.35;
   const fine=Math.sin(u*67+v*21)*Math.sin(v*53-u*17);
-  p.setZ(i,.008+Math.max(0,edge)*(.022*ridge+.009*Math.sin(u*19+v*11)+fine*.003));
+  p.setZ(i,.008+Math.max(0,edge)*(.035*ridge+.012*Math.sin(u*19+v*11)+fine*.003));
  }geo.computeVertexNormals();const o=mesh(g,geo,m,[x,e+h/2,z],name);o.rotation.y=yaw;return o;
 }
 function moon(g,m,x,z,e,r,yaw){
@@ -51,7 +51,7 @@ export function createOrganicDecor(layout,m){
  relief(g,m.rock,1.42,2.38,.032,3.62,.10,Math.PI/2,'living-stone-wall');
  box(g,m.joinery,.006,2.89,.035,.055,2.45,.06,.006,'media-oak-return');
  box(g,m.lamp,.072,2.94,.005,1.36,.009,2.45,.001,'living-graze');
- liveEdgeSlab(g,m.joinery,.012,3.12,.23,1.12,.04,.43,'media-live-edge');
+
  const sofa=get('sofa');if(sofa){const z=(sofa.y+sofa.depth/2)/1000;
   box(g,m.darkStone,.78,z-.16,.18,.32,.27,.015,.05,'table-pedestal');
   liveEdgeSlab(g,m.joinery,.60,z-.26,.65,.50,.065,.285,'collectible-table');
@@ -77,7 +77,7 @@ export function createOrganicDecor(layout,m){
   const x=cx+bed.depth/2000-.012;
   box(g,m.joinery,x-.022,cz-1.13,.025,2.26,2.46,.08,.008,'adult-oak-wall');
   box(g,m.upholstery,x-.095,cz-.93,.065,1.86,.61,.44,.030,'integrated-headboard');
-  relief(g,m.rock,.62,1.29,x-.053,cz-.84,1.12,-Math.PI/2,'headboard-stone-fragment');
+
   moon(g,m,x-.062,cz+.06,1.77,.77,-Math.PI/2);
   for(const side of [-1,1]){liveEdgeSlab(g,m.joinery,x-.27,cz+side*1.02-.12,.24,.25,.040,.50,'integrated-bedside');}
   box(g,m.lamp,x-.105,cz-.90,.007,1.80,.008,1.05,.001,'headboard-hidden-light');

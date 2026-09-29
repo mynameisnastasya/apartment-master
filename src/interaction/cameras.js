@@ -18,7 +18,7 @@ export class Cameras{
   this.ortho.left=-half*this.aspect;this.ortho.right=half*this.aspect;this.ortho.top=half;this.ortho.bottom=-half;this.ortho.updateProjectionMatrix();
  }
 
- setMode(mode){this.mode=mode;this.route=null;this.controls.dispose();const ortho=['iso','plan'].includes(mode);this.camera=ortho?this.ortho:this.perspective;this.controls=new OrbitControls(this.camera,this.canvas);this.controls.addEventListener('change',()=>this.onChange?.());this.controls.enableDamping=true;this.controls.maxPolarAngle=Math.PI*.49;this.controls.minDistance=1;this.controls.maxDistance=25;this.controls.minZoom=.4;this.controls.maxZoom=5;this.controls.target.set(3.2,0,4.15);this.camera.up.set(0,1,0);this.camera.zoom=1;
+ setMode(mode){this.perspective.fov=50;this.mode=mode;this.route=null;this.controls.dispose();const ortho=['iso','plan'].includes(mode);this.camera=ortho?this.ortho:this.perspective;this.controls=new OrbitControls(this.camera,this.canvas);this.controls.addEventListener('change',()=>this.onChange?.());this.controls.enableDamping=true;this.controls.maxPolarAngle=Math.PI*.49;this.controls.minDistance=1;this.controls.maxDistance=25;this.controls.minZoom=.4;this.controls.maxZoom=5;this.controls.target.set(3.2,0,4.15);this.camera.up.set(0,1,0);this.camera.zoom=1;
  if(mode==='walk'){this.controls.enabled=false;this.camera.position.set(5.95,mm(this.eye),.85);this.yaw=Math.PI;this.pitch=0;}
  else if(mode==='plan'||mode==='top'){this.camera.position.set(3.2,mode==='top'?14:15,4.151);this.camera.up.set(0,0,-1);this.controls.enableRotate=false;}
  else if(mode==='perspective'){this.camera.position.set(10,9,13);}

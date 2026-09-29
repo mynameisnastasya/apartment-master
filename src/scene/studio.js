@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {createFurniture} from './furniture.js';
 import {createDecor,box} from './build.js';
 
-export function roomSpec(layout,name){
+export function roomSpec(layout,name,interior=false){
  const east=layout.partitions.find(o=>o.id==='d-bath-east').x,south=layout.partitions.find(o=>o.id==='d-bath-south-left').y;
  const room=layout.rooms.find(r=>r.id===name);
  const polygon=name==='bath'?[[2440,0],[east,0],[east,south],[2440,south]]:name==='kitchen'?[[0,0],[2320,0],[2320,2750],[0,2750]]:name==='living'?[[0,0],[2320,0],[2320,south+120],[3000,south+120],[3000,4200],[0,4200]]:room?.polygon;
@@ -10,7 +10,8 @@ export function roomSpec(layout,name){
  const xs=polygon.map(p=>p[0]),ys=polygon.map(p=>p[1]),bounds=[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)];
  const [x,y,x2,y2]=bounds,cx=(x+x2)/2000,cy=(y+y2)/2000;
  const pos=name==='bath'?[cx-3.0,3.3,cy+3.6]:name==='adult'?[cx-4.1,3.8,cy+4.1]:name==='alice'?[cx-5,4.5,cy+5]:[cx+3.3,3.5,cy+3.8];
- return{polygon,bounds,pos,target:[cx,.85,cy],name};
+ const eye={kitchen:[[2.6,1.6,3.65],[.85,1.23,.75]],living:[[3.35,1.6,5.15],[.25,1.22,2.8]],adult:[[.05,1.55,8.15],[3.05,1.28,6.8]],alice:[[3.4,1.55,7.2],[6.1,1.18,5.5]],bath:[[3.4,1.60,3.3],[3.45,1.18,.35]]}[name];
+ return{polygon,bounds,pos:interior&&eye?eye[0]:pos,target:interior&&eye?eye[1]:[cx,.85,cy],name};
 }
 
 export function createStudio(geometry,layout,m,name){
@@ -28,7 +29,7 @@ export function createStudio(geometry,layout,m,name){
  const walls=new THREE.Group();walls.name='WALLS';root.add(walls);
  if(name==='bath'){
   box(walls,m.wall.userData.organic?m.slate:m.marble,x-80,y-80,x2-x+160,80,2450,0,'studio-north');
-  box(walls,m.marble,x2,y,80,y2-y,2450,0,'studio-east');
+  box(walls,m.wall.userData.organic?m.slate:m.marble,x2,y,80,y2-y,2450,0,'studio-east');
   box(walls,m.bathFloor,x-80,y,80,y2-y,2450,0,'studio-west');
   box(walls,m.bronze,x-25,y+12,x2-x+50,6,7,950,'bath-bronze-datum');
  }else if(['kitchen','living'].includes(name)){

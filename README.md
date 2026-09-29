@@ -1,3 +1,7 @@
+## Тихая геология
+
+Новая концепция по умолчанию: [исследование 20 проектов и три направления](docs/quiet-geology.md), [интерактивная модель](https://mynameisnastasya.github.io/apartment-master/model.html). Комнатные виды: на уровне глаз / разрез, дневной / вечерний свет.
+
 # Квартира Лизы · пять вариантов планировки
 
 [Сравнить планы](https://mynameisnastasya.github.io/apartment-master/) · [Открыть в 3D](https://mynameisnastasya.github.io/apartment-master/model.html) · [Базовый план D и размеры](https://mynameisnastasya.github.io/apartment-master/LIZA.html)
