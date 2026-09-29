@@ -44,6 +44,12 @@ export function createFurniture(o,m){
   else{const cushion=b(m.olive,mx+300,my+345,300,140,220,560,48);cushion.rotation.y=.08;}
   const cloth=new THREE.PlaneGeometry(M(mw+20),.42,34,18);const cp=cloth.attributes.position;for(let i=0;i<cp.count;i++){const xx=cp.getX(i),yy=cp.getY(i),edge=Math.pow(Math.abs(xx)/(M(mw+20)/2),10);cp.setXYZ(i,xx,.58-edge*.007+Math.sin(xx*30+yy*8)*.004,-yy);}cloth.computeVertexNormals();const throwMesh=new THREE.Mesh(cloth,mw>1100?m.olive:m.wine);throwMesh.position.set(M(mx+mw/2),0,M(my+md-395));throwMesh.castShadow=throwMesh.receiveShadow=true;g.add(throwMesh);
  }
+ else if(o.id.startsWith('adult-nightstand')){
+  // Bedside function is absorbed into the headboard composition: a thin floating ledge, not a box.
+  b(m.shadow,x+22,y+22,w-44,d-44,18,500,10);
+  b(m.marble,x+6,y+6,w-12,d-12,36,522,10);
+  b(m.bronze,x+w-18,y+24,7,d-48,6,510,2);
+ }
  else if(o.type==='sofa'){
   b(m.shadow,x+40,y+35,w-80,d-70,62,72,28);
   b(m.upholstery,x+10,y+12,w-20,d-24,215,120,58);
@@ -112,11 +118,12 @@ export function createFurniture(o,m){
   b(m.marble,x-3,y-2,w+6,d+4,24,h,5);
  }
  else if(['wardrobe','storage','upper','fridge'].includes(o.type)){
-  const mat=o.id==='hall-wardrobe'?m.joinery:(o.type==='fridge'?m.lacquer:m.joinery);
+  const mat=o.id==='hall-wardrobe'?m.joinery:m.lacquer;
   b(m.shadow,x+20,y+20,w-40,d-40,48,e+8,12);
   b(mat,x+3,y+3,w-6,d-6,h-54,e+54,10);
   const span=front==='east'||front==='west'?d:w,count=Math.max(1,Math.ceil(span/900)),step=span/count;
   for(let i=1;i<count;i++)face(m.shadow,i*step-1,e+85,2,h-130,2,-2);
+  if(o.type==='wardrobe'&&o.id!=='hall-wardrobe')face(m.joinery,Math.max(14,span-34),e+110,14,h-180,7,-5);
   if(o.type==='fridge')face(m.shadow,12,e+730,(front==='east'||front==='west'?d:w)-24,3,3,-2);
  }
  else if(o.type==='shelf'){
