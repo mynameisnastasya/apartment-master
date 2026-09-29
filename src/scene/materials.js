@@ -28,46 +28,51 @@ function surface(kind,color,seed=1,size=512){
  }ctx.putImageData(d,0,0);return c;
 }
 function parquet(color,herringbone){
- const c=canvas(1024),ctx=c.getContext('2d');ctx.fillStyle='#51473d';ctx.fillRect(0,0,1024,1024);
+ const c=canvas(1024),ctx=c.getContext('2d');ctx.fillStyle='#403831';ctx.fillRect(0,0,1024,1024);
  const planks=Array.from({length:12},(_,i)=>surface('wood',color,30+i,256));
  const plank=(x,y,w,h,vertical,id)=>{
   ctx.save();ctx.translate(x,y);if(vertical){ctx.translate(w,0);ctx.rotate(Math.PI/2);[w,h]=[h,w];}
-  // Grain follows the long axis of each individual board.
   ctx.save();ctx.translate(w/2,h/2);ctx.rotate(Math.PI/2);ctx.drawImage(planks[id%12],-h/2,-w/2,h,w);ctx.restore();
-  ctx.fillStyle='rgba(30,23,17,.24)';ctx.fillRect(0,0,w,1);ctx.fillRect(0,0,1,h);
-  ctx.fillStyle='rgba(255,255,255,.16)';ctx.fillRect(1,1,w-2,1);ctx.restore();
+  ctx.fillStyle='rgba(22,17,14,.25)';ctx.fillRect(0,0,w,1);ctx.fillRect(0,0,1,h);
+  ctx.fillStyle='rgba(255,255,255,.10)';ctx.fillRect(1,1,w-2,1);ctx.restore();
  };
- if(herringbone){const a=64,L=4;for(let i=-6;i<8;i++)for(let j=-25;j<25;j++){
-  const x=(L*i-j)*a,y=(L*i+j)*a,id=Math.abs(i*13+j*7);
-  if(x>-400&&x<1424&&y>-400&&y<1424){plank(x,y,L*a,a,false,id);plank(x+L*a,y,a,L*a,true,id+3);}
- }}else for(let row=-1;row<9;row++)for(let col=-1;col<5;col++)plank(col*512+(row%2)*256,row*128,512,128,false,Math.abs(row*5+col));
+ if(herringbone){const a=64,L=4;for(let i=-6;i<8;i++)for(let j=-25;j<25;j++){const x=(L*i-j)*a,y=(L*i+j)*a,id=Math.abs(i*13+j*7);if(x>-400&&x<1424&&y>-400&&y<1424){plank(x,y,L*a,a,false,id);plank(x+L*a,y,a,L*a,true,id+3);}}}
+ else for(let row=-1;row<9;row++)for(let col=-1;col<5;col++)plank(col*512+(row%2)*256,row*128,512,128,false,Math.abs(row*5+col));
  return map(c,[.48,.48]);
 }
 export function materials(style=interiorStyles[0]){
  const wood=map(surface('wood',style.wood,4),[1,1]),floor=parquet(style.floor,style.floorPattern==='herringbone');
  const fabric=map(surface('linen',style.sofa,5),[2,2]),rug=map(surface('linen',style.rug,7),[4,4]);
- const marble=map(surface('marble',style.id==='graphite'?'#d0cec5':'#ebe7de',6,1024));
+ const marbleBase=style.id==='graphite'?'#c6c5c1':style.id==='atelier'?'#ded3c9':'#e4e1da';
+ const marble=map(surface('marble',marbleBase,6,1024));
  const stone=map(surface('stone',style.tile,8));
+ const darkStone=map(surface('stone',style.id==='graphite'?'#343636':'#4a403b',17,768),[1.15,1.15]);
+ const plaster=map(surface('stone',style.wall,21,512),[3,3]);
  const m={
-  wall:new THREE.MeshStandardMaterial({color:style.wall,roughness:.96}),
-  floor:new THREE.MeshStandardMaterial({map:floor,roughness:.68}),
-  bathFloor:new THREE.MeshStandardMaterial({map:stone,roughness:.64}),
+  wall:new THREE.MeshStandardMaterial({map:plaster,color:style.wall,roughness:.98}),
+  floor:new THREE.MeshStandardMaterial({map:floor,roughness:.7}),
+  bathFloor:new THREE.MeshStandardMaterial({map:stone,roughness:.62}),
   rug:new THREE.MeshStandardMaterial({map:rug,roughness:1}),
-  joinery:new THREE.MeshStandardMaterial({map:wood,roughness:.62}),
-  upholstery:new THREE.MeshStandardMaterial({map:fabric,roughness:.96}),
-  worktop:new THREE.MeshStandardMaterial({map:marble,roughness:.28}),
-  marble:new THREE.MeshStandardMaterial({map:marble,roughness:.3}),
-  curtain:new THREE.MeshStandardMaterial({color:0xeee8df,roughness:1,transparent:true,opacity:.83,side:THREE.DoubleSide}),
-  bedding:new THREE.MeshStandardMaterial({map:map(surface('linen','#e9e3d9',10)),roughness:1}),
-  accent:new THREE.MeshStandardMaterial({color:style.id==='nordic'?0x718a8c:style.id==='japandi'?0x68715c:style.id==='atelier'?0x744b45:0x8c7965,roughness:.92}),
-  lacquer:new THREE.MeshStandardMaterial({color:style.wall,roughness:.46}),
-  shadow:new THREE.MeshStandardMaterial({color:0x302923,roughness:.85}),
-  metal:new THREE.MeshStandardMaterial({color:style.metal,metalness:.68,roughness:.28}),
-  glass:new THREE.MeshPhysicalMaterial({color:0xc9dad8,transparent:true,opacity:.17,roughness:.05,metalness:.05,side:THREE.DoubleSide,depthWrite:false}),
-  fixture:new THREE.MeshPhysicalMaterial({color:0xf2f0e9,roughness:.17,clearcoat:.45,clearcoatRoughness:.18}),
-  screen:new THREE.MeshStandardMaterial({color:0x171d1d,roughness:.21,metalness:.15}),
-  lamp:new THREE.MeshStandardMaterial({color:0xffe8bc,emissive:0xffdb91,emissiveIntensity:.55,roughness:.4}),
-  line:new THREE.LineBasicMaterial({color:0x504a42,transparent:true,opacity:.15})
+  joinery:new THREE.MeshStandardMaterial({map:wood,roughness:.58}),
+  upholstery:new THREE.MeshStandardMaterial({map:fabric,roughness:.98}),
+  worktop:new THREE.MeshStandardMaterial({map:marble,roughness:.25}),
+  marble:new THREE.MeshStandardMaterial({map:marble,roughness:.26}),
+  darkStone:new THREE.MeshStandardMaterial({map:darkStone,roughness:.34}),
+  curtain:new THREE.MeshStandardMaterial({color:0xe7e1d8,roughness:1,transparent:true,opacity:.76,side:THREE.DoubleSide}),
+  bedding:new THREE.MeshStandardMaterial({map:map(surface('linen','#e4ded4',10)),roughness:1}),
+  accent:new THREE.MeshStandardMaterial({color:style.id==='linen'?0x6e2633:style.id==='japandi'?0x68715c:style.id==='atelier'?0x702c37:0x817267,roughness:.9}),
+  olive:new THREE.MeshStandardMaterial({color:0x5f6853,roughness:.92}),
+  wine:new THREE.MeshStandardMaterial({color:0x672b37,roughness:.76}),
+  lacquer:new THREE.MeshStandardMaterial({color:style.wall,roughness:.5}),
+  shadow:new THREE.MeshStandardMaterial({color:0x211d1b,roughness:.88}),
+  metal:new THREE.MeshStandardMaterial({color:style.metal,metalness:.72,roughness:.3}),
+  bronze:new THREE.MeshStandardMaterial({color:0x76614b,metalness:.78,roughness:.28}),
+  glass:new THREE.MeshPhysicalMaterial({color:0xcbd0cc,transparent:true,opacity:.18,roughness:.08,metalness:.03,side:THREE.DoubleSide,depthWrite:false}),
+  smokedGlass:new THREE.MeshPhysicalMaterial({color:0x59605d,transparent:true,opacity:.26,roughness:.12,metalness:.08,side:THREE.DoubleSide,depthWrite:false}),
+  fixture:new THREE.MeshPhysicalMaterial({color:0xeeeae3,roughness:.18,clearcoat:.4,clearcoatRoughness:.2}),
+  screen:new THREE.MeshStandardMaterial({color:0x141718,roughness:.2,metalness:.2}),
+  lamp:new THREE.MeshStandardMaterial({color:0xffe6bf,emissive:0xffcf89,emissiveIntensity:.7,roughness:.35}),
+  line:new THREE.LineBasicMaterial({color:0x49423d,transparent:true,opacity:.13})
  };
  for(const [name,mat] of Object.entries(m))mat.name=name;
  return m;
