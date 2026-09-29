@@ -5,6 +5,7 @@ export function box(parent,m,x,y,w,d,h,e=0,name='',rotation=0){const mesh=new TH
 function softBox(parent,m,x,y,w,d,h,e,r=25){const mesh=new THREE.Mesh(new RoundedBoxGeometry(mm(w),mm(h),mm(d),3,mm(Math.min(r,h/3,w/5,d/5))),m);mesh.position.set(mm(x+w/2),mm(e+h/2),mm(y+d/2));mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
 function lineBox(mesh,m){const l=new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry,35),m);mesh.add(l);}
 export {createFurniture} from './furniture.js';
+import {createSignatureDecor} from './signature-decor.js';
 export function createArchitecture(geometry,layout,m,{cut=true,plan=false,walls=true,doorsOpen=true}={}){
  const root=new THREE.Group();root.name='APARTMENT_GEOMETRY';
  const shape=new THREE.Shape();geometry.floor.forEach(([x,y],i)=>i?shape.lineTo(mm(x),mm(y)):shape.moveTo(mm(x),mm(y)));shape.closePath();const floorGeo=new THREE.ExtrudeGeometry(shape,{depth:.10,bevelEnabled:false});floorGeo.rotateX(Math.PI/2);const floor=new THREE.Mesh(floorGeo,m.floor);floor.name='floor';floor.receiveShadow=true;root.add(floor);
@@ -88,6 +89,8 @@ export function createDecor(layout,m){
  pendant(1170,950);pendant(dining.x+dining.width/2,dining.y+dining.depth/2);
  const plate=(x,y,e)=>{cylinder(m.fixture,x,y,e,.11,.016,32);cylinder(m.worktop,x,y,e+.014,.075,.006,32);};
  plate(dining.x+155,dining.y+dining.depth/2,760);plate(dining.x+dining.width-155,dining.y+dining.depth/2,760);
+
+ for(const detail of [...createSignatureDecor(layout,m).children])group.add(detail);
 
  return group;
 }

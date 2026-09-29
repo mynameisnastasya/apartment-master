@@ -67,6 +67,23 @@ export function createFurniture(o,m){
   if(['east','west'].includes(f))b(m.upholstery,f==='west'?x+w-58:x+43,y+35,20,d-70,170,seat+120,7);
   else b(m.upholstery,x+35,f==='north'?y+d-58:y+43,w-70,20,170,seat+120,7);
  }
+ else if(o.type==='vanity'){
+  // A shallow, wall-hung writing/vanity desk; drawers stop short of the chair space.
+  b(m.joinery,x,y,w,d,35,h-35,15);
+  b(m.lacquer,x+12,y+15,w-24,d-30,115,h-155,10);
+  b(m.shadow,x+w-13,y+50,8,d-100,2,h-98);
+  for(let i=0;i<3;i++){
+   b(m.joinery,x+w-11,y+26+i*(d-52)/3,13,(d-58)/3,92,h-139,5);
+   b(m.metal,x+w+2,y+90+i*(d-52)/3,7,85,7,h-94,2);
+  }
+  b(m.metal,x+60,y+35,12,12,h-85,0);b(m.metal,x+60,y+d-47,12,12,h-85,0);
+ }
+ else if(o.type==='toy-storage'){
+  b(m.joinery,x,y,w,d,35,0,12);b(m.joinery,x,y,w,d,38,h-38,12);
+  b(m.joinery,x,y,30,d,h,0);b(m.joinery,x+w-30,y,30,d,h,0);
+  b(m.joinery,x,y+d/2-14,w,d>500?28:20,h-70,35);
+  b(m.joinery,x,y,w,d,20,h/2-10);
+ }
  else if(['desk','bar'].includes(o.type)){
   b(o.type==='bar'?m.marble:m.joinery,x,y,w,d,30,h-30,8);
   if(o.type==='bar'){
