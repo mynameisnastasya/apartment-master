@@ -45,6 +45,9 @@ export function createFurniture(o,m){
   const duvet=b(m.bedding,mx-10,my+480,mw+20,md-505,100,490,35);
   const a=duvet.geometry.attributes.position;for(let i=0;i<a.count;i++){const px=a.getX(i),py=a.getY(i),pz=a.getZ(i);if(py>0)a.setY(i,py+Math.sin(px*31+pz*4)*.005+Math.sin(pz*14)*.004);}a.needsUpdate=true;duvet.geometry.computeVertexNormals();
   const n=mw>1100?2:1;for(let i=0;i<n;i++){const pillow=b(m.bedding,mx+50+i*(mw-100)/n,my+90,(mw-140)/n,350,125,510,42);pillow.rotation.y=(i?-.05:.035);}
+  if(mw>1100){
+   for(let i=0;i<2;i++){const cushion=b(m.accent,mx+235+i*750,my+350,300,230,115,605,45);cushion.rotation.y=i?-.10:.13;}
+  }else b(m.accent,mx+290,my+365,320,220,92,602,40);
   const cloth=new THREE.PlaneGeometry(M(mw+24),.43,36,18);const cp=cloth.attributes.position;for(let i=0;i<cp.count;i++){const xx=cp.getX(i),yy=cp.getY(i),edge=Math.pow(Math.abs(xx)/(M(mw+24)/2),10);cp.setXYZ(i,xx,.617-edge*.007+Math.sin(xx*35+yy*9)*.004+Math.sin(yy*27)*.003,-yy);}cloth.computeVertexNormals();const throwMesh=new THREE.Mesh(cloth,m.accent);throwMesh.position.set(M(mx+mw/2),0,M(my+md-405));throwMesh.castShadow=throwMesh.receiveShadow=true;g.add(throwMesh);
  }
  else if(o.type==='sofa'){
@@ -66,6 +69,23 @@ export function createFurniture(o,m){
   const f=front;const back=b(m.joinery,f==='west'?x+w-45:x+12,f==='north'?y+d-45:y+12,['east','west'].includes(f)?32:w-24,['north','south'].includes(f)?32:d-24,h-seat-80,seat+70,10);
   if(['east','west'].includes(f))b(m.upholstery,f==='west'?x+w-58:x+43,y+35,20,d-70,170,seat+120,7);
   else b(m.upholstery,x+35,f==='north'?y+d-58:y+43,w-70,20,170,seat+120,7);
+ }
+ else if(o.type==='vanity'){
+  // A shallow, wall-hung writing/vanity desk; drawers stop short of the chair space.
+  b(m.joinery,x,y,w,d,35,h-35,15);
+  b(m.lacquer,x+12,y+15,w-24,d-30,115,h-155,10);
+  b(m.shadow,x+w-13,y+50,8,d-100,2,h-98);
+  for(let i=0;i<3;i++){
+   b(m.joinery,x+w-11,y+26+i*(d-52)/3,13,(d-58)/3,92,h-139,5);
+   b(m.metal,x+w+2,y+90+i*(d-52)/3,7,85,7,h-94,2);
+  }
+  b(m.metal,x+60,y+35,12,12,h-85,0);b(m.metal,x+60,y+d-47,12,12,h-85,0);
+ }
+ else if(o.type==='toy-storage'){
+  b(m.joinery,x,y,w,d,35,0,12);b(m.joinery,x,y,w,d,38,h-38,12);
+  b(m.joinery,x,y,30,d,h,0);b(m.joinery,x+w-30,y,30,d,h,0);
+  b(m.joinery,x,y+d/2-14,w,d>500?28:20,h-70,35);
+  b(m.joinery,x,y,w,d,20,h/2-10);
  }
  else if(['desk','bar'].includes(o.type)){
   b(o.type==='bar'?m.marble:m.joinery,x,y,w,d,30,h-30,8);

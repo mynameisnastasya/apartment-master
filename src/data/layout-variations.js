@@ -47,28 +47,36 @@ function updateClearances(layout){
  clearance(layout,'wc-side',{value:wcSide,length:wcSide,y:wc.y+wc.depth/2+wcSide/2});
 }
 
+// Four spatial strategies around a deliberately compact living area.
+// D retains its partition geometry; these are distinct alternatives for comparison.
 const options=[
- {id:'E',name:'Просторная общая зона',subtitle:'Гостиная больше, комнаты компактнее',
-  pros:['Границы обеих комнат сдвинуты к окнам: в общей зоне появляется больше места для дивана 1650 мм и встреч.','Раздвижная дверь спальни освобождает место у прикроватной тумбы.'],
-  cons:['Площади обеих комнат меньше базовой версии; неглубокий шкаф 450 мм требует торцевого хранения одежды.','Кассету двери и крупный диван нужно проверить после обмера стены и входа.'],
-  replan:{adultY:4850,childY:3800},furniture:{'adult-wardrobe':{y:4980,depth:450,label:'Неглубокий шкаф спальни 1800 × 450'},'alice-wardrobe':{y:4000},sofa:{y:3600,width:1650}},routes:{sofa:[2700,3750]}},
- {id:'F',name:'Большая спальня',subtitle:'Плюс площадь взрослой комнате',
-  pros:['Перегородка спальни отодвинута к гостиной на 340 мм: больше свободного пола у входа и шкафа.','Кухня, ванная и вторая комната сохраняют прежние места.'],
-  cons:['Ради увеличения спальни диван становится компактнее — 1200 мм.','Место дополнительного рабочего стола подтвердить после проверки окон и отопления.'],
-  replan:{adultY:4300},furniture:{'adult-wardrobe':{y:4500},sofa:{y:3200,width:1200}},routes:{sofa:[2670,3380]}},
- {id:'G',name:'Свободная вторая комната',subtitle:'Новый вход и ниша хранения у перегородки',
-  pros:['Северная перегородка второй комнаты сдвинута к входу; диагональ перестроена и появилась ниша под книжный шкаф.','Перемычка в разделяющей спальни стене даёт второй комнате больше места, сохраняя существующий пилон у окна.'],
-  cons:['Спальня немного уже на участке у входа; мебель требует индивидуальной привязки.','Перестройку диагонали и примыкание к пилону проверить на обмере и с конструктором.'],
-  replan:{childY:3300,dividerX:3025,jogY:6250},furniture:{'adult-bed':{x:1100},'adult-nightstand':{x:2550},'alice-wardrobe':{y:3550},'alice-bed':{y:4300}},add:[{id:'child-shelf',type:'shelf',room:'alice',x:3360,y:6100,width:280,depth:500,height:1500,front:'east',rotation:0,visible:true,label:'Неглубокий книжный шкаф 280 × 500'}],routes:{adultBed:[650,6200],childShelf:[3900,6300],aliceBed:[3875,5250]},routePairs:[['entry','childShelf']]},
- {id:'H',name:'Ванная с запасом',subtitle:'Ванная просторнее, прихожая компактнее',
-  pros:['Ванная расширена в сторону прихожей и гостиной: перед раковиной и унитазом больше свободного места.','Дверь ванной остаётся кассетной, а доступ к каждому прибору — отдельным.'],
-  cons:['В прихожей шкаф становится неглубоким, для верхней одежды потребуется продумать хранение в комнатах.','Ванна сдвигается на 140 мм; инженерные подключения и законность мокрой зоны проверить после обмера.','Диван в гостиной уменьшен до 1200 мм.'],
-  replan:{bathY:2250,bathEast:4860},furniture:{'bath-tub':{x:4110},wc:{y:1300},'hall-wardrobe':{x:5920,width:480,label:'Неглубокий шкаф прихожей 480 × 2000'},mirror:{x:5000},sofa:{y:3490,width:1200},media:{y:3400},tv:{y:3450}},routes:{bathroom:[3500,1750],bathToilet:[3440,1550],bathTub:[3770,1550],sofa:[2700,3600]}}
+ {id:'E',name:'Спальня-люкс',subtitle:'Больше места взрослой спальне и туалетному столику',
+  pros:['Северная стена спальни сдвинута на 340 мм к центру: у кровати и столика больше воздуха.','Гостиная остаётся компактной; два независимых входа и дневной свет у обеих комнат.'],
+  cons:['Общая зона становится камерной: диван на два места.','Перенос перегородки и дверь проверить после точного обмера.'],
+  replan:{adultY:4300,childY:3600},furniture:{'adult-wardrobe':{y:4420},'alice-wardrobe':{y:3720},sofa:{y:3200,width:1200}},routes:{sofa:[2670,3310]}},
+ {id:'F',name:'Детская для игры',subtitle:'Большая детская, кровать и свободная игровая зона',
+  pros:['Детская начинается на 500 мм раньше: появляется место для игры, чтения и хранения игрушек.','Спальня взрослых сохраняет кровать 1600 × 2000, шкаф и туалетный столик.'],
+  cons:['Взрослая спальня компактнее — мебель важно заказать в точных габаритах.','Общая зона рассчитана на редких гостей и диван на два места.'],
+  replan:{adultY:4700,childY:3020},furniture:{'adult-wardrobe':{y:4820},'alice-wardrobe':{y:3140},'hall-wardrobe':{depth:1600,label:'Прихожая · шкаф 1600 × 600'},sofa:{y:3330,width:1200}},routes:{sofa:[2670,3460],alice:[4500,3560]}},
+ {id:'G',name:'Две приватные зоны',subtitle:'Ступенчатая перегородка и ниша детской',
+  pros:['Перегородка смещена на 335 мм в пользу детской и ступенью обходит капитальный выступ.','Шкафы стоят по стенам; игровая ниша отделена от зоны сна без нового коридора.'],
+  cons:['Кровать взрослых сдвинута к западной стене; подходы нуждаются в контрольном обмере.','Ступень перегородки требует аккуратного мебельного узла.'],
+  replan:{adultY:4500,childY:3440,dividerX:2840,jogY:6220},furniture:{'adult-bed':{x:850},'adult-nightstand':{x:2390},'adult-nightstand-2':{x:2725},'adult-wardrobe':{y:4620},'alice-wardrobe':{y:3560},sofa:{y:3370,width:1250}},routes:{adultBed:[350,6450],sofa:[2670,3450]}},
+ {id:'H',name:'Ванная и хранение',subtitle:'Больше санузел, спокойная общая зона',
+  pros:['Санузел расширен на 230 мм к общей зоне и на 140 мм к прихожей, без перегородки перед раковиной.','Прихожая получает компактный встроенный шкаф; спальни остаются близкими к D.'],
+  cons:['Шкаф прихожей уменьшается по глубине; верхнюю одежду надо примерить к выбранной системе.','Границы мокрой зоны и подключение ванны — только после инженерной проверки.'],
+  replan:{bathY:2150,bathEast:4860},furniture:{'bath-tub':{x:4110},wc:{y:1260},'hall-wardrobe':{x:5900,width:500,label:'Встроенный шкаф 2000 × 500'},mirror:{x:5010},sofa:{y:3560,width:1200},media:{y:3400},tv:{y:3450}},routes:{bathroom:[3500,1720],bathToilet:[3460,1580],bathTub:[3800,1580],sofa:[2690,3650]}}
 ];
-export const layouts=[reference,...options.map(option=>{
- const layout=structuredClone(reference);layout.id=option.id;layout.name=option.name;layout.subtitle=option.subtitle;layout.recommended=false;layout.pros=option.pros;layout.cons=option.cons;
+const base=structuredClone(reference);
+// D geometry stays put; fitting the millwork to its walls makes the scheme buildable.
+move(base,'adult-wardrobe',{x:0,y:4760});
+move(base,'alice-wardrobe',{x:5010,y:3640});
+move(base,'adult-dresser',{type:'vanity',x:0,y:6810,width:420,depth:900,height:760,front:'east',label:'Туалетный / рабочий столик · таро и руны'});
+base.furniture.push({id:'alice-toys',type:'toy-storage',room:'alice',x:6080,y:6320,width:320,depth:740,height:780,rotation:0,visible:true,front:'west',label:'Низкая открытая полка · книги и игрушки'});
+export const layouts=[base,...options.map(option=>{
+ const layout=structuredClone(base);layout.id=option.id;layout.name=option.name;layout.subtitle=option.subtitle;layout.recommended=false;layout.pros=option.pros;layout.cons=option.cons;
  replanRooms(layout,option.replan);
- if(option.id==='E'){
+ if(['E','F'].includes(option.id)){
   const sliding=layout.doors.find(d=>d.id==='door-adult');
   delete sliding.hinge;delete sliding.arcStart;delete sliding.arcEnd;delete sliding.swing;
   Object.assign(sliding,{mechanism:'pocket-sliding',openX:sliding.x-850,openY:sliding.y+40,openWidth:850,openDepth:35});

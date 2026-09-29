@@ -18,7 +18,7 @@
         }
       ],
       "wallChanges": [],
-      "furniture": 27,
+      "furniture": 28,
       "routeCount": 16,
       "routes": [
         {
@@ -179,11 +179,11 @@
       "rooms": [
         {
           "id": "adult",
-          "area": 10.57
+          "area": 12.32
         },
         {
           "id": "alice",
-          "area": 10.48
+          "area": 11.24
         },
         {
           "id": "bath",
@@ -198,7 +198,7 @@
         "d-child-door-lintel",
         "d-child-diagonal"
       ],
-      "furniture": 27,
+      "furniture": 28,
       "routeCount": 16,
       "routes": [
         {
@@ -222,19 +222,19 @@
         {
           "from": "entry",
           "to": "adult",
-          "lengthMm": 7350,
+          "lengthMm": 6825,
           "snapMm": [
             25,
-            26.925824035672523
+            29.1547594742265
           ]
         },
         {
           "from": "entry",
           "to": "alice",
-          "lengthMm": 4650,
+          "lengthMm": 4425,
           "snapMm": [
             25,
-            32.01562118716424
+            25.495097567963924
           ]
         },
         {
@@ -267,9 +267,9 @@
         {
           "from": "adult",
           "to": "bathroom",
-          "lengthMm": 4725,
+          "lengthMm": 4200,
           "snapMm": [
-            26.925824035672523,
+            29.1547594742265,
             35.35533905932738
           ]
         },
@@ -294,9 +294,9 @@
         {
           "from": "sofa",
           "to": "kitchen",
-          "lengthMm": 3900,
+          "lengthMm": 3450,
           "snapMm": [
-            106.06601717798213,
+            31.622776601683796,
             35.35533905932738
           ]
         },
@@ -359,11 +359,11 @@
       "rooms": [
         {
           "id": "adult",
-          "area": 12.32
+          "area": 11.05
         },
         {
           "id": "alice",
-          "area": 11.45
+          "area": 12.65
         },
         {
           "id": "bath",
@@ -373,10 +373,12 @@
       "wallChanges": [
         "d-adult-north",
         "d-adult-divider",
+        "d-child-north-right",
         "d-adult-door-lintel",
+        "d-child-door-lintel",
         "d-child-diagonal"
       ],
-      "furniture": 27,
+      "furniture": 28,
       "routeCount": 16,
       "routes": [
         {
@@ -400,19 +402,19 @@
         {
           "from": "entry",
           "to": "adult",
-          "lengthMm": 6825,
+          "lengthMm": 7200,
           "snapMm": [
             25,
-            29.1547594742265
+            26.925824035672523
           ]
         },
         {
           "from": "entry",
           "to": "alice",
-          "lengthMm": 4350,
+          "lengthMm": 3750,
           "snapMm": [
             25,
-            25
+            35
           ]
         },
         {
@@ -445,9 +447,9 @@
         {
           "from": "adult",
           "to": "bathroom",
-          "lengthMm": 4200,
+          "lengthMm": 4575,
           "snapMm": [
-            29.1547594742265,
+            26.925824035672523,
             35.35533905932738
           ]
         },
@@ -472,9 +474,9 @@
         {
           "from": "sofa",
           "to": "kitchen",
-          "lengthMm": 3525,
+          "lengthMm": 3600,
           "snapMm": [
-            30.413812651491096,
+            31.622776601683796,
             35.35533905932738
           ]
         },
@@ -537,11 +539,11 @@
       "rooms": [
         {
           "id": "adult",
-          "area": 11.02
+          "area": 11.15
         },
         {
           "id": "alice",
-          "area": 12.26
+          "area": 12.36
         },
         {
           "id": "bath",
@@ -559,7 +561,7 @@
         "divider-lower"
       ],
       "furniture": 28,
-      "routeCount": 17,
+      "routeCount": 16,
       "routes": [
         {
           "from": "entry",
@@ -582,16 +584,16 @@
         {
           "from": "entry",
           "to": "adult",
-          "lengthMm": 7200,
+          "lengthMm": 7275,
           "snapMm": [
             25,
-            35.35533905932738
+            38.07886552931954
           ]
         },
         {
           "from": "entry",
           "to": "alice",
-          "lengthMm": 4125,
+          "lengthMm": 4275,
           "snapMm": [
             25,
             25.495097567963924
@@ -609,27 +611,27 @@
         {
           "from": "adultBed",
           "to": "adultWardrobe",
-          "lengthMm": 1200,
+          "lengthMm": 1725,
           "snapMm": [
-            70.71067811865476,
+            25,
             0
           ]
         },
         {
           "from": "aliceBed",
           "to": "aliceDesk",
-          "lengthMm": 975,
+          "lengthMm": 1050,
           "snapMm": [
-            25,
-            97.082439194738
+            35.35533905932738,
+            20.615528128088304
           ]
         },
         {
           "from": "adult",
           "to": "bathroom",
-          "lengthMm": 4575,
+          "lengthMm": 4650,
           "snapMm": [
-            35.35533905932738,
+            38.07886552931954,
             35.35533905932738
           ]
         },
@@ -654,9 +656,9 @@
         {
           "from": "sofa",
           "to": "kitchen",
-          "lengthMm": 3675,
+          "lengthMm": 3600,
           "snapMm": [
-            25,
+            30,
             35.35533905932738
           ]
         },
@@ -704,15 +706,6 @@
             25,
             11.180339887498949
           ]
-        },
-        {
-          "from": "entry",
-          "to": "childShelf",
-          "lengthMm": 7125,
-          "snapMm": [
-            25,
-            0
-          ]
         }
       ],
       "applianceAccess": [
@@ -736,7 +729,7 @@
         },
         {
           "id": "bath",
-          "area": 5.45
+          "area": 5.2
         }
       ],
       "wallChanges": [
@@ -747,7 +740,7 @@
         "d-bath-door-lintel",
         "d-child-diagonal"
       ],
-      "furniture": 27,
+      "furniture": 28,
       "routeCount": 16,
       "routes": [
         {
@@ -762,7 +755,7 @@
         {
           "from": "entry",
           "to": "kitchen",
-          "lengthMm": 7425,
+          "lengthMm": 7275,
           "snapMm": [
             25,
             35.35533905932738
@@ -789,10 +782,10 @@
         {
           "from": "entry",
           "to": "bathroom",
-          "lengthMm": 4725,
+          "lengthMm": 4575,
           "snapMm": [
             25,
-            35.35533905932738
+            25.495097567963924
           ]
         },
         {
@@ -819,7 +812,7 @@
           "lengthMm": 4200,
           "snapMm": [
             35.35533905932738,
-            35.35533905932738
+            25.495097567963924
           ]
         },
         {
@@ -843,16 +836,16 @@
         {
           "from": "sofa",
           "to": "kitchen",
-          "lengthMm": 3750,
+          "lengthMm": 3825,
           "snapMm": [
-            0,
+            26.925824035672523,
             35.35533905932738
           ]
         },
         {
           "from": "entry",
           "to": "bar",
-          "lengthMm": 6000,
+          "lengthMm": 5850,
           "snapMm": [
             25,
             125
@@ -861,7 +854,7 @@
         {
           "from": "entry",
           "to": "bathBasin",
-          "lengthMm": 6450,
+          "lengthMm": 6300,
           "snapMm": [
             25,
             15
@@ -870,16 +863,16 @@
         {
           "from": "entry",
           "to": "bathToilet",
-          "lengthMm": 4950,
+          "lengthMm": 4800,
           "snapMm": [
             25,
-            26.925824035672523
+            11.180339887498949
           ]
         },
         {
           "from": "entry",
           "to": "bathWasher",
-          "lengthMm": 5475,
+          "lengthMm": 5325,
           "snapMm": [
             25,
             32.01562118716424
@@ -888,10 +881,10 @@
         {
           "from": "entry",
           "to": "bathTub",
-          "lengthMm": 4800,
+          "lengthMm": 4725,
           "snapMm": [
             25,
-            32.01562118716424
+            25.495097567963924
           ]
         }
       ],
