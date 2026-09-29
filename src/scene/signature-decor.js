@@ -29,6 +29,11 @@ export function createSignatureDecor(layout,m){
  const pits=[[.1,.07,.18],[-.46,.30,.13],[.46,.38,.11],[-.24,-.42,.19],[.45,-.39,.16],
   [-.57,-.2,.08],[.04,.64,.1],[.7,.02,.08],[-.1,-.05,.06],[.18,-.66,.09],
   [-.63,.55,.06],[.56,.67,.045],[-.39,-.65,.065],[.33,.15,.05]];
+ // Warm reeded timber makes the moon a deliberate headboard composition.
+ block(g,m.joinery,wallX-42,wallY,1320,32,2260,2440);
+ for(let i=0;i<27;i++)block(g,i%5===0?m.metal:m.joinery,wallX-67,wallY-1070+i*82,1320,14,12,2400);
+ block(g,gold,wallX-71,wallY,2510,12,2260,8);
+ block(g,paper,wallX-72,wallY,2550,9,2130,7);
  const positions=[],colors=[],uv=[],index=[];
  for(let j=0;j<=N;j++)for(let i=0;i<=N;i++){
   const u=i/N*2-1,v=j/N*2-1,rr=u*u+v*v;
@@ -91,12 +96,22 @@ export function createSignatureDecor(layout,m){
   block(g,blush,sx+39,sy+270,1010,12,8,12,true);
   const child=byId('alice-bed');
   if(child){
-   // A constellation mural and a low, washable play mat near the bed.
+   // An arched painted niche, a constellation and a washable play mat.
    const y=child.y+child.depth/2;
+   const arch=new THREE.Shape();
+   arch.moveTo(-.67,.43);arch.lineTo(.67,.43);arch.lineTo(.67,1.65);
+   arch.absarc(0,1.65,.67,0,Math.PI,false);arch.lineTo(-.67,.43);
+   const archMesh=new THREE.Mesh(new THREE.ShapeGeometry(arch,32),blush);
+   archMesh.rotation.y=Math.PI/2;archMesh.position.set(6.345,0,mm(y));archMesh.receiveShadow=true;g.add(archMesh);
    for(let i=0;i<15;i++){
     const yy=y-720+(i*271)%1440,zz=1120+(i*397)%1090;
     const star=new THREE.Mesh(new THREE.OctahedronGeometry(.022+i%3*.01),i%3?gold:blush);
-    star.position.set(6.334,mm(zz),mm(yy));g.add(star);
+    star.position.set(6.32,mm(zz),mm(yy));g.add(star);
+   }
+   for(let i=0;i<6;i++){
+    const piece=new THREE.Mesh(new THREE.BoxGeometry(.065,.06,.065),[honey,blue,blush][i%3]);
+    piece.position.set(5.75+(i%3)*.1,.05+Math.floor(i/3)*.065,6.56+Math.floor(i/3)*.12);
+    piece.rotation.y=i*.41;piece.castShadow=true;g.add(piece);
    }
    const rug=new THREE.Mesh(new THREE.CircleGeometry(.53,64),new THREE.MeshStandardMaterial({color:0xc69f92,roughness:1,side:THREE.DoubleSide}));
    rug.rotation.x=-Math.PI/2;rug.position.set(5.43,.018,6.53);rug.receiveShadow=true;g.add(rug);
