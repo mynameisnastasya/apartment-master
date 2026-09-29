@@ -28,7 +28,7 @@ export function createStudio(geometry,layout,m,name){
  const walls=new THREE.Group();walls.name='WALLS';root.add(walls);
  if(name==='bath'){
   box(walls,m.marble,x-80,y-80,x2-x+160,80,2450,0,'studio-north');
-  box(walls,m.darkStone,x2,y,80,y2-y,2450,0,'studio-east');
+  box(walls,m.marble,x2,y,80,y2-y,2450,0,'studio-east');
   box(walls,m.bathFloor,x-80,y,80,y2-y,2450,0,'studio-west');
   box(walls,m.bronze,x-25,y+12,x2-x+50,6,7,950,'bath-bronze-datum');
  }else if(['kitchen','living'].includes(name)){
@@ -37,13 +37,12 @@ export function createStudio(geometry,layout,m,name){
   box(walls,m.marble,0,0,1668,10,650,860,'studio-backsplash-n');
   box(walls,m.marble,0,8,10,1790,650,860,'studio-backsplash-w');
 
-  box(walls,m.joinery,0,0,545,318,585,1840,'kitchen-upper-walnut');
-  box(walls,m.shadow,18,304,509,8,525,1870,'kitchen-upper-walnut-reveal');
-  box(walls,m.darkStone,675,8,410,110,690,1705,'kitchen-hood-monolith');
-  box(walls,m.bronze,698,122,364,7,7,1730,'kitchen-hood-bronze-line');
-  box(walls,m.lacquer,1235,0,430,318,820,1720,'kitchen-upper-recessive');
-  box(walls,m.shadow,1253,304,394,8,760,1750,'kitchen-upper-reveal');
-  box(walls,m.lamp,22,309,1620,7,7,1688,'kitchen-task-light');
+  box(walls,m.lacquer,0,0,1665,318,770,1730,'kitchen-upper-wall');
+  box(walls,m.joinery,0,302,1665,24,42,1698,'kitchen-upper-walnut-datum');
+  box(walls,m.shadow,1115,304,3,10,700,1762,'kitchen-upper-reveal');
+  box(walls,m.darkStone,620,300,455,20,360,1805,'kitchen-hood-recess');
+  box(walls,m.bronze,644,322,407,5,6,1785,'kitchen-hood-bronze-line');
+  box(walls,m.lamp,22,329,1620,6,6,1678,'kitchen-task-light');
  }else{
   for(let i=0;i<polygon.length;i++){
    const a=polygon[i],b=polygon[(i+1)%polygon.length];const dx=b[0]-a[0],dy=b[1]-a[1];

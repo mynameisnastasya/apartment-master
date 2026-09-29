@@ -84,9 +84,9 @@ export function createSignatureDecor(layout,m){
  }
 
  // ADULT BEDROOM — asymmetric wall, upholstery + walnut + stone shelf.
- const headY=6810;
- box(g,m.joinery,wallX-58,5480,42,2500,2360,100,5);
- for(let i=0;i<11;i++)box(g,i===8?m.bronze:m.joinery,wallX-76,5510+i*76,18,48,2180,165,3);
+ box(g,m.lacquer,wallX-58,5480,42,2500,2360,100,5);
+ box(g,m.joinery,wallX-76,5480,18,760,2180,165,3);
+ for(let i=0;i<5;i++)box(g,i===4?m.bronze:m.joinery,wallX-88,5510+i*92,12,54,2070,220,3);
  box(g,m.upholstery,wallX-128,6210,76,1500,820,520,70);
  box(g,m.wine,wallX-138,6210,10,460,820,520,4);
  box(g,m.marble,wallX-310,5740,245,2050,42,735,10);
@@ -121,9 +121,10 @@ export function createSignatureDecor(layout,m){
  }
  const child=byId('alice-bed');
  if(child){
-  box(g,m.olive,6324,4520,34,1720,920,650,48);
-  box(g,m.joinery,6300,4450,28,1880,2240,130,4);
-  box(g,m.lamp,6290,4525,7,1720,7,1600,2);
+  box(g,m.lacquer,6300,4450,28,1880,2240,130,4);
+  box(g,m.joinery,6282,4450,18,520,2160,170,3);
+  box(g,m.olive,6268,5000,18,1180,900,650,48);
+  box(g,m.lamp,6258,5040,6,1100,7,1600,2);
   box(g,m.joinery,6120,6030,210,420,35,650,8);
   box(g,m.bronze,6108,6080,10,320,7,625,2);
  }
