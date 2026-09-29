@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {liveEdgeSlab} from './organic.js';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 const M=v=>v/1000;
 function mesh(parent,geometry,material,x,y,z){const o=new THREE.Mesh(geometry,material);o.position.set(M(x),M(z),M(y));o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;}
@@ -17,6 +18,8 @@ function tap(g,m,x,y,e,front='south',height=230){const dx=front==='east'?120:0,d
 export function createFurniture(o,m){
  const g=new THREE.Group();g.name=o.id;g.userData={...o,category:'furniture'};
  const {x,y,width:w,depth:d,height:h}=o,e=o.elevation||0;
+ const organic=m.wall.userData.organic;
+ const slab=(mat,xx,yy,ww,dd,hh,ee,name)=>liveEdgeSlab(g,mat,M(xx),M(yy),M(ww),M(dd),M(hh),M(ee),name);
  const b=(mat,xx,yy,ww,dd,hh,ee=0,r=0)=>box(g,mat,xx,yy,ww,dd,hh,ee,r);
  const front=o.front||'south';
  const face=(mat,inset,z,fw,fh,thickness=18,offset=0)=>{
@@ -31,7 +34,7 @@ export function createFurniture(o,m){
    face(m.shadow,i*step+7,start+8,2,height-16,2,-1);
   }
  };
- const cabinet=()=>{b(m.shadow,x+24,y+24,w-48,d-48,58,e);b(m.joinery,x+4,y+4,w-8,d-8,h-58,e+58,10);facade(h-80,e+66);};
+ const cabinet=()=>{b(m.shadow,x+24,y+24,w-48,d-48,58,e);b(m.joinery,x+4,y+4,w-8,d-8,h-86,e+58,10);facade(h-110,e+66);};
  if(o.type==='bed'){
   b(m.shadow,x+50,y+70,w-100,d-120,68,48,22);
   b(m.upholstery,x+18,y+26,w-36,d-52,165,102,32);
@@ -47,7 +50,7 @@ export function createFurniture(o,m){
  else if(o.id.startsWith('adult-nightstand')){
   // Bedside function is absorbed into the headboard composition: a thin floating ledge, not a box.
   b(m.shadow,x+22,y+22,w-44,d-44,18,500,10);
-  b(m.marble,x+6,y+6,w-12,d-12,36,522,10);
+  b(organic?m.joinery:m.marble,x+6,y+6,w-12,d-12,36,522,10);
   b(m.bronze,x+w-18,y+24,7,d-48,6,510,2);
  }
  else if(o.type==='sofa'){
@@ -82,6 +85,13 @@ export function createFurniture(o,m){
   b(m.joinery,x,y,w,d,34,h-34,10);
   b(m.bronze,x+28,y+35,16,d-70,h-44,0,5);b(m.bronze,x+w-44,y+35,16,d-70,h-44,0,5);
  }
+ else if(o.type==='bar'&&organic){
+  b(m.marble,x+4,y+4,w-8,d-8,62,h-62,120);
+  b(m.darkStone,x+70,y+65,240,d-130,h-120,58,95);
+  b(m.joinery,x+335,y+100,w-420,d-200,95,h-164,24);
+  b(m.shadow,x+94,y+89,194,d-178,24,34,40);
+  b(m.bronze,x+344,y+d-106,w-440,5,5,h-169,1);
+ }
  else if(o.type==='bar'){
   b(m.shadow,x+38,y+38,w-76,d-76,44,32,20);
   b(m.marble,x,y,w,d,64,h-64,34);
@@ -103,6 +113,13 @@ export function createFurniture(o,m){
   vessel(g,m.fixture,x+155,y+55,w-180,d-110,165,240,30,150);
   const seat=new THREE.Mesh(new THREE.TorusGeometry(.158,.022,10,64),m.fixture);seat.rotation.x=Math.PI/2;seat.scale.set(1.18,.88,1);seat.position.set(M(x+370),.421,M(y+d/2));g.add(seat);
  }
+ else if(o.type==='basin'&&organic){
+  b(m.joinery,x+18,y+8,w-36,d-16,395,350,26);
+  b(m.shadow,x+24,y+d-20,w-48,6,8,541,1);
+  slab(m.joinery,x,y,w,d,48,750,'bath-live-edge-counter');
+  vessel(g,m.darkStone,x+70,y+45,w-140,d-85,794,112,22,95);
+  tap(g,m.bronze,x+w*.52,y+26,805,'south',210);
+ }
  else if(['sink','basin'].includes(o.type)){
   b(m.shadow,x+26,y+26,w-52,d-52,42,e+92,16);b(o.type==='basin'?m.joinery:m.lacquer,x+5,y+5,w-10,d-10,h-130,e+120,14);
   const bx=x+w*.16,by=y+d*.19,bw=w*.68,bd=d*.63;
@@ -115,12 +132,13 @@ export function createFurniture(o,m){
   b(m.lacquer,x+3,y+3,w-6,d-6,h,0,12);
   face(m.shadow,18,70,w-36,h-138,3,-2);
   face(m.bronze,w-34,h*.47,6,135,5,-8);
-  b(m.marble,x-3,y-2,w+6,d+4,24,h,5);
+  if(organic)slab(m.joinery,x,y,w,d,35,h,'laundry-oak-counter');else b(m.marble,x-3,y-2,w+6,d+4,24,h,5);
  }
  else if(['wardrobe','storage','upper','fridge'].includes(o.type)){
   const mat=o.id==='hall-wardrobe'?m.joinery:m.lacquer;
   b(m.shadow,x+20,y+20,w-40,d-40,48,e+8,12);
   b(mat,x+3,y+3,w-6,d-6,h-54,e+54,10);
+  if(organic&&o.type==='wardrobe'){b(m.joinery,x+3,y+3,w-6,d-6,120,e+h,6);face(m.joinery,0,e+54,24,h-54,21,-2);}
   const span=front==='east'||front==='west'?d:w,count=Math.max(1,Math.ceil(span/900)),step=span/count;
   for(let i=1;i<count;i++)face(m.shadow,i*step-1,e+85,2,h-130,2,-2);
   if(o.type==='wardrobe'&&o.id!=='hall-wardrobe')face(m.joinery,Math.max(14,span-34),e+110,14,h-180,7,-5);
@@ -130,13 +148,18 @@ export function createFurniture(o,m){
   b(m.joinery,x,y,w,18,h,0);for(let z=0;z<h;z+=315)b(m.joinery,x,y,w,d,18,z);
   b(m.joinery,x,y,18,d,h,0);b(m.joinery,x+w-18,y,18,d,h,0);
  }
+ else if(o.type==='media'&&organic){
+  b(m.shadow,x+30,y+25,w-60,d-50,220,150,14);
+  b(m.smokedGlass,x+w-10,y+32,8,d-64,200,161,4);
+  slab(m.joinery,x+3,y+3,w-6,d-6,38,370,'floating-media-slab');
+ }
  else if(o.type==='media'){
   b(m.shadow,x+26,y+34,w-18,d-68,56,214,18);
   b(m.darkStone,x+5,y+8,w-10,d-16,92,258,16);
   b(m.marble,x+2,y+3,w-4,d-6,22,350,7);
   b(m.bronze,x+w-14,y+60,8,d-120,7,292,2);
  }
- else if(o.type==='tv'){b(m.shadow,x,y,w,d,h,e,9);b(m.screen,x+w-2,y+12,4,d-24,h-24,e+12,2);}
+ else if(o.type==='tv'){const mount=organic?80:0;b(m.shadow,x+mount,y,w,d,h,e,9);b(m.screen,x+mount+w-2,y+12,4,d-24,h-24,e+12,2);}
  else if(o.type==='mirror'){b(m.bronze,x,y,w,d,h,e,5);b(m.glass,x+w,y+12,2,d-24,h-24,e+12);}
  else {
   cabinet();b(m.marble,x,y,w,d,28,h-28,5);

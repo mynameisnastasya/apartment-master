@@ -39,8 +39,8 @@ export function createArchitecture(geometry,layout,m,{cut=true,plan=false,walls=
   const bathEast=layout.partitions.find(o=>o.id==='d-bath-east').x;
   const bathSouth=layout.partitions.find(o=>o.id==='d-bath-south-left').y;
   const height=cut?1040:2350;
-  box(wallGroup,m.marble,2440,7,bathEast-2440,8,height,0,'bath-slab-north');
-  box(wallGroup,m.marble,bathEast-8,10,8,bathSouth-30,height,0,'bath-slab-east');
+  box(wallGroup,m.wall.userData.organic?m.slate:m.marble,2440,7,bathEast-2440,8,height,0,'bath-slab-north');
+  box(wallGroup,m.wall.userData.organic?m.slate:m.marble,bathEast-8,10,8,bathSouth-30,height,0,'bath-slab-east');
   box(wallGroup,m.bathFloor,2440,15,8,bathSouth-35,height,0,'bath-mineral-west');
 
   box(wallGroup,m.marble,0,5,1665,10,cut?150:650,860,'kitchen-stone-field');
