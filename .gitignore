@@ -6,3 +6,7 @@ node_modules/
 *.log
 playwright-report/
 test-results/
+
+tmp/
+browser-client-artifacts/
+browser-reference-artifacts/

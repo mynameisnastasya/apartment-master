@@ -9,7 +9,7 @@ try{
  browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
  const page=await browser.newPage({viewport:{width:1440,height:1050}});
  const saveRender=async path=>{const data=await page.evaluate(()=>{window.apartment.render();return window.apartment.renderer.domElement.toDataURL('image/png');});fs.writeFileSync(path,Buffer.from(data.split(',')[1],'base64'));};page.on('pageerror',e=>errors.push(e.message));
- await page.goto('http://127.0.0.1:4173/');
+ await page.goto('http://127.0.0.1:4173/variants.html');
  await page.getByRole('heading',{name:'Лиза. Пять планировок для выбора.'}).waitFor();
  assert.ok((await page.locator('body').innerText()).includes('50,199 м²'));
  assert.ok((await page.locator('body').innerText()).includes('ТРЕБУЕТ ОБМЕРА'));

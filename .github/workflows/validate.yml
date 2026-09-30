@@ -26,6 +26,12 @@ jobs:
         with:
           name: quiet-geology-preview
           path: test-results/quiet-geology/
+      - run: node scripts/client-qa.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: client-presentation
+          path: browser-client-artifacts/
       - run: node scripts/reference-browser-qa.mjs
       - uses: actions/upload-artifact@v4
         if: always()
