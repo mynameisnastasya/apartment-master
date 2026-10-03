@@ -36,4 +36,4 @@ npm run build
 npm start
 ```
 
-Откройте `http://127.0.0.1:4173/`. Кнопка GLB экспортирует текущую планировку; JSON содержит все пять. `src/data/layout-reference.json` — база D, а `src/data/layout-variations.js` формирует E–H: стены, двери, зоны и мебель. `scripts/variants-qa.mjs` проверяет пересечения повёрнутых тел, дверные створки, открывание техники и маршруты; результат — `variants-qa-results.json`. Браузерная проверка выполняется в GitHub Actions.
+Откройте `http://127.0.0.1:4173/`. Кнопка GLB экспортирует текущую планировку; JSON содержит все восемь. `src/data/layout-reference.json` — база D; `src/data/layout-variations.js` формирует E–H и подключает гардеробные I–K из `src/data/dressing-layout.js`: стены, двери, зоны и мебель. `scripts/variants-qa.mjs` проверяет пересечения повёрнутых тел, дверные створки, открывание техники и маршруты; результат — `variants-qa-results.json`. Браузерная проверка выполняется в GitHub Actions.
