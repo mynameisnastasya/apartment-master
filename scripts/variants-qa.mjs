@@ -26,8 +26,8 @@ const base=layouts[0],results=[];
 assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,6,'Each option must have genuinely different walls');
 for(const layout of layouts){
   assert.deepEqual(layout.rooms.filter(r=>r.id!=='dressing').map(r=>r.id),base.rooms.map(r=>r.id));
-  assert.equal(layout.doors.length,layout.id==='I'?4:3);
-  if(layout.id==='I'){
+  assert.equal(layout.doors.length,['I','J','K'].includes(layout.id)?4:3);
+  if(['I','J','K'].includes(layout.id)){
     assert.deepEqual(layout.rooms.find(r=>r.id==='adult'),base.rooms.find(r=>r.id==='adult'));
     assert.deepEqual(layout.furniture.find(r=>r.id==='adult-bed'),base.furniture.find(r=>r.id==='adult-bed'));
     const room=layout.rooms.find(r=>r.id==='dressing');assert.equal(room.area,2.61);
