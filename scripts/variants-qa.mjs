@@ -21,13 +21,13 @@ const overlap = (a,b) => {
   return true;
 };
 
-assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I']);
+assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I','J','K']);
 const base=layouts[0],results=[];
 assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,6,'Each option must have genuinely different walls');
 for(const layout of layouts){
   assert.deepEqual(layout.rooms.filter(r=>r.id!=='dressing').map(r=>r.id),base.rooms.map(r=>r.id));
-  assert.equal(layout.doors.length,layout.id==='I'?4:3);
-  if(layout.id==='I'){
+  assert.equal(layout.doors.length,['I','J','K'].includes(layout.id)?4:3);
+  if(['I','J','K'].includes(layout.id)){
     assert.deepEqual(layout.rooms.find(r=>r.id==='adult'),base.rooms.find(r=>r.id==='adult'));
     assert.deepEqual(layout.furniture.find(r=>r.id==='adult-bed'),base.furniture.find(r=>r.id==='adult-bed'));
     const room=layout.rooms.find(r=>r.id==='dressing');assert.equal(room.area,2.61);
@@ -98,5 +98,5 @@ for(const layout of layouts){
   assert.ok(layout.id==='D'||wallChanges.length>0,`${layout.id}: no architectural changes`);
   results.push({id:layout.id,rooms:layout.rooms.filter(r=>r.area).map(r=>({id:r.id,area:r.area})),wallChanges,furniture:layout.furniture.length,routeCount:routes.length,routes,applianceAccess,collisions});
 }
-fs.writeFileSync('variants-qa-results.json',JSON.stringify({scope:'Six D-based architectural options; shifted partitions and doors, rotated solids, shell, 500 mm avatar routes, independent room access, swing and appliance leaves. Conceptual, subject to survey.',results},null,2));
-console.log('Six layouts validated:',results.map(r=>`${r.id}: ${r.routeCount} routes`).join(', '));
+fs.writeFileSync('variants-qa-results.json',JSON.stringify({scope:'Eight D-based options, including three wardrobe fit-outs in one architectural shell; shifted partitions and doors, rotated solids, shell, 500 mm avatar routes, independent room access, swing and appliance leaves. Conceptual, subject to survey.',results},null,2));
+console.log('Eight layouts validated:',results.map(r=>`${r.id}: ${r.routeCount} routes`).join(', '));
