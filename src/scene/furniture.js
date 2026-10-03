@@ -1,15 +1,16 @@
 import * as THREE from 'three';
 import {liveEdgeSlab} from './organic.js';
+import {cushion,drape} from './textiles.js';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 const M=v=>v/1000;
 function mesh(parent,geometry,material,x,y,z){const o=new THREE.Mesh(geometry,material);o.position.set(M(x),M(z),M(y));o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;}
 function box(g,m,x,y,w,d,h,e=0,r=0){return mesh(g,r?new RoundedBoxGeometry(M(w),M(h),M(d),3,M(Math.min(r,w/3,d/3,h/3))):new THREE.BoxGeometry(M(w),M(h),M(d)),m,x+w/2,y+d/2,e+h/2);}
 function cylinder(g,m,x,y,e,r,h,rt=r){return mesh(g,new THREE.CylinderGeometry(M(rt),M(r),M(h),32),m,x,y,e+h/2);}
 function tube(g,m,points,r=8){const curve=new THREE.CatmullRomCurve3(points.map(([x,y,z])=>new THREE.Vector3(M(x),M(z),M(y))));const o=new THREE.Mesh(new THREE.TubeGeometry(curve,24,M(r),8,false),m);o.castShadow=true;g.add(o);return o;}
-function outline(w,d,r){const pts=[];for(const [cx,cy,start] of [[w/2-r,d/2-r,0],[-w/2+r,d/2-r,90],[-w/2+r,-d/2+r,180],[w/2-r,-d/2+r,270]])for(let i=0;i<12;i++){const a=(start+i/11*90)*Math.PI/180;pts.push([cx+Math.cos(a)*r,cy+Math.sin(a)*r]);}return pts;}
+function outline(w,d,r){const pts=[];for(const [cx,cy,start] of [[w/2-r,d/2-r,0],[-w/2+r,d/2-r,90],[-w/2+r,-d/2+r,180],[w/2-r,-d/2+r,270]])for(let i=0;i<24;i++){const a=(start+i/23*90)*Math.PI/180;pts.push([cx+Math.cos(a)*r,cy+Math.sin(a)*r]);}return pts;}
 function vessel(g,m,x,y,w,d,e,h,inset=50,radius=100){
  const rings=[{w:w*.80,d:d*.86,r:radius*.7,z:e},{w,d,r:radius,z:e+h-14},{w,d,r:radius,z:e+h},{w:w-inset*2,d:d-inset*2,r:radius*.8,z:e+h},{w:w-inset*2-70,d:d-inset*2-100,r:radius*.7,z:e+65}];
- const vs=[],uv=[],idx=[],N=48;for(const ring of rings)for(const [px,py] of outline(ring.w,ring.d,Math.min(ring.r,ring.w/2-1,ring.d/2-1))){vs.push(M(x+w/2+px),M(ring.z),M(y+d/2+py));uv.push(px/w+.5,py/d+.5);}
+ const vs=[],uv=[],idx=[],N=96;for(const ring of rings)for(const [px,py] of outline(ring.w,ring.d,Math.min(ring.r,ring.w/2-1,ring.d/2-1))){vs.push(M(x+w/2+px),M(ring.z),M(y+d/2+py));uv.push(px/w+.5,py/d+.5);}
  for(let k=0;k<rings.length-1;k++)for(let i=0;i<N;i++){const a=k*N+i,b=k*N+(i+1)%N,c=(k+1)*N+(i+1)%N,d=(k+1)*N+i;idx.push(a,c,b,a,d,c);}
  const center=vs.length/3;vs.push(M(x+w/2),M(e+65),M(y+d/2));uv.push(.5,.5);for(let i=0;i<N;i++)idx.push(center,4*N+(i+1)%N,4*N+i);
  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(vs,3));geo.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));geo.setIndex(idx);geo.computeVertexNormals();const o=new THREE.Mesh(geo,m);o.castShadow=o.receiveShadow=true;g.add(o);return o;
@@ -40,12 +41,11 @@ export function createFurniture(o,m){
   b(m.upholstery,x+18,y+26,w-36,d-52,165,102,32);
   const mw=o.mattress[0],md=o.mattress[1],mx=x+(w-mw)/2,my=y+(d-md)/2;
   b(m.bedding,mx,my,mw,md,170,290,42);
-  const duvet=b(m.bedding,mx-8,my+450,mw+16,md-470,105,440,38);
-  const a=duvet.geometry.attributes.position;for(let i=0;i<a.count;i++){const px=a.getX(i),py=a.getY(i),pz=a.getZ(i);if(py>0)a.setY(i,py+Math.sin(px*27+pz*5)*.0045+Math.sin(pz*13)*.0035);}a.needsUpdate=true;duvet.geometry.computeVertexNormals();
-  const n=mw>1100?2:1;for(let i=0;i<n;i++){const pillow=b(m.bedding,mx+60+i*(mw-120)/n,my+70,(mw-150)/n,340,118,472,48);pillow.rotation.y=(i?-.04:.04);}
+  const duvet=drape(g,m.bedding,{x:M(mx+mw/2),z:M(my+md/2+220),width:M(mw+24),depth:M(md-400),height:.535,drop:.105,name:'duvet-sculpted-folds'});
+  const n=mw>1100?2:1;for(let i=0;i<n;i++){const pw=(mw-150)/n;const pillow=cushion(g,m.bedding,M(mx+60+i*(mw-120)/n+pw/2),M(my+250),M(pw),.40,.15,.525,{seed:i+2});pillow.rotation.y=(i?-.045:.045);}
   if(mw>1100){const cushion=b(m.wine,mx+610,my+330,330,150,255,566,55);cushion.rotation.y=-.06;}
   else{const cushion=b(m.olive,mx+300,my+345,300,140,220,560,48);cushion.rotation.y=.08;}
-  const cloth=new THREE.PlaneGeometry(M(mw+20),.42,34,18);const cp=cloth.attributes.position;for(let i=0;i<cp.count;i++){const xx=cp.getX(i),yy=cp.getY(i),edge=Math.pow(Math.abs(xx)/(M(mw+20)/2),10);cp.setXYZ(i,xx,.58-edge*.007+Math.sin(xx*30+yy*8)*.004,-yy);}cloth.computeVertexNormals();const throwMesh=new THREE.Mesh(cloth,mw>1100?m.olive:m.wine);throwMesh.position.set(M(mx+mw/2),0,M(my+md-395));throwMesh.castShadow=throwMesh.receiveShadow=true;g.add(throwMesh);
+  drape(g,mw>1100?m.olive:m.wine,{x:M(mx+mw/2),z:M(my+md-390),width:M(mw+30),depth:.47,height:.558,drop:.10,seed:3,name:'woven-bed-runner',support:duvet.userData.surfaceHeight});
  }
  else if(o.id.startsWith('adult-nightstand')){
   // Bedside function is absorbed into the headboard composition: a thin floating ledge, not a box.
@@ -57,15 +57,18 @@ export function createFurniture(o,m){
   b(m.shadow,x+40,y+35,w-80,d-70,62,72,28);
   b(m.upholstery,x+10,y+12,w-20,d-24,215,120,58);
   const n=w>1350?3:2,seatW=(w-92)/n;
-  for(let i=0;i<n;i++)b(m.upholstery,x+38+i*seatW,y+34,seatW-12,d-205,112,310,48);
-  b(m.upholstery,x+35,y+d-205,w-70,165,370,402,68);
+  for(let i=0;i<n;i++){
+   cushion(g,m.upholstery,M(x+38+i*seatW+(seatW-12)/2),M(y+34+(d-205)/2),M(seatW-12),M(d-205),.125,.370,{seed:i});
+   cushion(g,m.upholstery,M(x+38+i*seatW+(seatW-12)/2),M(y+d-105),M(seatW-16),.38,.17,.575,{upright:true,seed:i+5});
+  }
   b(m.upholstery,x+8,y+50,120,d-95,330,248,52);b(m.upholstery,x+w-128,y+50,120,d-95,330,248,52);
-  const p=b(m.wine,x+150,y+d-295,275,115,245,468,55);p.rotation.z=-.1;
-  const q=b(m.bedding,x+w-415,y+d-305,240,95,225,468,50);q.rotation.z=.12;
+  const p=cushion(g,m.wine,M(x+270),M(y+d-275),.28,.28,.12,.575,{upright:true,seed:4});p.rotation.z=-.14;
+  const q=cushion(g,m.bedding,M(x+w-295),M(y+d-270),.26,.25,.11,.56,{upright:true,seed:7});q.rotation.z=.13;
  }
  else if(['chair','stool'].includes(o.type)){
   const seat=o.type==='stool'?650:435;
   for(const xx of[x+55,x+w-55])for(const yy of[y+55,y+d-55])cylinder(g,m.bronze,xx,yy,0,11,seat,15);
+  if(o.type==='stool')tube(g,m.bronze,[[x+55,y+55,240],[x+55,y+d-55,240],[x+w-55,y+d-55,240],[x+w-55,y+55,240]],7);
   b(o.type==='stool'?m.wine:m.upholstery,x+12,y+12,w-24,d-24,68,seat,28);
   const f=front;const back=b(m.joinery,f==='west'?x+w-42:x+10,f==='north'?y+d-42:y+10,['east','west'].includes(f)?30:w-20,['north','south'].includes(f)?30:d-20,h-seat-80,seat+68,14);
   if(['east','west'].includes(f))b(o.type==='stool'?m.wine:m.upholstery,f==='west'?x+w-55:x+41,y+34,18,d-68,170,seat+116,9);
@@ -125,7 +128,7 @@ export function createFurniture(o,m){
   const bx=x+w*.16,by=y+d*.19,bw=w*.68,bd=d*.63;
   b(m.marble,x,y,w,by-y,28,h-28);b(m.marble,x,by+bd,w,y+d-by-bd,28,h-28);b(m.marble,x,by,bx-x,bd,28,h-28);b(m.marble,bx+bw,by,x+w-bx-bw,bd,28,h-28);
   vessel(g,o.type==='basin'?m.fixture:m.darkStone,bx,by,bw,bd,h-150,155,18,42);
-  cylinder(g,m.darkStone,bx+bw/2,by+bd/2,h-82,18,3);tap(g,m.bronze,x+w*.53,y+45,h,'south',190);
+  cylinder(g,m.metal,bx+bw/2,by+bd/2,h-82,18,3);tap(g,m.bronze,x+w*.53,y+45,h,'south',190);
  }
  else if(o.type==='washer'){
   b(m.shadow,x+12,y+12,w-24,d-24,h-22,10,10);
@@ -163,6 +166,12 @@ export function createFurniture(o,m){
  else if(o.type==='mirror'){b(m.bronze,x,y,w,d,h,e,5);b(m.glass,x+w,y+12,2,d-24,h-24,e+12);}
  else {
   cabinet();b(m.marble,x,y,w,d,28,h-28,5);
+  const span=['east','west'].includes(front)?d:w;
+  face(m.shadow,8,h-48,span-16,12,4,-2);
+  if(o.type==='base')for(const level of [340,610]){
+   face(m.shadow,6,level,span-12,3,3,-2);
+   face(m.bronze,span*.18,level+10,span*.64,4,5,-4);
+  }
   if(o.type==='hob'){
    b(m.screen,x+35,y+50,w-70,d-95,7,h,5);
    for(const xx of[x+w*.28,x+w*.7])for(const yy of[y+d*.3,y+d*.68]){const ring=new THREE.Mesh(new THREE.TorusGeometry(.073,.0018,6,48),m.bronze);ring.rotation.x=Math.PI/2;ring.position.set(M(xx),M(h+9),M(yy));g.add(ring);}
