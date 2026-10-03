@@ -53,6 +53,7 @@ try{
   assert.equal(await page.evaluate(()=>window.apartment.routeResult('entry','bathBasin').ok),true);
   assert.equal(await page.evaluate(()=>window.apartment.routeResult('entry','aliceDesk').ok),true);
  }
+ await page.locator('[data-variant="H"]').click();
  assert.ok(await page.evaluate(()=>window.apartment.layout.rooms.find(r=>r.id==='bath').area>4.5),'Expanded H bathroom is present');
  await page.screenshot({path:'browser-reference-artifacts/plan-H.png'});
  await page.goto('http://127.0.0.1:4173/model.html?variant=F');await page.waitForFunction(()=>window.apartment?.ready);
