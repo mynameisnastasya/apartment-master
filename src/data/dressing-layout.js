@@ -6,7 +6,7 @@ export function dressingLayout(base){
  const area=p=>Math.abs(p.reduce((s,a,i)=>{const b=p[(i+1)%p.length];return s+a[0]*b[1]-a[1]*b[0]},0))/2e6;
  Object.assign(l,{id:'I',name:'Отдельная гардеробная',subtitle:'2,61 м² · отдельный вход · спальня и кухня как в D',recommended:false,
   pros:['Гардеробная 1740 × 1500 мм с отдельным входом из холла. Кухня, ванная и взрослая спальня сохраняют геометрию D.',
-   'Восточный ряд глубиной 600 мм для плечиков; торцевые полки глубиной 350 мм. Перед основным рядом остаётся 1140 мм.',
+   'Восточный ряд глубиной 600 мм для плечиков; торцевые полки 500 × 350 мм. Основной проход 1140 мм, локальный подход у торца 640 мм: глухого угла нет.',
    'Кассетная дверь с проектным проёмом 850 мм не перекрывает проход. Между ванной и гардеробной остаётся 960 мм.',
    'Вторая комната сохраняет односпальную кровать, стол 1000 × 600 боком к окну и отдельный шкаф. Её вход перенесён западнее.'],
   cons:['Вторая комната уменьшается и получает нишу у входа. Это осознанный обмен её площади на отдельную гардеробную; не замена утверждённому D.',
@@ -33,13 +33,14 @@ export function dressingLayout(base){
  child.area=+area(child.polygon).toFixed(2);child.x=5200;child.y=6150;
  l.rooms.push({id:'dressing',name:'Гардеробная',x:5320,y:4070,polygon:[[4660,3120],[6400,3120],[6400,4620],[4660,4620]],area:2.61});
  l.furniture.push({id:'dressing-rail',type:'dressing-rack',room:'dressing',x:5800,y:3120,width:600,depth:1500,height:2400,rotation:0,front:'west',visible:true,label:'Открытое хранение · 1500 × 600 · длинное + двойное подвешивание'},
-  {id:'dressing-shoes',type:'dressing-shelves',room:'dressing',x:4660,y:4270,width:1140,depth:350,height:1200,rotation:0,front:'north',visible:true,label:'Обувь и сумки · полки 1140 × 350'},
+  {id:'dressing-shoes',type:'dressing-shelves',room:'dressing',x:4660,y:4270,width:500,depth:350,height:1200,rotation:0,front:'north',visible:true,label:'Обувь и сумки · полки 500 × 350'},
   {id:'dressing-mirror',type:'mirror',room:'dressing',x:4665,y:3240,width:25,depth:780,height:1800,elevation:250,rotation:0,front:'east',visible:true,collidable:false,label:'Зеркало в полный рост · боковая подсветка'});
- Object.assign(l.routes,{alice:[4050,4050],aliceDesk:[4350,6150],dressing:[5230,3730],dressingRail:[5450,3950],dressingShoes:[5230,3950],childWardrobe:[5440,6900]});
- l.routePairs.push(['entry','dressing'],['adult','dressing'],['dressing','dressingRail'],['dressing','dressingShoes'],['alice','childWardrobe']);
+ Object.assign(l.routes,{alice:[4050,4050],aliceDesk:[4350,6150],dressing:[5230,3730],dressingRail:[5450,3950],dressingShoes:[4930,3950],dressingFar:[5475,4350],childWardrobe:[5440,6900]});
+ l.routePairs.push(['entry','dressing'],['adult','dressing'],['dressing','dressingRail'],['dressing','dressingShoes'],['dressing','dressingFar'],['alice','childWardrobe']);
  l.clearances.push({id:'dressing-aisle',label:'В гардеробной перед плечиками',value:1140,unit:'мм',status:'good',x:5230,y:3770,axis:'x',length:1140},
   {id:'dressing-door',label:'Проём гардеробной до коробки',value:850,unit:'мм',status:'good',x:5085,y:3060,axis:'x',length:850},
-  {id:'dressing-hall',label:'Между ванной и гардеробной',value:960,unit:'мм',status:'good',x:5300,y:2520,axis:'y',length:960});
+  {id:'dressing-hall',label:'Между ванной и гардеробной',value:960,unit:'мм',status:'good',x:5300,y:2520,axis:'y',length:960},
+  {id:'dressing-end',label:'Локальный подход у торцевых полок',value:640,unit:'мм',status:'compact',x:5480,y:4440,axis:'x',length:640});
  const c=l.clearances.find(c=>c.id==='child-door-clear');c.x=3925;
  l.design.notes+=' В I гардеробная оформлена как деревянная ниша: открытые секции, бронзовые штанги, вертикальный свет и зеркало. Без декоративного острова.';
  return l;

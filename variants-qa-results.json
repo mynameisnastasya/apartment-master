@@ -926,7 +926,7 @@
         "i-dressing-lintel"
       ],
       "furniture": 30,
-      "routeCount": 21,
+      "routeCount": 22,
       "routes": [
         {
           "from": "entry",
@@ -1102,10 +1102,19 @@
         {
           "from": "dressing",
           "to": "dressingShoes",
-          "lengthMm": 225,
+          "lengthMm": 525,
           "snapMm": [
             28.284271247461902,
             32.01562118716424
+          ]
+        },
+        {
+          "from": "dressing",
+          "to": "dressingFar",
+          "lengthMm": 825,
+          "snapMm": [
+            28.284271247461902,
+            0
           ]
         },
         {

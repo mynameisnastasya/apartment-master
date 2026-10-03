@@ -58,8 +58,8 @@ export function createFurniture(o,m){
   for(const xx of [x,x+w/2-9,x+w-18])b(m.joinery,xx,y,18,d,h,0);
   for(const z of [60,330,600,870,h-24])b(m.joinery,x,y,w,d,24,z);
   for(let k=0;k<4;k++){
-   b(m.olive,x+80+(k%2)*550,y+35,360,250,160,90+Math.floor(k/2)*540,18);
-   b(m.bronze,x+240+(k%2)*550,y+25,40,12,8,155+Math.floor(k/2)*540,3);
+   b(m.olive,x+40+(k%2)*w/2,y+35,w/2-70,250,160,90+Math.floor(k/2)*540,18);
+   b(m.bronze,x+w/4-20+(k%2)*w/2,y+25,40,12,8,155+Math.floor(k/2)*540,3);
   }
  }
  else if(o.type==='bed'){
