@@ -1,5 +1,5 @@
 {
-  "scope": "Five D-based architectural options; shifted partitions and doors, rotated solids, shell, 500 mm avatar routes, independent room access, swing and appliance leaves. Conceptual, subject to survey.",
+  "scope": "Six D-based architectural options; shifted partitions and doors, rotated solids, shell, 500 mm avatar routes, independent room access, swing and appliance leaves. Conceptual, subject to survey.",
   "results": [
     {
       "id": "D",
@@ -885,6 +885,245 @@
           "snapMm": [
             25,
             25.495097567963924
+          ]
+        }
+      ],
+      "applianceAccess": [
+        "washer",
+        "fridge",
+        "hob",
+        "dishwasher"
+      ],
+      "collisions": []
+    },
+    {
+      "id": "I",
+      "rooms": [
+        {
+          "id": "adult",
+          "area": 11.24
+        },
+        {
+          "id": "alice",
+          "area": 9.55
+        },
+        {
+          "id": "bath",
+          "area": 4.38
+        },
+        {
+          "id": "dressing",
+          "area": 2.61
+        }
+      ],
+      "wallChanges": [
+        "d-child-north-right",
+        "d-child-door-lintel",
+        "d-child-diagonal",
+        "i-dressing-west",
+        "i-dressing-south",
+        "i-dressing-north",
+        "i-dressing-lintel"
+      ],
+      "furniture": 30,
+      "routeCount": 22,
+      "routes": [
+        {
+          "from": "entry",
+          "to": "storage",
+          "lengthMm": 1725,
+          "snapMm": [
+            25,
+            35.35533905932738
+          ]
+        },
+        {
+          "from": "entry",
+          "to": "kitchen",
+          "lengthMm": 6825,
+          "snapMm": [
+            25,
+            35.35533905932738
+          ]
+        },
+        {
+          "from": "entry",
+          "to": "adult",
+          "lengthMm": 7125,
+          "snapMm": [
+            25,
+            35.35533905932738
+          ]
+        },
+        {
+          "from": "entry",
+          "to": "alice",
+          "lengthMm": 4725,
+          "snapMm": [
+            25,
+            0
+          ]
+        },
+        {
+          "from": "entry",
+          "to": "bathroom",
+          "lengthMm": 4425,
+          "snapMm": [
+            25,
+            35.35533905932738
+          ]
+        },
+        {
+          "from": "adultBed",
+          "to": "adultWardrobe",
+          "lengthMm": 1125,
+          "snapMm": [
+            25,
+            0
+          ]
+        },
+        {
+          "from": "aliceBed",
+          "to": "aliceDesk",
+          "lengthMm": 1275,
+          "snapMm": [
+            35.35533905932738,
+            0
+          ]
+        },
+        {
+          "from": "adult",
+          "to": "bathroom",
+          "lengthMm": 4500,
+          "snapMm": [
+            35.35533905932738,
+            35.35533905932738
+          ]
+        },
+        {
+          "from": "kitchen",
+          "to": "fridge",
+          "lengthMm": 600,
+          "snapMm": [
+            35.35533905932738,
+            10
+          ]
+        },
+        {
+          "from": "kitchen",
+          "to": "dishwasher",
+          "lengthMm": 825,
+          "snapMm": [
+            35.35533905932738,
+            25
+          ]
+        },
+        {
+          "from": "sofa",
+          "to": "kitchen",
+          "lengthMm": 3675,
+          "snapMm": [
+            25,
+            35.35533905932738
+          ]
+        },
+        {
+          "from": "entry",
+          "to": "bar",
+          "lengthMm": 5400,
+          "snapMm": [
+            25,
+            125
+          ]
+        },
+        {
+          "from": "entry",
+          "to": "bathBasin",
+          "lengthMm": 5850,
+          "snapMm": [
+            25,
+            15
+          ]
+        },
+        {
+          "from": "entry",
+          "to": "bathToilet",
+          "lengthMm": 4575,
+          "snapMm": [
+            25,
+            35.35533905932738
+          ]
+        },
+        {
+          "from": "entry",
+          "to": "bathWasher",
+          "lengthMm": 4875,
+          "snapMm": [
+            25,
+            32.01562118716424
+          ]
+        },
+        {
+          "from": "entry",
+          "to": "bathTub",
+          "lengthMm": 4350,
+          "snapMm": [
+            25,
+            11.180339887498949
+          ]
+        },
+        {
+          "from": "entry",
+          "to": "dressing",
+          "lengthMm": 3225,
+          "snapMm": [
+            25,
+            28.284271247461902
+          ]
+        },
+        {
+          "from": "adult",
+          "to": "dressing",
+          "lengthMm": 6000,
+          "snapMm": [
+            35.35533905932738,
+            28.284271247461902
+          ]
+        },
+        {
+          "from": "dressing",
+          "to": "dressingRail",
+          "lengthMm": 450,
+          "snapMm": [
+            28.284271247461902,
+            35.35533905932738
+          ]
+        },
+        {
+          "from": "dressing",
+          "to": "dressingShoes",
+          "lengthMm": 525,
+          "snapMm": [
+            28.284271247461902,
+            32.01562118716424
+          ]
+        },
+        {
+          "from": "dressing",
+          "to": "dressingFar",
+          "lengthMm": 825,
+          "snapMm": [
+            28.284271247461902,
+            0
+          ]
+        },
+        {
+          "from": "alice",
+          "to": "childWardrobe",
+          "lengthMm": 4275,
+          "snapMm": [
+            0,
+            35
           ]
         }
       ],
