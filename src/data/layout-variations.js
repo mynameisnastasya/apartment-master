@@ -1,5 +1,5 @@
 import reference from './layout-reference.json' with {type:'json'};
-import {dressingLayout} from './dressing-layout.js';
+import {dressingLayouts} from './dressing-layout.js';
 
 const move=(layout,id,changes)=>Object.assign(layout.furniture.find(o=>o.id===id),changes);
 const wall=(layout,id,changes)=>Object.assign(layout.partitions.find(o=>o.id===id),changes);
@@ -89,4 +89,4 @@ export const layouts=[base,...options.map(option=>{
  updateClearances(layout);
  return layout;
 })];
-layouts.push(dressingLayout(base));
+layouts.push(...dressingLayouts(base));
