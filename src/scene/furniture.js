@@ -41,11 +41,11 @@ export function createFurniture(o,m){
   b(m.upholstery,x+18,y+26,w-36,d-52,165,102,32);
   const mw=o.mattress[0],md=o.mattress[1],mx=x+(w-mw)/2,my=y+(d-md)/2;
   b(m.bedding,mx,my,mw,md,170,290,42);
-  drape(g,m.bedding,{x:M(mx+mw/2),z:M(my+md/2+220),width:M(mw+24),depth:M(md-400),height:.535,drop:.105,name:'duvet-sculpted-folds'});
+  const duvet=drape(g,m.bedding,{x:M(mx+mw/2),z:M(my+md/2+220),width:M(mw+24),depth:M(md-400),height:.535,drop:.105,name:'duvet-sculpted-folds'});
   const n=mw>1100?2:1;for(let i=0;i<n;i++){const pw=(mw-150)/n;const pillow=cushion(g,m.bedding,M(mx+60+i*(mw-120)/n+pw/2),M(my+250),M(pw),.40,.15,.525,{seed:i+2});pillow.rotation.y=(i?-.045:.045);}
   if(mw>1100){const cushion=b(m.wine,mx+610,my+330,330,150,255,566,55);cushion.rotation.y=-.06;}
   else{const cushion=b(m.olive,mx+300,my+345,300,140,220,560,48);cushion.rotation.y=.08;}
-  drape(g,mw>1100?m.olive:m.wine,{x:M(mx+mw/2),z:M(my+md-390),width:M(mw+30),depth:.47,height:.558,drop:.10,seed:3,name:'woven-bed-runner'});
+  drape(g,mw>1100?m.olive:m.wine,{x:M(mx+mw/2),z:M(my+md-390),width:M(mw+30),depth:.47,height:.558,drop:.10,seed:3,name:'woven-bed-runner',support:duvet.userData.surfaceHeight});
  }
  else if(o.id.startsWith('adult-nightstand')){
   // Bedside function is absorbed into the headboard composition: a thin floating ledge, not a box.

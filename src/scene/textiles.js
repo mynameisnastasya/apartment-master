@@ -26,18 +26,20 @@ export function cushion(parent,material,x,z,w,d,h,e,{upright=false,seed=1}={}){
  group.position.set(x,e,z);parent.add(group);return group;
 }
 
-export function drape(parent,material,{x,z,width,depth,height,drop=.12,seed=0,name='draped-linen'}){
+export function drape(parent,material,{x,z,width,depth,height,drop=.12,seed=0,name='draped-linen',support=null}){
  const geo=new THREE.PlaneGeometry(width,depth,80,72),p=geo.attributes.position;
  const point=(u,v)=>{
   const side=Math.pow(Math.max(0,(Math.abs(u)/(width/2)-.84)/.16),1.65);
   const foot=Math.pow(Math.max(0,(v/(depth/2)-.82)/.18),1.5);
   const waves=.010*Math.sin(u*24+v*7+seed)+.005*Math.sin(u*49-v*13)+.003*Math.sin(v*58+u*15);
   const diagonal=.022*Math.exp(-Math.pow((u*.7+v-.17)*11,2));
-  return new THREE.Vector3(u,height+waves+diagonal-drop*Math.max(side,foot),v);
+  const elevation=height+waves+diagonal-drop*Math.max(side,foot);
+  return new THREE.Vector3(u,support?Math.max(elevation,support(x+u,z+v)+.008):elevation,v);
  };
  for(let i=0;i<p.count;i++){const q=point(p.getX(i),-p.getY(i));p.setXYZ(i,q.x,q.y,q.z);}
  geo.computeVertexNormals();
  const cloth=new THREE.Mesh(geo,material);cloth.position.set(x,0,z);cloth.castShadow=cloth.receiveShadow=true;cloth.name=name;parent.add(cloth);
+ cloth.userData.surfaceHeight=(worldX,worldZ)=>point(worldX-x,worldZ-z).y;
  const edge=[];const n=80;
  for(let i=0;i<=n;i++)edge.push(point(-width/2+width*i/n,-depth/2));
  for(let i=1;i<=n;i++)edge.push(point(width/2,-depth/2+depth*i/n));

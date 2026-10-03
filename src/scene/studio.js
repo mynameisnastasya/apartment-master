@@ -11,16 +11,22 @@ export function roomSpec(layout,name,interior=false){
  const xs=polygon.map(p=>p[0]),ys=polygon.map(p=>p[1]),bounds=[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)];
  const [x,y,x2,y2]=bounds,cx=(x+x2)/2000,cy=(y+y2)/2000;
  const pos=name==='bath'?[cx-3.0,3.3,cy+3.6]:name==='adult'?[cx-4.1,3.8,cy+4.1]:name==='alice'?[cx-5,4.5,cy+5]:[cx+3.3,3.5,cy+3.8];
- const eye={kitchen:[[2.6,1.6,3.65],[.85,1.23,.75]],living:[[3.35,1.6,5.15],[.25,1.22,2.8]],adult:[[.05,1.55,8.15],[3.05,1.28,6.8]],alice:[[3.4,1.55,7.2],[6.1,1.18,5.5]],bath:[[3.4,1.60,3.3],[3.45,1.18,.35]]}[name];
+ const eye={kitchen:[[2.2,1.6,2.65],[.75,1.23,.65]],living:[[2.90,1.6,4.08],[.50,1.22,2.0]],adult:[[.10,1.55,8.13],[3.05,1.28,6.8]],alice:[[3.62,1.55,7.15],[6.1,1.18,5.5]],bath:[[3.56,1.60,1.86],[3.48,1.18,.15]]}[name];
  return{polygon,bounds,pos:interior&&eye?eye[0]:pos,target:interior&&eye?eye[1]:[cx,.85,cy],name};
 }
 
-export function createStudio(geometry,layout,m,name){
+export function createStudio(geometry,layout,m,name,{interior=false}={}){
  const spec=roomSpec(layout,name),root=new THREE.Group();root.name='STUDIO_'+name;
  const {polygon,bounds:[x,y,x2,y2]}=spec;
  const shape=new THREE.Shape(polygon.map(([px,py])=>new THREE.Vector2(px/1000,py/1000)));shape.closePath();
  const geo=new THREE.ExtrudeGeometry(shape,{depth:.10,bevelEnabled:false});geo.rotateX(Math.PI/2);
  const floor=new THREE.Mesh(geo,name==='bath'?m.bathFloor:m.floor);floor.receiveShadow=true;root.add(floor);
+
+ if(interior){
+  const ceilingGeo=new THREE.ShapeGeometry(shape);ceilingGeo.rotateX(Math.PI/2);
+  const ceiling=new THREE.Mesh(ceilingGeo,m.wall);ceiling.position.y=geometry.ceilingHeight/1000;
+  ceiling.name='interior-ceiling';ceiling.receiveShadow=true;root.add(ceiling);
+ }
 
  const furniture=new THREE.Group();furniture.name='FURNITURE_'+layout.id;root.add(furniture);
  for(const o of layout.furniture){
@@ -78,6 +84,17 @@ export function createStudio(geometry,layout,m,name){
   const update=reflection.onBeforeRender;
   reflection.onBeforeRender=function(renderer,scene,...args){if(!scene.overrideMaterial)update.call(this,renderer,scene,...args);};
   face.add(reflection);
+ }
+ if(interior){
+  // Complete the visible room shell above existing walls, preserving all plan openings.
+  for(const wall of [...walls.children]){
+   if(!wall.name.startsWith('studio-'))continue;
+   const p=wall.geometry.parameters;if(!p?.height)continue;
+   const top=wall.position.y+p.height/2,remaining=geometry.ceilingHeight/1000-top;
+   if(remaining<=0)continue;
+   const infill=new THREE.Mesh(new THREE.BoxGeometry(p.width,remaining,p.depth),wall.material);
+   infill.position.set(wall.position.x,top+remaining/2,wall.position.z);infill.name='ceiling-wall-junction';walls.add(infill);
+  }
  }
  return root;
 }
