@@ -12,6 +12,7 @@ export function roomSpec(layout,name,interior=false){
  const [x,y,x2,y2]=bounds,cx=(x+x2)/2000,cy=(y+y2)/2000;
  const pos=name==='bath'?[cx-3.0,3.3,cy+3.6]:name==='adult'?[cx-4.1,3.8,cy+4.1]:name==='alice'?[cx-5,4.5,cy+5]:[cx+3.3,3.5,cy+3.8];
  const eye={kitchen:[[2.2,1.6,2.65],[.75,1.23,.65]],living:[[2.90,1.6,4.08],[.50,1.22,2.0]],adult:[[.10,1.55,8.13],[3.05,1.28,6.8]],alice:[[3.62,1.55,7.15],[6.1,1.18,5.5]],bath:[[3.56,1.60,1.86],[3.48,1.18,.15]]}[name];
+ if(name==='dressing')return{polygon,bounds,pos:interior?[4.99,1.60,3.23]:[2.3,4.2,6.4],target:[5.83,1.25,4.02],name};
  return{polygon,bounds,pos:interior&&eye?eye[0]:pos,target:interior&&eye?eye[1]:[cx,.85,cy],name};
 }
 
@@ -34,7 +35,12 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
  }
 
  const walls=new THREE.Group();walls.name='WALLS';root.add(walls);
- if(name==='bath'){
+ if(name==='dressing'){
+  box(walls,m.wall,6400,3120,120,1500,2700,0,'studio-east');
+  box(walls,m.joinery,4660,4620,1740,120,2700,0,'studio-south');
+  box(walls,m.wall,4540,3120,120,1500,2700,0,'studio-west');
+  const light=new THREE.PointLight(0xffe1b1,8,4,2);light.position.set(5.4,2.35,3.8);root.add(light);
+ }else if(name==='bath'){
   box(walls,m.wall.userData.organic?m.slate:m.marble,x-80,y-80,x2-x+160,80,2450,0,'studio-north');
   box(walls,m.wall.userData.organic?m.slate:m.marble,x2,y,80,y2-y,2450,0,'studio-east');
   box(walls,m.bathFloor,x-80,y,80,y2-y,2450,0,'studio-west');
@@ -70,6 +76,10 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
  }
 
  const decor=createDecor(layout,m);
+ if(layout.id==='I'&&name==='alice'){
+  box(walls,m.wall,4540,3640,120,1100,2700,0,'studio-dressing-return');
+  box(walls,m.wall,4660,4620,1740,120,2700,0,'studio-dressing-front');
+ }
  const inside=(px,py)=>{let hit=false;for(let i=0,j=polygon.length-1;i<polygon.length;j=i++){
   const a=polygon[i],b=polygon[j];if((a[1]>py)!==(b[1]>py)&&px<(b[0]-a[0])*(py-a[1])/(b[1]-a[1])+a[0])hit=!hit;
  }return hit;};

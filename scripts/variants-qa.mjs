@@ -21,12 +21,20 @@ const overlap = (a,b) => {
   return true;
 };
 
-assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H']);
+assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I']);
 const base=layouts[0],results=[];
-assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,5,'Each option must have genuinely different walls');
+assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,6,'Each option must have genuinely different walls');
 for(const layout of layouts){
-  assert.deepEqual(layout.rooms.map(r=>r.id),base.rooms.map(r=>r.id));
-  assert.equal(layout.doors.length,3);
+  assert.deepEqual(layout.rooms.filter(r=>r.id!=='dressing').map(r=>r.id),base.rooms.map(r=>r.id));
+  assert.equal(layout.doors.length,layout.id==='I'?4:3);
+  if(layout.id==='I'){
+    assert.deepEqual(layout.rooms.find(r=>r.id==='adult'),base.rooms.find(r=>r.id==='adult'));
+    assert.deepEqual(layout.furniture.find(r=>r.id==='adult-bed'),base.furniture.find(r=>r.id==='adult-bed'));
+    const room=layout.rooms.find(r=>r.id==='dressing');assert.equal(room.area,2.61);
+    for(const item of layout.furniture.filter(o=>o.room==='dressing'&&o.collidable!==false))for(const [x,y] of corners(item))assert.ok(insidePolygon(x+(5530-x)*1e-5,y+(3870-y)*1e-5,room.polygon),'Storage must stay inside dressing room');
+    const closed=colliders(geometry,layout,{doorsOpen:false});
+    assert.ok(findRoute(layout.routes.entry,layout.routes.kitchen,geometry,closed).ok,'Closed dressing door must not block public circulation');
+  }
   for(const id of ['hob','sink','dishwasher','fridge'])
     assert.deepEqual(layout.furniture.find(o=>o.id===id),base.furniture.find(o=>o.id===id),`${layout.id}: kitchen connection moved`);
   const sofa=layout.furniture.find(o=>o.id==='sofa');
@@ -90,5 +98,5 @@ for(const layout of layouts){
   assert.ok(layout.id==='D'||wallChanges.length>0,`${layout.id}: no architectural changes`);
   results.push({id:layout.id,rooms:layout.rooms.filter(r=>r.area).map(r=>({id:r.id,area:r.area})),wallChanges,furniture:layout.furniture.length,routeCount:routes.length,routes,applianceAccess,collisions});
 }
-fs.writeFileSync('variants-qa-results.json',JSON.stringify({scope:'Five D-based architectural options; shifted partitions and doors, rotated solids, shell, 500 mm avatar routes, independent room access, swing and appliance leaves. Conceptual, subject to survey.',results},null,2));
-console.log('Five layouts validated:',results.map(r=>`${r.id}: ${r.routeCount} routes`).join(', '));
+fs.writeFileSync('variants-qa-results.json',JSON.stringify({scope:'Six D-based architectural options; shifted partitions and doors, rotated solids, shell, 500 mm avatar routes, independent room access, swing and appliance leaves. Conceptual, subject to survey.',results},null,2));
+console.log('Six layouts validated:',results.map(r=>`${r.id}: ${r.routeCount} routes`).join(', '));

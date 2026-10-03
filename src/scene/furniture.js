@@ -36,7 +36,33 @@ export function createFurniture(o,m){
   }
  };
  const cabinet=()=>{b(m.shadow,x+24,y+24,w-48,d-48,58,e);b(m.joinery,x+4,y+4,w-8,d-8,h-86,e+58,10);facade(h-110,e+66);};
- if(o.type==='bed'){
+ if(o.type==='dressing-rack'){
+  // Open, east-backed millwork: two 750 mm bays, clothes stay inside the footprint.
+  b(m.joinery,x+w-20,y,20,d,h,0);b(m.joinery,x,y,w,20,h,0);b(m.joinery,x,y+d-20,w,20,h,0);
+  b(m.joinery,x,y+d/2-10,w,20,h,0);b(m.joinery,x,y,w,d,28,70);b(m.joinery,x,y,w,d,28,h-28);
+  b(m.joinery,x,y,w,d,24,2120);
+  for(const [start,end,z] of [[30,720,1920],[780,1470,1920],[780,1470,960]]){
+   tube(g,m.bronze,[[x+300,y+start,z],[x+300,y+end,z]],12);
+   for(let k=0;k<5;k++){
+    const yy=y+start+65+k*(end-start-130)/4;
+    tube(g,m.bronze,[[x+90,yy,z-100],[x+300,yy,z-15],[x+510,yy,z-100],[x+90,yy,z-100]],5);
+    const length=start<100?1230:660;
+    const cloth=b(k%3===0?m.olive:k%3===1?m.bedding:m.wine,x+95,yy-14,410,28,length,z-100-length,12);cloth.name='dressing-hanging-clothes';
+   }
+  }
+  for(const yy of [y+24,y+d-30])b(m.lamp,x+20,yy,8,6,1990,110,2);
+  for(let k=0;k<2;k++)b(m.upholstery,x+55,y+80+k*750,470,560,160,2180,12);
+ }
+ else if(o.type==='dressing-shelves'){
+  b(m.joinery,x,y+d-18,w,18,h,0);
+  for(const xx of [x,x+w/2-9,x+w-18])b(m.joinery,xx,y,18,d,h,0);
+  for(const z of [60,330,600,870,h-24])b(m.joinery,x,y,w,d,24,z);
+  for(let k=0;k<4;k++){
+   b(m.olive,x+80+(k%2)*550,y+35,360,250,160,90+Math.floor(k/2)*540,18);
+   b(m.bronze,x+240+(k%2)*550,y+25,40,12,8,155+Math.floor(k/2)*540,3);
+  }
+ }
+ else if(o.type==='bed'){
   b(m.shadow,x+50,y+70,w-100,d-120,68,48,22);
   b(m.upholstery,x+18,y+26,w-36,d-52,165,102,32);
   const mw=o.mattress[0],md=o.mattress[1],mx=x+(w-mw)/2,my=y+(d-md)/2;
@@ -163,7 +189,14 @@ export function createFurniture(o,m){
   b(m.bronze,x+w-14,y+60,8,d-120,7,292,2);
  }
  else if(o.type==='tv'){const mount=organic?80:0;b(m.shadow,x+mount,y,w,d,h,e,9);b(m.screen,x+mount+w-2,y+12,4,d-24,h-24,e+12,2);}
- else if(o.type==='mirror'){b(m.bronze,x,y,w,d,h,e,5);b(m.glass,x+w,y+12,2,d-24,h-24,e+12);}
+ else if(o.type==='mirror'){
+  b(m.bronze,x,y,w,d,h,e,5);
+  if(o.id==='dressing-mirror'){
+   const face=new THREE.Mesh(new THREE.PlaneGeometry(M(d-24),M(h-24)),m.mirror);
+   face.rotation.y=Math.PI/2;face.position.set(M(x+w+2),M(e+h/2),M(y+d/2));face.name='mirror-face';g.add(face);
+   for(const yy of [y-4,y+d])b(m.lamp,x+w,yy,5,5,h,e,1);
+  }else b(m.glass,x+w,y+12,2,d-24,h-24,e+12);
+ }
  else {
   cabinet();b(m.marble,x,y,w,d,28,h-28,5);
   const span=['east','west'].includes(front)?d:w;
