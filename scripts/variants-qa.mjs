@@ -98,5 +98,5 @@ for(const layout of layouts){
   assert.ok(layout.id==='D'||wallChanges.length>0,`${layout.id}: no architectural changes`);
   results.push({id:layout.id,rooms:layout.rooms.filter(r=>r.area).map(r=>({id:r.id,area:r.area})),wallChanges,furniture:layout.furniture.length,routeCount:routes.length,routes,applianceAccess,collisions});
 }
-fs.writeFileSync('variants-qa-results.json',JSON.stringify({scope:'Six D-based architectural options; shifted partitions and doors, rotated solids, shell, 500 mm avatar routes, independent room access, swing and appliance leaves. Conceptual, subject to survey.',results},null,2));
-console.log('Six layouts validated:',results.map(r=>`${r.id}: ${r.routeCount} routes`).join(', '));
+fs.writeFileSync('variants-qa-results.json',JSON.stringify({scope:'Eight D-based options, including three wardrobe fit-outs in one architectural shell; shifted partitions and doors, rotated solids, shell, 500 mm avatar routes, independent room access, swing and appliance leaves. Conceptual, subject to survey.',results},null,2));
+console.log('Eight layouts validated:',results.map(r=>`${r.id}: ${r.routeCount} routes`).join(', '));
