@@ -21,7 +21,7 @@ const overlap = (a,b) => {
   return true;
 };
 
-assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I']);
+assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I','J','K']);
 const base=layouts[0],results=[];
 assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,6,'Each option must have genuinely different walls');
 for(const layout of layouts){
