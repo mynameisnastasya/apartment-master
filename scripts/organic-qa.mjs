@@ -14,8 +14,13 @@ try{
  const save=async name=>{const data=await page.evaluate(()=>{const a=window.apartment;a.render();return a.renderer.domElement.toDataURL('image/png');});fs.writeFileSync(`${output}/${name}.png`,Buffer.from(data.split(',')[1],'base64'));};
  const stats=await page.evaluate(()=>{let vertices=0,invalid=0;window.apartment.root.traverse(o=>{const p=o.geometry?.attributes.position;if(p){vertices+=p.count;for(const n of p.array)if(!Number.isFinite(n))invalid++;}});return{vertices,invalid,moon:!!window.apartment.root.getObjectByName('sculpted-lunar-relief'),stone:!!window.apartment.root.getObjectByName('living-stone-wall')};});
  assert.equal(stats.invalid,0);assert.ok(stats.moon&&stats.stone);await save('overview');
+ assert.ok(await page.evaluate(()=>!!window.apartment.root.getObjectByName('duvet-sculpted-folds')));
+ assert.ok(await page.evaluate(()=>!!window.apartment.root.getObjectByName('continuous-piping')));
+ assert.ok(stats.vertices<2500000,'Detailed geometry stays within the browser budget');
  for(const room of ['kitchen','living','adult','alice','bath']){await page.locator(`[data-room="${room}"]`).click();assert.equal(await page.evaluate(()=>window.apartment.state.focus),room);await save(room);await page.locator('#room-camera').click();assert.equal(await page.evaluate(()=>window.apartment.state.interior),false);await save(room+'-cutaway');await page.locator('#room-camera').click();}
  await page.locator('[data-room="adult"]').click();await page.locator('#lighting-toggle').click();assert.equal(await page.evaluate(()=>window.apartment.state.evening),true);await save('adult-evening');await page.locator('#lighting-toggle').click();
+ await page.locator('#detail-light').click();assert.equal(await page.evaluate(()=>window.apartment.state.detailLight),false);await save('adult-lightweight');await page.locator('#detail-light').click();
+ await page.locator('[data-room="bath"]').click();assert.ok(await page.evaluate(()=>!!window.apartment.root.getObjectByName('optical-mirror')));
  for(const variant of ['D','E','F','G','H']){await page.locator(`[data-variant="${variant}"]`).click();assert.ok(await page.evaluate(()=>window.apartment.routeResult('entry','bathBasin').ok));}
  await page.locator('[data-variant="D"]').click();for(const id of ['japandi','nordic','atelier','graphite','linen']){await page.locator(`[data-style="${id}"]`).click();assert.equal(await page.evaluate(()=>window.apartment.state.style),id);}
  const exportBytes=await page.evaluate(async()=>(await window.apartment.exportModel()).byteLength);assert.ok(exportBytes>10000);

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import {createFurniture} from './furniture.js';
 import {createDecor,box} from './build.js';
+import {Reflector} from 'three/addons/objects/Reflector.js';
 
 export function roomSpec(layout,name,interior=false){
  const east=layout.partitions.find(o=>o.id==='d-bath-east').x,south=layout.partitions.find(o=>o.id==='d-bath-south-left').y;
@@ -66,6 +67,17 @@ export function createStudio(geometry,layout,m,name){
  for(const c of [...decor.children]){
   const bounds=new THREE.Box3().setFromObject(c),cx=(bounds.min.x+bounds.max.x)*500,cy=(bounds.min.z+bounds.max.z)*500;
   if(cx>=x&&cx<=x2&&cy>=y&&cy<=y2)root.add(c);
+ }
+ // Room views get actual planar reflections; the full apartment/export retains PBR mirrors.
+ const mirrors=[];root.traverse(o=>{if(o.name==='mirror-face')mirrors.push(o);});
+ for(const face of mirrors){
+  const {width,height}=face.geometry.parameters;
+  if(!width||!height)continue;
+  const reflection=new Reflector(new THREE.PlaneGeometry(width-.045,height-.045),{color:0xc7cbc8,textureWidth:512,textureHeight:512,clipBias:.003});
+  reflection.name='optical-mirror';reflection.position.z=.014;
+  const update=reflection.onBeforeRender;
+  reflection.onBeforeRender=function(renderer,scene,...args){if(!scene.overrideMaterial)update.call(this,renderer,scene,...args);};
+  face.add(reflection);
  }
  return root;
 }

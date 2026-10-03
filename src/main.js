@@ -10,6 +10,7 @@ import {createStudio,roomSpec} from './scene/studio.js';
 import {Cameras} from './interaction/cameras.js';
 import {colliders,canStand,findRoute} from './interaction/collision.js';
 import {openingLeaf} from './interaction/appliances.js';
+import {RealismRenderer} from './scene/realism.js';
 async function main(){
 await prepareTextures();
 const $=s=>document.querySelector(s);
@@ -24,8 +25,13 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.shadowMap.e
 const pmrem=new THREE.PMREMGenerator(renderer);const roomEnvironment=new RoomEnvironment();const environment=pmrem.fromScene(roomEnvironment,.04);scene.environment=environment.texture;scene.environmentIntensity=.45;roomEnvironment.dispose();pmrem.dispose();
 const ground=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:initialStyle.background,roughness:1}));ground.rotation.x=-Math.PI/2;ground.position.y=-.115;ground.receiveShadow=true;scene.add(ground);
 const cameras=new Cameras(renderer.domElement,geometry,()=>obstacles,()=>{needsRender=true;});
+const realism=new RealismRenderer(renderer,scene,cameras.camera);
+state.detailLight=window.innerWidth>=800;
+const qualityButton=document.createElement('button');qualityButton.id='detail-light';qualityButton.textContent='Детальный свет';qualityButton.title='Контактные тени и сглаживание в перспективе';qualityButton.setAttribute('aria-pressed',String(state.detailLight));$('#modes').insertBefore(qualityButton,$('#reset'));
+qualityButton.onclick=()=>{state.detailLight=!state.detailLight;qualityButton.setAttribute('aria-pressed',String(state.detailLight));needsRender=true;};
+function renderFrame(){realism.render(cameras.camera,state.detailLight&&state.mode!=='walk');}
 const annotationLayer=$('#annotation-layer');let highlight=null;
-function dispose(group){group?.traverse(o=>{o.geometry?.dispose();});}
+function dispose(group){group?.traverse(o=>{o.geometry?.dispose();if(o.isReflector){o.getRenderTarget().dispose();o.material.dispose();}});}
 function addAnnotation(text,x,y,dim=false,z=30){const el=document.createElement('div');el.className='annotation'+(dim?' dim':'');el.textContent=text;annotationLayer.append(el);annotations.push({el,p:new THREE.Vector3(mm(x),mm(z),mm(y))});}
 function serviceZone(o){const angle=(o.rotation||0)*Math.PI/180;const f=['north','east','south','west'][(['north','east','south','west'].indexOf(o.front||'south')+Math.round((o.rotation||0)/90))%4];if(o.rotation){const w=Math.abs(o.width*Math.cos(angle))+Math.abs(o.depth*Math.sin(angle)),d=Math.abs(o.width*Math.sin(angle))+Math.abs(o.depth*Math.cos(angle));o={...o,x:o.x+o.width/2-w/2,y:o.y+o.depth/2-d/2,width:w,depth:d};}let reach=['fridge','dishwasher','washer','hob'].includes(o.type)?650:['chair','stool'].includes(o.type)?300:600;
  if(o.type==='bed'||['upper','tv','mirror','shower','shelf'].includes(o.type))return null;
@@ -74,10 +80,10 @@ function download(blob,name){const a=document.createElement('a');a.href=URL.crea
 function downloadJSON(){download(new Blob([JSON.stringify({project,geometry,layouts,selectedLayout:layout.id},null,2)],{type:'application/json'}),'MASTER-APARTMENT.json');}
 function exportModel(){const exportRoot=new THREE.Group();exportRoot.name='MASTER_APARTMENT_'+layout.id;exportRoot.userData={units:'meters',sourceDataUnits:'mm',layout:layout.id,approvalStatus:project.approvalStatus};exportRoot.add(createArchitecture(geometry,layout,mats,{cut:false,plan:false,walls:true,doorsOpen:true}));for(const o of layout.furniture)exportRoot.add(createFurniture(o,mats));exportRoot.add(createDecor(layout,mats));return new Promise((resolve,reject)=>new GLTFExporter().parse(exportRoot,resolve,reject,{binary:true,onlyVisible:true}));}
 $('#export').onclick=async()=>{try{download(new Blob([await exportModel()],{type:'model/gltf-binary'}),'MASTER-'+layout.id+'.glb');toast('Полная модель '+layout.id+' сохранена.');}catch(e){toast('Ошибка экспорта: '+e.message);}};
-$('#snapshot').onclick=()=>{renderer.render(scene,cameras.camera);renderer.domElement.toBlob(blob=>download(blob,'apartment-'+layout.id+'-'+state.mode+'.png'));};
-new ResizeObserver(()=>{needsRender=true;const {width,height}=$('#canvas-container').getBoundingClientRect();renderer.setSize(width,height);cameras.resize(width,height);}).observe($('#canvas-container'));
-const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);cameras.tick(clock.getDelta());if(!needsRender&&state.mode!=='walk')return;needsRender=false;for(const a of annotations){const p=a.p.clone().project(cameras.camera);a.el.style.left=(p.x*.5+.5)*renderer.domElement.clientWidth+'px';a.el.style.top=(-p.y*.5+.5)*renderer.domElement.clientHeight+'px';a.el.style.display=p.z<1&&p.z>-1?'':'none';}renderer.render(scene,cameras.camera);}rebuild();animate();const initialRoom=new URLSearchParams(location.search).get('room');if(['adult','alice','kitchen','living','bath'].includes(initialRoom))viewRoom(initialRoom);
-window.apartment={get scene(){return scene},get root(){return root},state,geometry,layouts,project,interiorStyles,setStyle,get layout(){return layout},get camera(){return cameras.camera},get renderer(){return renderer},cameras,setVariant,setMode,viewRoom,rebuild,selectObject,routeResult,startRoute,canStand:(x,y)=>canStand(x,y,geometry,obstacles,250),setLayer:(key,v)=>{state[key]=v;rebuild();},exportModel,serviceZone,render:()=>renderer.render(scene,cameras.camera),ready:true};
+$('#snapshot').onclick=()=>{renderFrame();renderer.domElement.toBlob(blob=>download(blob,'apartment-'+layout.id+'-'+state.mode+'.png'));};
+new ResizeObserver(()=>{needsRender=true;const {width,height}=$('#canvas-container').getBoundingClientRect();renderer.setSize(width,height);cameras.resize(width,height);realism.resize(width,height);}).observe($('#canvas-container'));
+const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);cameras.tick(clock.getDelta());if(!needsRender&&state.mode!=='walk')return;needsRender=false;for(const a of annotations){const p=a.p.clone().project(cameras.camera);a.el.style.left=(p.x*.5+.5)*renderer.domElement.clientWidth+'px';a.el.style.top=(-p.y*.5+.5)*renderer.domElement.clientHeight+'px';a.el.style.display=p.z<1&&p.z>-1?'':'none';}renderFrame();}rebuild();animate();const initialRoom=new URLSearchParams(location.search).get('room');if(['adult','alice','kitchen','living','bath'].includes(initialRoom))viewRoom(initialRoom);
+window.apartment={get scene(){return scene},get root(){return root},state,geometry,layouts,project,interiorStyles,setStyle,get layout(){return layout},get camera(){return cameras.camera},get renderer(){return renderer},cameras,setVariant,setMode,viewRoom,rebuild,selectObject,routeResult,startRoute,canStand:(x,y)=>canStand(x,y,geometry,obstacles,250),setLayer:(key,v)=>{state[key]=v;rebuild();},exportModel,serviceZone,render:()=>renderFrame(),ready:true};
 
 }
 main().catch(console.error);
