@@ -24,7 +24,7 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
 
  if(interior){
   const ceilingGeo=new THREE.ShapeGeometry(shape);ceilingGeo.rotateX(Math.PI/2);
-  const ceiling=new THREE.Mesh(ceilingGeo,m.wall);ceiling.position.y=geometry.ceilingHeight/1000;
+  const ceiling=new THREE.Mesh(ceilingGeo,m.lacquer);ceiling.position.y=geometry.ceilingHeight/1000;
   ceiling.name='interior-ceiling';ceiling.receiveShadow=true;root.add(ceiling);
  }
 
@@ -70,9 +70,12 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
  }
 
  const decor=createDecor(layout,m);
+ const inside=(px,py)=>{let hit=false;for(let i=0,j=polygon.length-1;i<polygon.length;j=i++){
+  const a=polygon[i],b=polygon[j];if((a[1]>py)!==(b[1]>py)&&px<(b[0]-a[0])*(py-a[1])/(b[1]-a[1])+a[0])hit=!hit;
+ }return hit;};
  for(const c of [...decor.children]){
   const bounds=new THREE.Box3().setFromObject(c),cx=(bounds.min.x+bounds.max.x)*500,cy=(bounds.min.z+bounds.max.z)*500;
-  if(cx>=x&&cx<=x2&&cy>=y&&cy<=y2)root.add(c);
+  if(inside(cx,cy))root.add(c);
  }
  // Room views get actual planar reflections; the full apartment/export retains PBR mirrors.
  const mirrors=[];root.traverse(o=>{if(o.name==='mirror-face')mirrors.push(o);});
