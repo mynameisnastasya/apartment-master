@@ -64,8 +64,29 @@ try{
   await page.waitForTimeout(500);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await page.screenshot({path:'test-results/kseniya/mobile.png',fullPage:true});
+
+  await page.setViewportSize({width:1400,height:1000});
+  await page.goto('http://127.0.0.1:4173/kseniya-prohodnaya.html');
+  await page.waitForFunction(()=>window.kseniyaDebug?.getState().ready,{timeout:20000});
+  assert.equal((await page.evaluate(()=>kseniyaDebug.getState())).layout,'walkthrough');
+  assert.equal(await page.locator('[data-layout]').count(),1);
+  assert.equal(await page.locator('a[href*="LIZA"],a[href*="index.html"],a[href*="model.html"]').count(),0);
+  assert.match(await page.locator('#scheme-title').textContent(),/Проходная/);
+  assert.match(await page.locator('#rooms').textContent(),/≈8,6/);
+  await page.locator('#view2d').click();
+  assert.match(await page.locator('#plan').textContent(),/≈8,0/);
+  assert.match(await page.locator('#plan').textContent(),/120 × 200/);
+  const soloDownloadPromise=page.waitForEvent('download');
+  await page.locator('#download').click();
+  const soloDownload=await soloDownloadPromise;
+  assert.equal(soloDownload.suggestedFilename(),'kseniya-walkthrough.svg');
+  await page.screenshot({path:'test-results/kseniya/prohodnaya-plus.png',fullPage:true});
+  await page.locator('#view3d').click();
+  await page.locator('[data-room="living"]').click();
+  assert.match(await page.locator('#room-detail').textContent(),/транзит/);
+
   assert.deepEqual(errors,[]);
-  console.log('PASS: variants 03-05, isolated triroom default, split/original comparisons, WebGL, 2D/3D, furniture, cutaway, camera, SVG download, mobile overflow, isolated navigation.');
+  console.log('PASS: variants 03-05 + standalone Pass-through Plus, WebGL, 2D/3D, furniture, cutaway, camera, SVG download, mobile overflow, isolated navigation.');
 } finally {
   if(browser)await browser.close();
   server.kill('SIGTERM');
