@@ -59,13 +59,19 @@ function archPanel(g,m,w,h,x,z,e,yaw){
 export function createOrganicDecor(layout,m){
  const g=new THREE.Group();g.name='QUIET_GEOLOGY';const get=id=>layout.furniture.find(o=>o.id===id);
  // Public focal point: a quiet mineral media field, separated from oak by shadow.
- relief(g,m.rock,1.42,2.38,.032,3.62,.10,Math.PI/2,'living-stone-wall');
+ if(get('sofa')){relief(g,m.rock,1.42,2.38,.032,3.62,.10,Math.PI/2,'living-stone-wall');
  box(g,m.joinery,.006,2.89,.035,.055,2.45,.06,.006,'media-oak-return');
- box(g,m.lamp,.072,2.94,.005,1.36,.009,2.45,.001,'living-graze');
+ box(g,m.lamp,.072,2.94,.005,1.36,.009,2.45,.001,'living-graze');}
 
  const sofa=get('sofa');if(sofa){const z=(sofa.y+sofa.depth/2)/1000;
   box(g,m.darkStone,.78,z-.16,.18,.32,.27,.015,.05,'table-pedestal');
   liveEdgeSlab(g,m.joinery,.60,z-.26,.65,.50,.065,.285,'collectible-table');
+ }
+ if(layout.id==='W4'){
+  mirror(g,m,.035,4.86,1.32,.60,1.75,Math.PI/2,'gallery-mirror');
+  box(g,m.lamp,.04,3.81,2.20,.012,.008,2.46,.002,'gallery-ceiling-wash');
+  const light=new THREE.PointLight(0xffe1b1,5,3.5,2);
+  light.position.set(1.55,2.42,4.62);light.name='gallery-soft-light';g.add(light);
  }
  // Entry: full-height joinery reads as a wall; a single mirror is its light slot.
  const hall=get('hall-wardrobe');if(hall){const x=hall.x/1000,z=hall.y/1000,d=hall.depth/1000;
@@ -90,9 +96,9 @@ export function createOrganicDecor(layout,m){
   box(g,m.upholstery,x-.095,cz-.93,.065,1.86,.61,.44,.030,'integrated-headboard');
 
   moon(g,m,x-.062,cz+.06,1.77,.77,-Math.PI/2);
-  for(const side of [-1,1]){liveEdgeSlab(g,m.joinery,x-.27,cz+side*1.02-.12,.24,.25,.040,.50,'integrated-bedside');}
+  for(const side of (layout.id==='W4'?[1]:[-1,1])){liveEdgeSlab(g,m.joinery,x-.27,cz+side*1.02-.12,.24,.25,.040,.50,'integrated-bedside');}
   box(g,m.lamp,x-.105,cz-.90,.007,1.80,.008,1.05,.001,'headboard-hidden-light');
-  globe(g,m,x-.18,cz-1.02,.63,.065);
+  globe(g,m,x-.18,cz+(layout.id==='W4'?1.02:-1.02),.63,.065);
  }
  // Second room: same arc language, softer scale; desk and storage form a system.
  const child=get('alice-bed');if(child){const cz=(child.y+child.depth/2)/1000,x=(child.x+child.width/2+child.depth/2)/1000-.028;

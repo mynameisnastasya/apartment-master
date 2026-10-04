@@ -37,11 +37,11 @@ export function createFurniture(o,m){
  };
  const cabinet=()=>{b(m.shadow,x+24,y+24,w-48,d-48,58,e);b(m.joinery,x+4,y+4,w-8,d-8,h-86,e+58,10);facade(h-110,e+66);};
  if(o.type==='dressing-rack'){
-  // Open, east-backed millwork: two 750 mm bays, clothes stay inside the footprint.
+  // Open, east-backed millwork: two equal bays sized to the actual row, clothes stay inside the footprint.
   b(m.joinery,x+w-20,y,20,d,h,0);b(m.joinery,x,y,w,20,h,0);b(m.joinery,x,y+d-20,w,20,h,0);
   b(m.joinery,x,y+d/2-10,w,20,h,0);b(m.joinery,x,y,w,d,28,70);b(m.joinery,x,y,w,d,28,h-28);
   b(m.joinery,x,y,w,d,24,2120);
-  for(const [start,end,z] of [[30,720,1920],[780,1470,1920],[780,1470,960]]){
+  for(const [start,end,z] of [[30,d/2-30,1920],[d/2+30,d-30,1920],[d/2+30,d-30,960]]){
    tube(g,m.bronze,[[x+300,y+start,z],[x+300,y+end,z]],12);
    for(let k=0;k<5;k++){
     const yy=y+start+65+k*(end-start-130)/4;
@@ -51,7 +51,7 @@ export function createFurniture(o,m){
    }
   }
   for(const yy of [y+24,y+d-30])b(m.lamp,x+20,yy,8,6,1990,110,2);
-  for(let k=0;k<2;k++)b(m.upholstery,x+55,y+80+k*750,470,560,160,2180,12);
+  for(let k=0;k<2;k++)b(m.upholstery,x+55,y+80+k*d/2,470,Math.min(560,d/2-160),160,2180,12);
  }
  else if(o.type==='dressing-shelves'){
   b(m.joinery,x,y+d-18,w,18,h,0);
