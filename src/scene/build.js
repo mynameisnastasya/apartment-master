@@ -26,7 +26,7 @@ export function createArchitecture(geometry,layout,m,{cut=true,plan=false,walls=
   const bathSouth=layout.partitions.find(o=>o.id==='d-bath-south-left').y;
   const bathFloor=box(root,m.bathFloor,2440,0,bathEast-2440,bathSouth,10,1,'bath-floor');bathFloor.castShadow=false;
   const sofa=layout.furniture.find(o=>o.id==='sofa');
-  if(sofa){const livingRug=layout.id==='W4'?softBox(root,m.rug,100,2600,1960,1060,8,3,120):softBox(root,m.rug,360,sofa.y+70,1910,1130,8,3,120);livingRug.name='living-rug';livingRug.castShadow=false;}
+  if(sofa){const livingRug=layout.familyDesign?softBox(root,m.rug,sofa.x+30,sofa.y-600,sofa.width-60,1400,8,3,120):layout.id==='W4'?softBox(root,m.rug,100,2600,1960,1060,8,3,120):softBox(root,m.rug,360,sofa.y+70,1910,1130,8,3,120);livingRug.name='living-rug';livingRug.castShadow=false;}
  }
 
  const wallGroup=new THREE.Group();wallGroup.name='WALLS';root.add(wallGroup);wallGroup.visible=walls;
@@ -69,6 +69,11 @@ export function createArchitecture(geometry,layout,m,{cut=true,plan=false,walls=
  }
 
  if(walls&&!plan&&!cut)for(const win of geometry.windows){
+  if(layout.familyDesign&&win.id==='window-alice'){
+   box(wallGroup,m.curtain,win.x,win.y-70,win.width,30,340,2160,'alice-roman-blind');
+   for(let i=0;i<4;i++)box(wallGroup,m.bedding,win.x,win.y-75,win.width,8,8,2175+i*75,'roman-blind-fold');
+   continue;
+  }
   const curtainY=win.y-92;
   box(wallGroup,m.bronze,win.x-100,curtainY-14,win.width+200,10,10,2510,'curtain-rail');
   const geo=new THREE.PlaneGeometry(mm(win.width+120),2.23,104,12),p=geo.attributes.position;
