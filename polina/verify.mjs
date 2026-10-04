@@ -23,7 +23,11 @@ try{
 
   await page.goto('http://127.0.0.1:4173/polina.html');
   await page.waitForFunction(()=>window.polinaDebug?.getState());
+  await page.waitForFunction(()=>window.polina3DDebug?.getState().ready,{timeout:20000});
   assert.equal((await page.evaluate(()=>polinaDebug.getState())).current,'v3');
+  assert.equal((await page.evaluate(()=>polinaDebug.getState())).view,'3d');
+  assert.equal((await page.evaluate(()=>polina3DDebug.getState())).current,'v3');
+  assert.equal(await page.locator('#polina-3d canvas').isVisible(),true);
   assert.equal(await page.locator('#switcher button').count(),4);
   assert.match(await page.locator('#side-title').textContent(),/Семь постоянных мест сна/);
   assert.match(await page.locator('#sleepmap').textContent(),/7 мест/);
@@ -33,7 +37,23 @@ try{
   for(const v of ['original','v1','v2','v3']){
     await page.locator('#switcher button[data-v="'+v+'"]').click();
     assert.equal((await page.evaluate(()=>polinaDebug.getState())).current,v);
+    assert.equal((await page.evaluate(()=>polina3DDebug.getState())).current,v);
   }
+  await page.locator('#p3d-furniture').uncheck();
+  assert.equal((await page.evaluate(()=>polina3DDebug.getState())).showFurniture,false);
+  await page.locator('#p3d-furniture').check();
+  await page.locator('#p3d-cutaway').uncheck();
+  assert.equal((await page.evaluate(()=>polina3DDebug.getState())).cutaway,false);
+  await page.locator('#p3d-cutaway').check();
+  await page.locator('#p3d-rotate').click();
+  await page.locator('#p3d-zoom-in').click();
+  await page.locator('#p3d-reset').click();
+  await page.screenshot({path:'test-results/polina/3d.png',fullPage:true});
+  await page.locator('#p-view2d').click();
+  assert.equal((await page.evaluate(()=>polinaDebug.getState())).view,'2d');
+  assert.equal(await page.locator('#polina-2d svg').isVisible(),true);
+  await page.locator('#p-view3d').click();
+  assert.equal((await page.evaluate(()=>polinaDebug.getState())).view,'3d');
 
   await page.goto('http://127.0.0.1:4173/polina.html#v1');
   await page.waitForFunction(()=>window.polinaDebug?.getState().current==='v1');
@@ -52,7 +72,7 @@ try{
   await page.screenshot({path:'test-results/polina/mobile.png',fullPage:true});
 
   assert.deepEqual(errors,[]);
-  console.log('PASS: Polina variants, v3 furniture/sleep plan, deep links, SVG download, mobile overflow, isolated navigation.');
+  console.log('PASS: Polina interactive 3D/2D, variant-synced geometry, furniture, cutaway/camera controls, v3 sleep plan, deep links, SVG download, mobile overflow, isolated navigation.');
 } finally {
   if(browser)await browser.close();
   server.kill('SIGTERM');
