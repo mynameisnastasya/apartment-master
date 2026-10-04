@@ -47,7 +47,20 @@ export function createFurniture(o,m){
     const yy=y+start+65+k*(end-start-130)/4;
     tube(g,m.bronze,[[x+90,yy,z-100],[x+300,yy,z-15],[x+510,yy,z-100],[x+90,yy,z-100]],5);
     const length=start<100?1230:660;
-    const cloth=b(k%3===0?m.olive:k%3===1?m.bedding:m.wine,x+95,yy-14,410,28,length,z-100-length,12);cloth.name='dressing-hanging-clothes';
+    const fabric=k%3===0?m.olive:k%3===1?m.bedding:m.wine;
+    if(d>2000){
+     const height=length/1000,shape=new THREE.Shape();
+     shape.moveTo(-.045,height-.025);shape.quadraticCurveTo(0,height-.07,.045,height-.025);
+     shape.lineTo(.15,height-.065);shape.lineTo(.205,height-.31);shape.lineTo(.151,height-.327);
+     shape.lineTo(.125,height-.21);shape.lineTo(.14,.025);
+     shape.quadraticCurveTo(.07,.012,0,.027);shape.quadraticCurveTo(-.07,.012,-.14,.025);
+     shape.lineTo(-.125,height-.21);shape.lineTo(-.151,height-.327);shape.lineTo(-.205,height-.31);shape.lineTo(-.15,height-.065);shape.closePath();
+     const geo=new THREE.ExtrudeGeometry(shape,{depth:.018,bevelEnabled:true,bevelThickness:.004,bevelSize:.005,bevelSegments:2,curveSegments:8});
+     const cloth=new THREE.Mesh(geo,fabric);cloth.position.set((x+300)/1000,(z-100-length)/1000,(yy-9)/1000);
+     cloth.name='dressing-hanging-clothes';cloth.castShadow=true;cloth.receiveShadow=true;g.add(cloth);
+    }else{
+     const cloth=b(fabric,x+95,yy-14,410,28,length,z-100-length,12);cloth.name='dressing-hanging-clothes';
+    }
    }
   }
   for(const yy of [y+24,y+d-30])b(m.lamp,x+20,yy,8,6,1990,110,2);
