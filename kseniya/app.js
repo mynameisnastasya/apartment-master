@@ -3,7 +3,8 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {roomsFor,floorZones,wallData,windows,openings,furniture,layoutMeta} from './model.js';
 
 const $=s=>document.querySelector(s);
-let layout='balanced',is2d=false,showFurniture=true,cutaway=true,scene,camera,renderer,controls,group,ready=false;
+const pagePreset=window.kseniyaPagePreset||{};
+let layout=pagePreset.defaultLayout||'balanced',is2d=false,showFurniture=true,cutaway=true,scene,camera,renderer,controls,group,ready=false;
 const materials=new Map();
 function mat(color,opacity=1){const key=color+opacity;if(!materials.has(key))materials.set(key,new THREE.MeshStandardMaterial({color,roughness:.83,transparent:opacity<1,opacity}));return materials.get(key);}
 function box(x,z,w,d,h,color,y=0,opacity=1,parent=group){const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(color,opacity));mesh.position.set(x+w/2,y+h/2,z+d/2);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
@@ -23,7 +24,7 @@ function furnish(f){const {x,z,w,d,h,color,type}=f;
 }
 function draw3d(){if(!ready)return;if(group){scene.remove(group);group.traverse(o=>o.geometry?.dispose());}group=new THREE.Group();scene.add(group);
  floorZones(layout).forEach(floor);
- wallData(layout).forEach(a=>{if(a[4]==='glass'){segment(a,cutaway?.58:1.10,'#bd7c4c');if(!cutaway)segment(a,1.60,'#a4c8c5',1.10,.22);}else{const c=a[4]==='proposed'?'#c89670':(a[4]==='outer'?'#e8e3d6':'#f1ede3');segment(a,cutaway?.58:2.70,c);}});
+ wallData(layout).forEach(a=>{if(a[4]==='glass'){segment(a,cutaway?.58:1.10,'#bd7c4c');if(!cutaway)segment(a,1.60,'#a4c8c5',1.10,.22);}else if(a[4]==='transom'){segment(a,cutaway?.58:2.15,'#f1ede3');if(!cutaway)segment(a,.55,'#a4c8c5',2.15,.26);}else{const c=a[4]==='proposed'?'#c89670':(a[4]==='outer'?'#e8e3d6':'#f1ede3');segment(a,cutaway?.58:2.70,c);}});
  windows.forEach(a=>{segment(a,.12,'#fbfaf4',cutaway?.58:.85);segment(a,cutaway?.30:1.45,'#a8cbcc',cutaway?.70:.97,.42);});
  if(showFurniture)furniture(layout).forEach(furnish);
 }
@@ -34,7 +35,7 @@ function svg(){
  const text=(x,y,t,size=.15,anchor='middle')=>a.push('<text x="'+x+'" y="'+y+'" font-family="Arial,sans-serif" font-size="'+size+'" text-anchor="'+anchor+'" fill="#364b3c">'+escapeHtml(t)+'</text>');
  floorZones(layout).forEach(r=>rect(r.x,r.z,r.w,r.d,r.color,'none'));
  if(showFurniture)furniture(layout).forEach(f=>{if(f.type==='roundtable'){a.push('<circle cx="'+(f.x+f.w/2)+'" cy="'+(f.z+f.d/2)+'" r="'+(f.w/2)+'" fill="'+f.color+'" stroke="#a49c8c" stroke-width=".018"/>');}else{rect(f.x,f.z,f.w,f.d,f.color);if(f.type==='bed'){rect(f.x+.05,f.z+.10,f.w-.10,.35,'#fffaf0');rect(f.x+.03,f.z+.60,f.w-.06,f.d-.65,'#c6bca7');}if(f.type==='sofa')rect(f.x,f.z,.16,f.d,'#596f54');}a.push('<title>'+escapeHtml(f.name)+'</title>');});
- wallData(layout).forEach(([x,y,X,Y,type])=>a.push('<path d="M'+x+' '+y+'L'+X+' '+Y+'" stroke="'+(type==='glass'?'#bd7c4c':type==='proposed'?'#c9875d':'#566454')+'" stroke-width=".12" fill="none"/>'));
+ wallData(layout).forEach(([x,y,X,Y,type])=>a.push('<path d="M'+x+' '+y+'L'+X+' '+Y+'" stroke="'+(type==='glass'||type==='transom'?'#bd7c4c':type==='proposed'?'#c9875d':'#566454')+'" stroke-width=".12" fill="none"/>'));
  windows.forEach(([x,y,X,Y])=>a.push('<path d="M'+x+' '+y+'L'+X+' '+Y+'" stroke="#7db4c0" stroke-width=".065"/>'));
  openings(layout).forEach(([x,y,X,Y])=>a.push('<path d="M'+x+' '+y+'L'+X+' '+Y+'" stroke="#9c8d79" stroke-width=".025" stroke-dasharray=".08 .05"/>'));
  roomsFor(layout).forEach(r=>{text(r.labelX??(r.x+r.w/2),r.labelZ??(r.z+r.d/2),r.name,.15);text(r.labelX??(r.x+r.w/2),(r.labelZ??(r.z+r.d/2))+.22,r.area+' м²',.125);});
