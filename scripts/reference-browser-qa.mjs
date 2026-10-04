@@ -20,7 +20,7 @@ try{
   await image.scrollIntoViewIfNeeded();
   await image.evaluate(img=>img.decode());
  }
- for(const image of await page.locator('.variant-thumb').all())await image.evaluate(img=>img.decode());
+ for(const image of await page.locator('.variant-thumb').all()){await image.scrollIntoViewIfNeeded();await image.evaluate(img=>img.decode());}
  await page.screenshot({path:'browser-reference-artifacts/album-desktop.png',fullPage:true});
  await page.setViewportSize({width:390,height:844});
  await page.locator('#mobile-nav').click();assert.ok(await page.locator('.side.open').isVisible());
