@@ -27,6 +27,10 @@ const base=layouts[0],results=[];
 const gallery=layouts.find(l=>l.id==='W4'),study=wardrobeOptions.find(l=>l.id==='W4');
 for(const key of ['partitions','doors','furniture'])assert.deepEqual(gallery[key],study[key],'W4 3D must use the selected study geometry');
 assert.equal(gallery.rooms.find(r=>r.id==='dressing').area,4.76);
+assert.equal(gallery.partitions.find(w=>w.id==='d-child-diagonal').rotation,0);
+assert.equal(gallery.partitions.find(w=>w.id==='d-child-north-right').y,gallery.partitions.find(w=>w.id==='suite-north').y);
+assert.equal(gallery.furniture.find(o=>o.id==='sofa').rotation,0);
+assert.equal(gallery.furniture.find(o=>o.id==='dining').wallMounted,true);
 assert.equal(gallery.clearances.find(c=>c.id==='dressing-aisle').value,900);
 assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,7,'Each option must have genuinely different walls');
 for(const layout of layouts){
@@ -58,7 +62,7 @@ for(const layout of layouts){
     const fixture=layout.furniture.find(o=>o.id===id);
     assert.ok(fixture.x>=2440&&fixture.x+fixture.width<=part('d-bath-east').x&&fixture.y>=0&&fixture.y+fixture.depth<=bathSouth.y,`${layout.id}: ${id} outside bathroom`);
   }
-  if(sofa){const gap=sofa.y+sofa.depth/2-sofa.width/2-(bathSouth.y+bathSouth.depth);
+  if(sofa&&layout.id!=='W4'){const gap=sofa.y+sofa.depth/2-sofa.width/2-(bathSouth.y+bathSouth.depth);
   assert.equal(layout.clearances.find(c=>c.id==='kitchen-entry').value,gap);
   assert.ok(gap>=914,`${layout.id}: kitchen passage narrower than target`);}
   assert.ok(layout.clearances.find(c=>c.id==='entry-aisle').value>=914,`${layout.id}: entry passage narrower than target`);

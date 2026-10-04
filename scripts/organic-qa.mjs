@@ -36,8 +36,9 @@ try{
  }
  await page.locator('[data-variant="W4"]').click();
  await page.locator('[data-room="dressing"]').click();await page.locator('#room-camera').click();await save('W4-dressing-cutaway');await page.locator('#room-camera').click();
- for(const room of ['adult','living']){await page.locator('[data-room="'+room+'"]').click();await save('W4-'+room);}
+ for(const room of ['adult','living','alice']){await page.locator('[data-room="'+room+'"]').click();await save('W4-'+room);}
  await page.getByRole('button',{name:'План',exact:true}).click();await save('W4-plan');
+ assert.ok(await page.evaluate(()=>{const l=window.apartment.layout,s=l.furniture.find(o=>o.id==='sofa'),bar=l.furniture.find(o=>o.id==='dining');return s.width===2000&&s.rotation===0&&bar.wallMounted&&l.partitions.find(w=>w.id==='d-child-diagonal').rotation===0;}));
  assert.ok(await page.evaluate(()=>!window.apartment.root.getObjectByName('living-stone-wall')));
  await page.getByRole('button',{name:'Прогулка',exact:true}).click();
  const visitsW4=await page.evaluate(()=>{const a=window.apartment;return ['dressing','adult','alice','living','kitchen','bath'].map(room=>{a.viewRoom(room);return{room,ok:a.canStand(a.camera.position.x*1000,a.camera.position.z*1000)};});});

@@ -59,15 +59,17 @@ function archPanel(g,m,w,h,x,z,e,yaw){
 export function createOrganicDecor(layout,m){
  const g=new THREE.Group();g.name='QUIET_GEOLOGY';const get=id=>layout.furniture.find(o=>o.id===id);
  // Public focal point: a quiet mineral media field, separated from oak by shadow.
- if(get('sofa')){relief(g,m.rock,1.42,2.38,.032,3.62,.10,Math.PI/2,'living-stone-wall');
+ if(get('sofa')&&layout.id!=='W4'){relief(g,m.rock,1.42,2.38,.032,3.62,.10,Math.PI/2,'living-stone-wall');
  box(g,m.joinery,.006,2.89,.035,.055,2.45,.06,.006,'media-oak-return');
  box(g,m.lamp,.072,2.94,.005,1.36,.009,2.45,.001,'living-graze');}
 
- const sofa=get('sofa');if(sofa){const z=(sofa.y+sofa.depth/2)/1000;
+ const sofa=get('sofa');if(sofa&&layout.id!=='W4'){const z=(sofa.y+sofa.depth/2)/1000;
   box(g,m.darkStone,.78,z-.16,.18,.32,.27,.015,.05,'table-pedestal');
   liveEdgeSlab(g,m.joinery,.60,z-.26,.65,.50,.065,.285,'collectible-table');
  }
  if(layout.id==='W4'){
+  box(g,m.joinery,.08,3.662,2,.012,1.15,.06,.006,'gallery-lounge-back-panel');
+  box(g,m.lamp,.14,3.650,1.88,.008,.008,1.20,.002,'gallery-lounge-wall-wash');
   mirror(g,m,.035,4.86,1.32,.60,1.75,Math.PI/2,'gallery-mirror');
   box(g,m.lamp,.04,3.81,2.20,.012,.008,2.46,.002,'gallery-ceiling-wash');
   const light=new THREE.PointLight(0xffe1b1,5,3.5,2);
