@@ -32,6 +32,12 @@ jobs:
         with:
           name: polina-layout-preview
           path: test-results/polina/
+      - run: node polina39/verify.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: polina-39-preview
+          path: test-results/polina39/
       - run: node scripts/organic-qa.mjs
       - uses: actions/upload-artifact@v4
         if: always()
