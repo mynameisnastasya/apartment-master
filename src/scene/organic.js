@@ -59,11 +59,11 @@ function archPanel(g,m,w,h,x,z,e,yaw){
 export function createOrganicDecor(layout,m){
  const g=new THREE.Group();g.name='QUIET_GEOLOGY';const get=id=>layout.furniture.find(o=>o.id===id);
  // Public focal point: a quiet mineral media field, separated from oak by shadow.
- if(get('sofa')&&layout.id!=='W4'){relief(g,m.rock,1.42,2.38,.032,3.62,.10,Math.PI/2,'living-stone-wall');
+ if(get('sofa')&&layout.id!=='W4'&&!layout.familyDesign){relief(g,m.rock,1.42,2.38,.032,3.62,.10,Math.PI/2,'living-stone-wall');
  box(g,m.joinery,.006,2.89,.035,.055,2.45,.06,.006,'media-oak-return');
  box(g,m.lamp,.072,2.94,.005,1.36,.009,2.45,.001,'living-graze');}
 
- const sofa=get('sofa');if(sofa&&layout.id!=='W4'){const z=(sofa.y+sofa.depth/2)/1000;
+ const sofa=get('sofa');if(sofa&&layout.id!=='W4'&&!layout.familyDesign){const z=(sofa.y+sofa.depth/2)/1000;
   box(g,m.darkStone,.78,z-.16,.18,.32,.27,.015,.05,'table-pedestal');
   liveEdgeSlab(g,m.joinery,.60,z-.26,.65,.50,.065,.285,'collectible-table');
  }
@@ -74,6 +74,11 @@ export function createOrganicDecor(layout,m){
   box(g,m.lamp,.04,3.81,2.20,.012,.008,2.46,.002,'gallery-ceiling-wash');
   const light=new THREE.PointLight(0xffe1b1,5,3.5,2);
   light.position.set(1.55,2.42,4.62);light.name='gallery-soft-light';g.add(light);
+ }
+ if(layout.familyDesign&&sofa){
+  const x=sofa.x/1000,w=sofa.width/1000,z=(sofa.y+sofa.depth+2)/1000;
+  box(g,m.joinery,x,z,w,.012,1.15,.06,.006,'family-lounge-back-panel');
+  box(g,m.lamp,x+.06,z-.012,w-.12,.008,.008,1.20,.002,'family-lounge-wall-wash');
  }
  // Entry: full-height joinery reads as a wall; a single mirror is its light slot.
  const hall=get('hall-wardrobe');if(hall){const x=hall.x/1000,z=hall.y/1000,d=hall.depth/1000;
@@ -108,10 +113,16 @@ export function createOrganicDecor(layout,m){
   box(g,m.upholstery,x-.10,cz-.52,.065,1.04,.43,.43,.04,'child-soft-headboard');
   box(g,m.joinery,x-.18,cz+.57,.18,.32,.034,.56,.01,'child-bedside');globe(g,m,x-.10,cz+.71,.69,.055);
  }
- const desk=get('alice-desk');if(desk){const x=desk.x/1000,z=desk.y/1000,w=desk.width/1000,d=desk.depth/1000;
+ const desk=get('alice-desk');if(desk&&!desk.windowWall){const x=desk.x/1000,z=desk.y/1000,w=desk.width/1000,d=desk.depth/1000;
   box(g,m.joinery,x,z+d-.03,w,.035,.43,.755,.009,'desk-wall');
   liveEdgeSlab(g,m.joinery,x,z+d-.19,w,.18,.032,1.18,'desk-shelf');
   box(g,m.lamp,x+.07,z+d-.08,w-.14,.012,.006,1.172,.001,'desk-task-light');
+ }
+ if(desk?.windowWall){
+  const x=(desk.x+desk.width-200)/1000,z=(desk.y+160)/1000;
+  box(g,m.bronze,x-.004,z,.008,.008,.40,.74,.002,'desk-lamp-stem');
+  box(g,m.bronze,x-.22,z-.035,.24,.07,.025,1.14,.01,'desk-lamp');
+  box(g,m.lamp,x-.20,z-.028,.20,.055,.005,1.13,.002,'desk-task-light');
  }
  // Mineral bathing room. Only one textured dry-wall zone; wet planes stay smooth.
  const basin=get('basin'),washer=get('washer'),tub=get('bath-tub');

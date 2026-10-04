@@ -1,3 +1,4 @@
+import {familyLayouts} from './family-layout.js';
 import reference from './layout-reference.json' with {type:'json'};
 import {createWardrobeStudies} from './wardrobe-studies.js';
 import {dressingLayouts} from './dressing-layout.js';
@@ -113,3 +114,5 @@ gallery.clearances=[
 const publicRoom=gallery.rooms.find(r=>r.id==='living');
 Object.assign(publicRoom,{name:'Кухня-гостиная',x:1400,y:2700});
 layouts.push(gallery);
+export const familyAlternatives=familyLayouts(base,layouts.find(l=>l.id==='J'));
+layouts.push(familyAlternatives[0]);

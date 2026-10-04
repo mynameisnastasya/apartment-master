@@ -26,7 +26,7 @@ try{
  // SwiftShader compiles each material combination on the CPU on its first use.
  // Keep the real click and state/error assertions, but allow that cold compilation.
  for(const id of ['japandi','nordic','atelier','graphite','linen']){const started=Date.now();await page.locator(`[data-style="${id}"]`).click({timeout:90000});assert.equal(await page.evaluate(()=>window.apartment.state.style),id);console.log(`Style ${id}: ${Date.now()-started} ms including software shader compilation`);}
- for(const variant of ['I','J','K','W4']){
+ for(const variant of ['I','J','K','W4','W6']){
   await page.locator(`[data-variant="${variant}"]`).click();
   assert.ok(await page.locator('[data-room="dressing"]').isVisible());
   await page.locator('[data-room="dressing"]').click();
@@ -34,6 +34,14 @@ try{
   assert.ok(await page.evaluate(()=>window.apartment.routeResult('entry','dressing').ok));
   await save(variant+'-dressing');
  }
+ await page.goto('http://127.0.0.1:4173/model.html?variant=W6&style=linen&room=alice');
+ await page.waitForFunction(()=>window.apartment?.ready&&window.apartment.state.variant==='W6'&&window.apartment.state.focus==='alice');
+ assert.ok(await page.evaluate(()=>!!window.apartment.root.getObjectByName('alice-dresser-drawer')&&!!window.apartment.root.getObjectByName('alice-window-glass')&&!window.apartment.root.getObjectByName('desk-wall')));
+ for(const room of ['alice','living','adult','dressing']){await page.locator('[data-room="'+room+'"]').click();await save('W6-'+room);}
+ await page.getByRole('button',{name:'План',exact:true}).click();await save('W6-plan');
+ await page.getByRole('button',{name:'Прогулка',exact:true}).click();
+ assert.ok(await page.evaluate(()=>{const a=window.apartment;return ['dressing','adult','alice','living','kitchen','bath'].every(room=>{a.viewRoom(room);return a.canStand(a.camera.position.x*1000,a.camera.position.z*1000);});}));
+ await page.goto('http://127.0.0.1:4173/model.html?variant=W4&style=linen');await page.waitForFunction(()=>window.apartment?.ready);
  await page.locator('[data-variant="W4"]').click();
  await page.locator('[data-room="dressing"]').click();await page.locator('#room-camera').click();await save('W4-dressing-cutaway');await page.locator('#room-camera').click();
  for(const room of ['adult','living','alice']){await page.locator('[data-room="'+room+'"]').click();await save('W4-'+room);}

@@ -8,6 +8,7 @@ export function roomSpec(layout,name,interior=false){
  const room=layout.rooms.find(r=>r.id===name);
  let polygon=name==='bath'?[[2440,0],[east,0],[east,south],[2440,south]]:name==='kitchen'?[[0,0],[2320,0],[2320,2750],[0,2750]]:name==='living'?[[0,0],[2320,0],[2320,south+120],[3000,south+120],[3000,4200],[0,4200]]:room?.polygon;
  if(layout.id==='W4'&&['kitchen','living'].includes(name))polygon=[[0,0],[2320,0],[2320,2040],[3175,2040],[3175,3680],[0,3680]];
+ if(layout.studioPolygons?.[name])polygon=layout.studioPolygons[name];
  if(!polygon)return null;
  const xs=polygon.map(p=>p[0]),ys=polygon.map(p=>p[1]),bounds=[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)];
  const [x,y,x2,y2]=bounds,cx=(x+x2)/2000,cy=(y+y2)/2000;
@@ -16,6 +17,7 @@ export function roomSpec(layout,name,interior=false){
  if(layout.id==='W4'&&name==='dressing')return{polygon,bounds,pos:interior?[1.65,1.60,5.02]:[4.8,4.4,7.0],target:interior?[1.12,1.26,4.00]:[.95,1.25,4.10],name};
  if(layout.id==='W4'&&name==='living')return{polygon,bounds,pos:interior?[2.90,1.60,2.45]:[5.4,4.4,5.8],target:[.85,1.0,3.05],name};
  if(layout.id==='W4'&&name==='kitchen')return{polygon,bounds,pos:interior?[2.90,1.60,3.30]:[5.4,4.4,5.8],target:[1.15,1.1,1.7],name};
+ if(interior&&layout.studioViews?.[name])return{polygon,bounds,...layout.studioViews[name],name};
  if(name==='dressing')return{polygon,bounds,pos:interior?[4.99,1.60,3.23]:[2.3,4.2,6.4],target:[5.83,1.25,4.02],name};
  return{polygon,bounds,pos:interior&&eye?eye[0]:pos,target:interior&&eye?eye[1]:[cx,.85,cy],name};
 }
@@ -35,7 +37,7 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
 
  const furniture=new THREE.Group();furniture.name='FURNITURE_'+layout.id;root.add(furniture);
  for(const o of layout.furniture){
-  if((layout.id==='W4'&&['kitchen','living'].includes(name)&&o.room==='living')||o.room===name||(['kitchen','living'].includes(name)&&o.room==='kitchen')||(name==='living'&&o.room==='living'))furniture.add(createFurniture(o,m));
+  if(((layout.id==='W4'||layout.familyDesign)&&['kitchen','living'].includes(name)&&o.room==='living')||o.room===name||(['kitchen','living'].includes(name)&&o.room==='kitchen')||(name==='living'&&o.room==='living'))furniture.add(createFurniture(o,m));
  }
 
  const walls=new THREE.Group();walls.name='WALLS';root.add(walls);
@@ -61,6 +63,10 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   box(walls,m.bathFloor,x-80,y,80,y2-y,2450,0,'studio-west');
   box(walls,m.bronze,x-25,y+12,x2-x+50,6,7,950,'bath-bronze-datum');
  }else if(['kitchen','living'].includes(name)){
+  if(layout.familyDesign&&interior){
+   box(walls,m.wall,0,4640,2325,120,2700,0,'studio-lounge-back');
+   box(walls,m.wall,2325,4640,850,120,600,2100,'studio-adult-lintel');
+  }
   if(layout.id==='W4'&&interior){
    box(walls,m.wall,0,3680,2325,120,2700,0,'studio-lounge-back');
    box(walls,m.wall,2325,3680,850,120,600,2100,'studio-gallery-lintel');
@@ -94,8 +100,21 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   }
  }
 
+ // The W6 desk faces the actual model window, so include its reveal and sill.
+ if(layout.familyDesign&&name==='alice'){
+  const win=geometry.windows.find(w=>w.id==='window-alice'),wy=7440;
+  box(walls,m.wall,3425,wy,2975,100,win.sill,0,'studio-window-apron');
+  box(walls,m.wall,3425,wy,win.x-3425,100,1850,win.sill,'studio-window-left');
+  box(walls,m.wall,win.x+win.width,wy,6400-win.x-win.width,100,1850,win.sill,'studio-window-right');
+  box(walls,m.wall,win.x,wy,win.width,100,2700-win.sill-win.height,win.sill+win.height,'studio-window-head');
+  box(walls,m.glass,win.x,win.y,win.width,15,win.height,win.sill,'alice-window-glass');
+  for(let i=0;i<=3;i++)box(walls,m.worktop,win.x+i*win.width/3-10,win.y-12,20,35,win.height,win.sill,'alice-window-frame');
+  for(const z of [win.sill,win.sill+win.height-25])box(walls,m.worktop,win.x,win.y-12,win.width,35,25,z,'alice-window-frame');
+  box(walls,m.joinery,win.x-12,wy-20,win.width+24,132,24,win.sill-24,'alice-window-sill');
+  box(walls,m.curtain,win.x-15,wy-28,win.width+30,25,300,win.sill+win.height-260,'alice-roman-blind');
+ }
  const decor=createDecor(layout,m);
- if(layout.id==='I'&&name==='alice'){
+ if((['I','J','K'].includes(layout.id)||layout.familyDesign)&&name==='alice'){
   box(walls,m.wall,4540,3640,120,1100,2700,0,'studio-dressing-return');
   box(walls,m.wall,4660,4620,1740,120,2700,0,'studio-dressing-front');
  }
@@ -120,7 +139,7 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
  if(interior){
   // Complete the visible room shell above existing walls, preserving all plan openings.
   for(const wall of [...walls.children]){
-   if(!wall.name.startsWith('studio-'))continue;
+   if(!wall.name.startsWith('studio-')||wall.name.startsWith('studio-window-'))continue;
    const p=wall.geometry.parameters;if(!p?.height)continue;
    const top=wall.position.y+p.height/2,remaining=geometry.ceilingHeight/1000-top;
    if(remaining<=0)continue;

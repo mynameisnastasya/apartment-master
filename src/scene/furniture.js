@@ -125,7 +125,21 @@ export function createFurniture(o,m){
  }
  else if(o.type==='desk'){
   b(m.joinery,x,y,w,d,34,h-34,10);
-  b(m.bronze,x+28,y+35,16,d-70,h-44,0,5);b(m.bronze,x+w-44,y+35,16,d-70,h-44,0,5);
+  if(o.underDeskDresser){
+   const cw=o.underDeskDresser;
+   b(m.shadow,x+25,y+65,cw-50,d-90,60,0,4);
+   b(m.joinery,x+4,y+40,cw-8,d-44,h-98,60,6);
+   for(let i=0;i<3;i++){
+    const drawer=b(m.lacquer,x+9,y+28,cw-18,20,202,72+i*211,5);drawer.name='alice-dresser-drawer';
+    b(m.bronze,x+cw*.30,y+23,cw*.40,5,4,260+i*211,1);
+   }
+   // A recessed beam carries the long clear span; the radiator zone stays open.
+   b(m.bronze,x+cw,y+70,w-cw-36,30,50,h-90,3);
+   b(m.joinery,x+w-28,y+35,28,d-70,h-44,0,4);
+   b(m.shadow,x+cw+120,y+d-36,90,8,3,h,1).name='desk-cable-slot';
+  }else{
+   b(m.bronze,x+28,y+35,16,d-70,h-44,0,5);b(m.bronze,x+w-44,y+35,16,d-70,h-44,0,5);
+  }
  }
  else if(o.type==='bar'&&o.wallMounted){
   b(m.joinery,x,y,w,d,40,h-40,24);

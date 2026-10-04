@@ -22,7 +22,7 @@ const overlap = (a,b) => {
   return true;
 };
 
-assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I','J','K','W4']);
+assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I','J','K','W4','W6']);
 const base=layouts[0],results=[];
 const gallery=layouts.find(l=>l.id==='W4'),study=wardrobeOptions.find(l=>l.id==='W4');
 for(const key of ['partitions','doors','furniture'])assert.deepEqual(gallery[key],study[key],'W4 3D must use the selected study geometry');
@@ -32,10 +32,18 @@ assert.equal(gallery.partitions.find(w=>w.id==='d-child-north-right').y,gallery.
 assert.equal(gallery.furniture.find(o=>o.id==='sofa').rotation,0);
 assert.equal(gallery.furniture.find(o=>o.id==='dining').wallMounted,true);
 assert.equal(gallery.clearances.find(c=>c.id==='dressing-aisle').value,900);
-assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,7,'Each option must have genuinely different walls');
+assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,8,'Each option must have genuinely different walls');
 for(const layout of layouts){
-  assert.deepEqual(layout.rooms.filter(r=>r.id!=='dressing').map(r=>r.id),base.rooms.map(r=>r.id));
-  assert.equal(layout.doors.length,layout.rooms.some(r=>r.id==='dressing')?4:3);
+  assert.deepEqual(layout.rooms.filter(r=>!['dressing','childDressing'].includes(r.id)).map(r=>r.id),base.rooms.map(r=>r.id));
+  assert.equal(layout.doors.length,3+layout.rooms.filter(r=>['dressing','childDressing'].includes(r.id)).length);
+  if(layout.id==='W6'){
+    const desk=layout.furniture.find(o=>o.id==='alice-desk');
+    assert.equal(desk.x,3425);assert.equal(desk.x+desk.width,6400);assert.equal(desk.y+desk.depth,7440);
+    assert.equal(desk.underDeskDresser,1000);
+    assert.equal(layout.rooms.filter(r=>r.id==='dressing').length,1);
+    assert.ok(!layout.furniture.some(o=>['hall-wardrobe','alice-wardrobe'].includes(o.id)));
+    assert.equal(layout.doors.find(o=>o.id==='door-adult').mechanism,'pocket-sliding');
+  }
   if(['I','J','K'].includes(layout.id)){
     assert.deepEqual(layout.rooms.find(r=>r.id==='adult'),base.rooms.find(r=>r.id==='adult'));
     assert.deepEqual(layout.furniture.find(r=>r.id==='adult-bed'),base.furniture.find(r=>r.id==='adult-bed'));
@@ -62,7 +70,7 @@ for(const layout of layouts){
     const fixture=layout.furniture.find(o=>o.id===id);
     assert.ok(fixture.x>=2440&&fixture.x+fixture.width<=part('d-bath-east').x&&fixture.y>=0&&fixture.y+fixture.depth<=bathSouth.y,`${layout.id}: ${id} outside bathroom`);
   }
-  if(sofa&&layout.id!=='W4'){const gap=sofa.y+sofa.depth/2-sofa.width/2-(bathSouth.y+bathSouth.depth);
+  if(sofa&&sofa.rotation!==0){const gap=sofa.y+sofa.depth/2-sofa.width/2-(bathSouth.y+bathSouth.depth);
   assert.equal(layout.clearances.find(c=>c.id==='kitchen-entry').value,gap);
   assert.ok(gap>=914,`${layout.id}: kitchen passage narrower than target`);}
   assert.ok(layout.clearances.find(c=>c.id==='entry-aisle').value>=914,`${layout.id}: entry passage narrower than target`);
@@ -107,5 +115,5 @@ for(const layout of layouts){
   assert.ok(layout.id==='D'||wallChanges.length>0,`${layout.id}: no architectural changes`);
   results.push({id:layout.id,rooms:layout.rooms.filter(r=>r.area).map(r=>({id:r.id,area:r.area})),wallChanges,furniture:layout.furniture.length,routeCount:routes.length,routes,applianceAccess,collisions});
 }
-fs.writeFileSync('variants-qa-results.json',JSON.stringify({scope:'Nine D-based options, including three wardrobe fit-outs in one architectural shell; shifted partitions and doors, rotated solids, shell, 500 mm avatar routes, independent room access, swing and appliance leaves. Conceptual, subject to survey.',results},null,2));
-console.log('Nine layouts validated:',results.map(r=>`${r.id}: ${r.routeCount} routes`).join(', '));
+fs.writeFileSync('variants-qa-results.json',JSON.stringify({scope:'Ten interactive D-based options, including three wardrobe fit-outs in one architectural shell; shifted partitions and doors, rotated solids, shell, 500 mm avatar routes, independent room access, swing and appliance leaves. Conceptual, subject to survey.',results},null,2));
+console.log('Ten interactive layouts validated:',results.map(r=>`${r.id}: ${r.routeCount} routes`).join(', '));
