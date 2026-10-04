@@ -36,11 +36,11 @@ export const layoutMeta={
   },
   walkthrough:{
     title:'Проходная — но продуманная.',
-    copy:'Маршрут в спальню проходит по правому краю гостиной, а не через её центр. Вторая спальня чуть компактнее, зато гостиная глубже и работает как настоящая комната.',
+    copy:'Маршрут в спальню проходит по правому краю гостиной, а не через её центр. В большой спальне у входа появилась отдельная проходная гардеробная, а спальная зона осталась у окна.',
     noticeTitle:'Что исправлено в проходной схеме',
-    notice:'Проём в спальню — 90 см и предполагается кассетной раздвижной дверью. Диван и ТВ стоят вне транзитной полосы. Перегородка глухая до 2,15 м, выше — световая фрамуга около 55 см: приватность сохраняется, а гостиная получает заимствованный свет.',
-    stats:['≈8,6','м² вторая спальня','≈8,0','м² гостиная'],
-    annotations:[['door',2.50,2.67,'кассета 90 см'],['route',2.63,4.55,'чистый транзит →']]
+    notice:'Проём во вторую спальню — 90 см под кассетную дверь. Диван и ТВ стоят вне транзитной полосы. В большой спальне выделена гардеробная около 3,6 м² с отдельным внутренним проёмом; кровать и рабочая консоль вынесены в тихую оконную часть.',
+    stats:['≈3,6','м² гардеробная','≈8,0','м² гостиная'],
+    annotations:[['door',2.50,2.67,'кассета 90 см'],['route',2.63,4.55,'чистый транзит →'],['wardrobe',1.16,6.45,'гардеробная ≈ 3,6 м²']]
   },
   split:{
     title:'Свет — спальням.',
@@ -103,7 +103,8 @@ export function roomsFor(layout='balanced'){
     ...wetRooms,hallRoom
   ];
   if(layout==='walkthrough')return [
-    master,
+    {id:'bed1',name:'Большая спальня',area:'≈9,3',x:0,z:7.30,w:2.34,d:3.98,labelX:1.17,labelZ:8.72,color:C.master,note:'Тихая спальная часть у окна: кровать 160 × 200, прикроватные проходы и рабочая консоль. Шкафов в комнате больше нет — всё хранение вынесено в гардеробную.'},
+    {id:'dressing',name:'Гардеробная',area:'≈3,6',x:0,z:5.68,w:2.34,d:1.52,labelX:1.17,labelZ:6.46,color:'#c9b79f',note:'Проходная гардеробная у входа в большую спальню: глубокий шкаф 55 см по левой стене, дополнительный блок справа и центральный проход к спальне. Внутренний проём 84 см.'},
     {id:'bed2',name:'Вторая спальня',area:'≈8,6',x:0,z:0,w:3.04,d:2.82,labelX:1.38,labelZ:1.48,color:C.bed2,note:'Кровать 120 × 200 см, рабочий стол и высокий шкаф. Вход через кассетную дверь 90 см у правого края, поэтому мебель не конфликтует с открыванием.'},
     {id:'living',name:'Проходная гостиная',area:'≈8,0',x:0,z:2.94,w:3.04,d:2.62,labelX:1.35,labelZ:4.72,color:C.living,note:'Диван 180 см и ТВ вынесены в левую часть. Справа сохраняется прямой транзит к спальне: маршрут не пересекает журнальный стол и ТВ-зону.'},
     {id:'kitchen',name:'Кухня',area:'5,14',x:3.16,z:0,w:2.52,d:2.04,labelX:4.42,labelZ:1.13,color:C.kitchen,note:'Кухня остаётся отдельной; для еды — компактный круглый стол на двоих, чтобы не зажимать проход.'},
@@ -171,7 +172,9 @@ export function floorZones(layout='balanced'){
     {id:'bed2',x:0,z:0,w:3.04,d:2.82,color:C.bed2},
     {id:'living',x:0,z:2.94,w:3.04,d:2.62,color:C.living},
     {id:'kitchen',x:3.16,z:0,w:2.52,d:2.04,color:C.kitchen},
-    ...tail
+    {id:'dressing',x:0,z:5.68,w:2.34,d:1.52,color:'#c9b79f'},
+    {id:'bed1',x:0,z:7.30,w:2.34,d:3.98,color:C.master},
+    ...tail.filter(r=>r.id!=='bed1')
   ];
   if(layout==='split')return [
     {id:'bed2',x:0,z:0,w:3.04,d:2.95,color:C.bed2},
@@ -218,7 +221,11 @@ export function wallData(layout='balanced'){
   if(layout==='full')return [
     ...base,[2.06,0,2.06,2.73,'proposed'],[2.06,3.53,2.06,3.75,'proposed'],[0,3.75,2.06,3.75,'proposed']
   ];
-  if(layout==='walkthrough')return [...base,[0,2.82,2.04,2.82,'transom'],[2.94,2.82,3.10,2.82,'transom']];
+  if(layout==='walkthrough')return [
+    ...base,
+    [0,2.82,2.04,2.82,'transom'],[2.94,2.82,3.10,2.82,'transom'],
+    [0,7.30,.78,7.30,'proposed'],[1.62,7.30,2.34,7.30,'proposed']
+  ];
   if(layout==='split')return [...base,[0,3.01,2.09,3.01,'glass'],[2.89,3.01,3.10,3.01,'glass']];
   return base;
 }
@@ -233,7 +240,7 @@ export function openings(layout='balanced'){
   if(layout==='balanced'||layout==='gentle')return [[2.06,2.65,2.06,3.45],...common];
   if(layout==='bedroomplus')return [[2.16,2.85,2.16,3.65],...common];
   if(layout==='full')return [[2.06,2.73,2.06,3.53],...common];
-  if(layout==='walkthrough')return [[2.04,2.82,2.94,2.82],...common];
+  if(layout==='walkthrough')return [[2.04,2.82,2.94,2.82],[.78,7.30,1.62,7.30],...common];
   if(layout==='split')return [[2.09,3.01,2.89,3.01],...common];
   return common;
 }
@@ -244,7 +251,7 @@ function masterFurniture(layout){
     {type:'bed',name:'Кровать 160 × 200',x:.10,z:7.60,w:1.60,d:2.00,h:.50,color:'#eee6dc'},
     {type:'wardrobe',name:'Шкаф 180 × 60',x:.08,z:5.85,w:.60,d:1.80,h:2.25,color:'#ae9273'},
     {type:'desk',name:'Стол 120 × 55',x:.16,z:10.55,w:1.20,d:.55,h:.74,color:'#b9936f'},
-    {type:'chair',name:'Стул',x:.58,z:10.00,w:.45,d:.45,h:.45,color:'#6d7f71'}
+    {type:'chair',name:'Стул',x:.58,z:10.00,w:.45,d:.45,h:.45,color:'#6d7f71',rotation:180}
   ];
   const bedZ=m.wall===6.42?8.58:8.38;
   return [
@@ -289,8 +296,8 @@ export function furniture(layout='balanced'){
     {type:'sofa',name:'Диван 180 × 80',x:.12,z:4.12,w:.80,d:1.80,h:.72,color:'#72846f'},
     {type:'tv',name:'ТВ-панель',x:2.20,z:4.20,w:.08,d:1.15,h:1.25,color:'#343b37'},
     {type:'roundtable',name:'Круглый стол Ø90',x:4.23,z:1.06,w:.90,d:.90,h:.74,color:'#b9936f'},
-    {type:'chair',name:'Стул',x:4.16,z:.68,w:.42,d:.42,h:.45,color:'#72846f'},
-    {type:'chair',name:'Стул',x:5.12,z:1.18,w:.42,d:.42,h:.45,color:'#72846f'},
+    {type:'chair',name:'Стул',x:4.16,z:.68,w:.42,d:.42,h:.45,color:'#72846f',rotation:-135},
+    {type:'chair',name:'Стул',x:5.12,z:1.18,w:.42,d:.42,h:.45,color:'#72846f',rotation:135},
     ...kitchen,...wet
   ];
   if(layout==='bedroomplus')return [
@@ -317,23 +324,29 @@ export function furniture(layout='balanced'){
   ];
   const shared=[...masterFurniture(layout),...kitchen,...wet];
   if(layout==='walkthrough')return [
-    ...shared,
+    ...kitchen,...wet,
+    {type:'wardrobe',name:'Гардероб · глубокий ряд 135 × 55',x:.06,z:5.80,w:.55,d:1.35,h:2.35,color:'#ae9273'},
+    {type:'wardrobe',name:'Гардероб · правый блок 72 × 45',x:1.83,z:6.38,w:.45,d:.72,h:2.35,color:'#b79d7d'},
+    {type:'cabinet',name:'Комод гардеробной 70 × 35',x:.92,z:5.78,w:.70,d:.35,h:.78,color:'#c2a989'},
+    {type:'bed',name:'Кровать 160 × 200',x:.37,z:8.28,w:1.60,d:2.00,h:.50,color:'#eee6dc'},
+    {type:'desk',name:'Консоль 100 × 45',x:.12,z:10.58,w:1.00,d:.45,h:.74,color:'#b9936f'},
+    {type:'chair',name:'Стул у консоли',x:.38,z:10.08,w:.45,d:.45,h:.45,color:'#6d7f71',rotation:180},
     {type:'bed',name:'Кровать 120 × 200',x:.10,z:.52,w:1.20,d:2.00,h:.48,color:'#f0eade'},
     {type:'desk',name:'Стол 110 × 50',x:1.43,z:.12,w:1.10,d:.50,h:.74,color:'#b9936f'},
-    {type:'chair',name:'Стул',x:1.72,z:.70,w:.43,d:.43,h:.45,color:'#6d7f71'},
+    {type:'chair',name:'Стул у стола',x:1.72,z:.70,w:.43,d:.43,h:.45,color:'#6d7f71',rotation:0},
     {type:'wardrobe',name:'Шкаф 120 × 55',x:2.36,z:.90,w:.55,d:1.20,h:2.25,color:'#ae9273'},
     {type:'sofa',name:'Диван 180 × 80',x:.12,z:3.18,w:.80,d:1.80,h:.72,color:'#72846f'},
     {type:'tv',name:'ТВ-панель',x:1.84,z:3.30,w:.08,d:1.10,h:1.25,color:'#343b37'},
     {type:'table',name:'Приставной стол 42 × 42',x:1.10,z:4.12,w:.42,d:.42,h:.48,color:'#a58363'},
     {type:'roundtable',name:'Круглый стол Ø75',x:4.38,z:1.12,w:.75,d:.75,h:.74,color:'#b9936f'},
-    {type:'chair',name:'Стул',x:4.24,z:.72,w:.42,d:.42,h:.45,color:'#72846f'},
-    {type:'chair',name:'Стул',x:5.10,z:1.18,w:.42,d:.42,h:.45,color:'#72846f'}
+    {type:'chair',name:'Стул к столу · левый',x:4.24,z:.72,w:.42,d:.42,h:.45,color:'#72846f',rotation:-150},
+    {type:'chair',name:'Стул к столу · правый',x:5.10,z:1.18,w:.42,d:.42,h:.45,color:'#72846f',rotation:100}
   ];
   if(layout==='split')return [
     ...shared,
     {type:'bed',name:'Кровать 90 × 200',x:.12,z:.35,w:.90,d:2.00,h:.48,color:'#f0eade'},
     {type:'desk',name:'Стол 120 × 55',x:1.35,z:.15,w:1.20,d:.55,h:.74,color:'#b9936f'},
-    {type:'chair',name:'Стул',x:1.78,z:.83,w:.45,d:.45,h:.45,color:'#6d7f71'},
+    {type:'chair',name:'Стул',x:1.78,z:.83,w:.45,d:.45,h:.45,color:'#6d7f71',rotation:0},
     {type:'wardrobe',name:'Шкаф 120 × 60',x:1.00,z:2.27,w:1.20,d:.60,h:2.25,color:'#ae9273'},
     {type:'sofa',name:'Диван 170 × 80',x:.10,z:3.35,w:.80,d:1.70,h:.72,color:'#72846f'},
     {type:'tv',name:'ТВ',x:2.91,z:3.35,w:.08,d:1.05,h:1.30,color:'#343b37'},
