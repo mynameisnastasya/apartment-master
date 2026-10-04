@@ -77,6 +77,7 @@ try{
   const walkthroughFurniture=await page.evaluate(()=>kseniyaDebug.furniture());
   const walkthroughChairs=walkthroughFurniture.filter(f=>f.type==='chair');
   assert.ok(walkthroughFurniture.some(f=>/Гардероб/.test(f.name)));
+  assert.ok(walkthroughFurniture.some(f=>f.type==='mirror'&&/Зеркало/.test(f.name)));
   assert.ok(walkthroughChairs.length>=4);
   assert.ok(walkthroughChairs.every(f=>Number.isFinite(f.rotation)));
   assert.ok(walkthroughChairs.every(f=>f.x>=0&&f.z>=0&&f.x+f.w<=5.68&&f.z+f.d<=11.28));
@@ -84,6 +85,7 @@ try{
   await page.locator('#view2d').click();
   assert.match(await page.locator('#plan').textContent(),/≈8,0/);
   assert.match(await page.locator('#plan').textContent(),/≈3,6/);
+  assert.match(await page.locator('#plan').textContent(),/проход ≈ 120 см/);
   assert.match(await page.locator('#plan').textContent(),/120 × 200/);
   const soloDownloadPromise=page.waitForEvent('download');
   await page.locator('#download').click();
