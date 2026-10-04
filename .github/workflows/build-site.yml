@@ -31,7 +31,7 @@ jobs:
       - name: Commit generated site
         shell: bash
         run: |
-          git add design.html index.html variants.html engineering.html model.html LIZA.html wardrobe.html views/[D-K]-floor-plan.svg views/I-dressing-detail.svg views/J-dressing-detail.svg views/K-dressing-detail.svg MASTER-APARTMENT.json
+          git add design.html index.html variants.html engineering.html model.html LIZA.html views/*.svg wardrobe.html wardrobe-five.html MASTER-APARTMENT.json
           if git diff --cached --quiet; then
             echo "generated site is already current"
             exit 0

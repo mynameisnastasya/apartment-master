@@ -26,7 +26,7 @@ try{
  // SwiftShader compiles each material combination on the CPU on its first use.
  // Keep the real click and state/error assertions, but allow that cold compilation.
  for(const id of ['japandi','nordic','atelier','graphite','linen']){const started=Date.now();await page.locator(`[data-style="${id}"]`).click({timeout:90000});assert.equal(await page.evaluate(()=>window.apartment.state.style),id);console.log(`Style ${id}: ${Date.now()-started} ms including software shader compilation`);}
- for(const variant of ['I','J','K']){
+ for(const variant of ['I','J','K','W4']){
   await page.locator(`[data-variant="${variant}"]`).click();
   assert.ok(await page.locator('[data-room="dressing"]').isVisible());
   await page.locator('[data-room="dressing"]').click();
@@ -34,6 +34,18 @@ try{
   assert.ok(await page.evaluate(()=>window.apartment.routeResult('entry','dressing').ok));
   await save(variant+'-dressing');
  }
+ await page.locator('[data-variant="W4"]').click();
+ await page.locator('[data-room="dressing"]').click();await page.locator('#room-camera').click();await save('W4-dressing-cutaway');await page.locator('#room-camera').click();
+ for(const room of ['adult','living']){await page.locator('[data-room="'+room+'"]').click();await save('W4-'+room);}
+ await page.getByRole('button',{name:'План',exact:true}).click();await save('W4-plan');
+ assert.ok(await page.evaluate(()=>!window.apartment.root.getObjectByName('living-stone-wall')));
+ await page.getByRole('button',{name:'Прогулка',exact:true}).click();
+ const visitsW4=await page.evaluate(()=>{const a=window.apartment;return ['dressing','adult','alice','living','kitchen','bath'].map(room=>{a.viewRoom(room);return{room,ok:a.canStand(a.camera.position.x*1000,a.camera.position.z*1000)};});});
+ assert.ok(visitsW4.every(v=>v.ok),JSON.stringify(visitsW4));
+ await page.locator('[data-room="dressing"]').click();await save('W4-walk');
+ await page.goto('http://127.0.0.1:4173/model.html?variant=W4&style=linen&room=dressing');
+ await page.waitForFunction(()=>window.apartment?.ready&&window.apartment.state.variant==='W4'&&window.apartment.state.focus==='dressing');
+ assert.ok(await page.locator('[data-room="dressing"]').isVisible());
  await page.locator('[data-variant="I"]').click();
  await page.locator('[data-room="alice"]').click();await save('I-second-room');
  await page.getByRole('button',{name:'План',exact:true}).click();await save('I-plan');

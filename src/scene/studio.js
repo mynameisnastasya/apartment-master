@@ -6,12 +6,15 @@ import {Reflector} from 'three/addons/objects/Reflector.js';
 export function roomSpec(layout,name,interior=false){
  const east=layout.partitions.find(o=>o.id==='d-bath-east').x,south=layout.partitions.find(o=>o.id==='d-bath-south-left').y;
  const room=layout.rooms.find(r=>r.id===name);
- const polygon=name==='bath'?[[2440,0],[east,0],[east,south],[2440,south]]:name==='kitchen'?[[0,0],[2320,0],[2320,2750],[0,2750]]:name==='living'?[[0,0],[2320,0],[2320,south+120],[3000,south+120],[3000,4200],[0,4200]]:room?.polygon;
+ let polygon=name==='bath'?[[2440,0],[east,0],[east,south],[2440,south]]:name==='kitchen'?[[0,0],[2320,0],[2320,2750],[0,2750]]:name==='living'?[[0,0],[2320,0],[2320,south+120],[3000,south+120],[3000,4200],[0,4200]]:room?.polygon;
+ if(layout.id==='W4'&&['kitchen','living'].includes(name))polygon=[[0,0],[2320,0],[2320,2040],[3175,2040],[3175,3680],[0,3680]];
  if(!polygon)return null;
  const xs=polygon.map(p=>p[0]),ys=polygon.map(p=>p[1]),bounds=[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)];
  const [x,y,x2,y2]=bounds,cx=(x+x2)/2000,cy=(y+y2)/2000;
  const pos=name==='bath'?[cx-3.0,3.3,cy+3.6]:name==='adult'?[cx-4.1,3.8,cy+4.1]:name==='alice'?[cx-5,4.5,cy+5]:[cx+3.3,3.5,cy+3.8];
  const eye={kitchen:[[2.2,1.6,2.65],[.75,1.23,.65]],living:[[2.90,1.6,4.08],[.50,1.22,2.0]],adult:[[.10,1.55,8.13],[3.05,1.28,6.8]],alice:[[3.62,1.55,7.15],[6.1,1.18,5.5]],bath:[[3.56,1.60,1.86],[3.48,1.18,.15]]}[name];
+ if(layout.id==='W4'&&name==='dressing')return{polygon,bounds,pos:interior?[1.65,1.60,5.02]:[4.8,4.4,7.0],target:interior?[1.12,1.26,4.00]:[.95,1.25,4.10],name};
+ if(layout.id==='W4'&&['kitchen','living'].includes(name))return{polygon,bounds,pos:interior?[2.90,1.60,3.30]:[5.4,4.4,5.8],target:[1.15,1.1,1.7],name};
  if(name==='dressing')return{polygon,bounds,pos:interior?[4.99,1.60,3.23]:[2.3,4.2,6.4],target:[5.83,1.25,4.02],name};
  return{polygon,bounds,pos:interior&&eye?eye[0]:pos,target:interior&&eye?eye[1]:[cx,.85,cy],name};
 }
@@ -35,7 +38,18 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
  }
 
  const walls=new THREE.Group();walls.name='WALLS';root.add(walls);
- if(name==='dressing'){
+ if(name==='dressing'&&layout.id==='W4'){
+  box(walls,m.wall,-80,3800,80,1500,2700,0,'studio-west');
+  box(walls,m.wall,0,3680,2325,120,2700,0,'studio-north');
+  box(walls,m.wall,2325,3680,850,120,600,2100,'studio-north-lintel');
+  if(interior){
+   box(walls,m.wall,3175,3800,120,1500,2700,0,'studio-east');
+   box(walls,m.wall,0,5300,2325,120,2700,0,'studio-south');
+   box(walls,m.wall,2325,5300,850,120,600,2100,'studio-south-lintel');
+   box(walls,m.joinery,2325,3800,40,850,2100,0,'gallery-open-door');
+  }
+  const light=new THREE.PointLight(0xffe1b1,8,4,2);light.position.set(1.65,2.35,4.70);root.add(light);
+ }else if(name==='dressing'){
   box(walls,m.wall,6400,3120,120,1500,2700,0,'studio-east');
   box(walls,m.joinery,4660,4620,1740,120,2700,0,'studio-south');
   box(walls,m.wall,4540,3120,120,1500,2700,0,'studio-west');

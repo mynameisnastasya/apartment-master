@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import geometry from '../src/data/geometry.json' with {type:'json'};
+import {wardrobeOptions} from '../src/data/wardrobe-options.js';
 import {layouts} from '../src/data/layout-variations.js';
 import {colliders,findRoute,insidePolygon} from '../src/interaction/collision.js';
 import {openingLeaf,operatorPoint} from '../src/interaction/appliances.js';
@@ -21,12 +22,16 @@ const overlap = (a,b) => {
   return true;
 };
 
-assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I','J','K']);
+assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I','J','K','W4']);
 const base=layouts[0],results=[];
-assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,6,'Each option must have genuinely different walls');
+const gallery=layouts.find(l=>l.id==='W4'),study=wardrobeOptions.find(l=>l.id==='W4');
+for(const key of ['partitions','doors','furniture'])assert.deepEqual(gallery[key],study[key],'W4 3D must use the selected study geometry');
+assert.equal(gallery.rooms.find(r=>r.id==='dressing').area,4.76);
+assert.equal(gallery.clearances.find(c=>c.id==='dressing-aisle').value,900);
+assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,7,'Each option must have genuinely different walls');
 for(const layout of layouts){
   assert.deepEqual(layout.rooms.filter(r=>r.id!=='dressing').map(r=>r.id),base.rooms.map(r=>r.id));
-  assert.equal(layout.doors.length,['I','J','K'].includes(layout.id)?4:3);
+  assert.equal(layout.doors.length,layout.rooms.some(r=>r.id==='dressing')?4:3);
   if(['I','J','K'].includes(layout.id)){
     assert.deepEqual(layout.rooms.find(r=>r.id==='adult'),base.rooms.find(r=>r.id==='adult'));
     assert.deepEqual(layout.furniture.find(r=>r.id==='adult-bed'),base.furniture.find(r=>r.id==='adult-bed'));
@@ -53,9 +58,9 @@ for(const layout of layouts){
     const fixture=layout.furniture.find(o=>o.id===id);
     assert.ok(fixture.x>=2440&&fixture.x+fixture.width<=part('d-bath-east').x&&fixture.y>=0&&fixture.y+fixture.depth<=bathSouth.y,`${layout.id}: ${id} outside bathroom`);
   }
-  const gap=sofa.y+sofa.depth/2-sofa.width/2-(bathSouth.y+bathSouth.depth);
+  if(sofa){const gap=sofa.y+sofa.depth/2-sofa.width/2-(bathSouth.y+bathSouth.depth);
   assert.equal(layout.clearances.find(c=>c.id==='kitchen-entry').value,gap);
-  assert.ok(gap>=914,`${layout.id}: kitchen passage narrower than target`);
+  assert.ok(gap>=914,`${layout.id}: kitchen passage narrower than target`);}
   assert.ok(layout.clearances.find(c=>c.id==='entry-aisle').value>=914,`${layout.id}: entry passage narrower than target`);
   const collisions=[];
   for(let i=0;i<layout.furniture.length;i++){
@@ -98,5 +103,5 @@ for(const layout of layouts){
   assert.ok(layout.id==='D'||wallChanges.length>0,`${layout.id}: no architectural changes`);
   results.push({id:layout.id,rooms:layout.rooms.filter(r=>r.area).map(r=>({id:r.id,area:r.area})),wallChanges,furniture:layout.furniture.length,routeCount:routes.length,routes,applianceAccess,collisions});
 }
-fs.writeFileSync('variants-qa-results.json',JSON.stringify({scope:'Eight D-based options, including three wardrobe fit-outs in one architectural shell; shifted partitions and doors, rotated solids, shell, 500 mm avatar routes, independent room access, swing and appliance leaves. Conceptual, subject to survey.',results},null,2));
-console.log('Eight layouts validated:',results.map(r=>`${r.id}: ${r.routeCount} routes`).join(', '));
+fs.writeFileSync('variants-qa-results.json',JSON.stringify({scope:'Nine D-based options, including three wardrobe fit-outs in one architectural shell; shifted partitions and doors, rotated solids, shell, 500 mm avatar routes, independent room access, swing and appliance leaves. Conceptual, subject to survey.',results},null,2));
+console.log('Nine layouts validated:',results.map(r=>`${r.id}: ${r.routeCount} routes`).join(', '));
