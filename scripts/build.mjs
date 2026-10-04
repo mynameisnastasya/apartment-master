@@ -22,3 +22,4 @@ fs.writeFileSync(path.join(dir,'design.html'),`<!doctype html><html lang="ru"><m
 
 await import('./client-site.mjs');
 await import('./wardrobe-page.mjs');
+await import('./wardrobe-five-page.mjs');

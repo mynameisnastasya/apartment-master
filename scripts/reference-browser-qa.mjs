@@ -26,6 +26,16 @@ try{
  await page.locator('#mobile-nav').click();assert.ok(await page.locator('.side.open').isVisible());
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
  await page.screenshot({path:'browser-reference-artifacts/album-mobile.png',fullPage:true});
+ await page.setViewportSize({width:1440,height:1050});
+ await page.goto('http://127.0.0.1:4173/wardrobe-five.html');
+ await page.getByRole('heading',{name:/Своя комната/}).waitFor();
+ assert.equal(await page.locator('.card').count(),5);
+ for(const img of await page.locator('.plan img').all()){await img.scrollIntoViewIfNeeded();await img.evaluate(i=>i.decode());}
+ assert.ok(await page.evaluate(()=>[...document.querySelectorAll('.plan img')].every(i=>i.naturalWidth>0)));
+ await page.screenshot({path:'browser-reference-artifacts/five-wardrobes-desktop.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});
+ assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Wardrobe study has horizontal overflow on mobile');
+ await page.screenshot({path:'browser-reference-artifacts/five-wardrobes-mobile.png',fullPage:true});
  await page.setViewportSize({width:1440,height:1050});await page.goto('http://127.0.0.1:4173/model.html');await page.waitForFunction(()=>window.apartment?.ready);
  assert.equal(await page.evaluate(()=>window.apartment.layout.id),'D');
  for(const id of ['linen','japandi','nordic','atelier','graphite']){
