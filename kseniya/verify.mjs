@@ -73,8 +73,17 @@ try{
   assert.equal(await page.locator('a[href*="LIZA"],a[href*="index.html"],a[href*="model.html"]').count(),0);
   assert.match(await page.locator('#scheme-title').textContent(),/Проходная/);
   assert.match(await page.locator('#rooms').textContent(),/≈8,6/);
+  assert.match(await page.locator('#rooms').textContent(),/Гардеробная/);
+  const walkthroughFurniture=await page.evaluate(()=>kseniyaDebug.furniture());
+  const walkthroughChairs=walkthroughFurniture.filter(f=>f.type==='chair');
+  assert.ok(walkthroughFurniture.some(f=>/Гардероб/.test(f.name)));
+  assert.ok(walkthroughChairs.length>=4);
+  assert.ok(walkthroughChairs.every(f=>Number.isFinite(f.rotation)));
+  assert.ok(walkthroughChairs.every(f=>f.x>=0&&f.z>=0&&f.x+f.w<=5.68&&f.z+f.d<=11.28));
+  assert.ok(walkthroughChairs.some(f=>f.rotation!==0));
   await page.locator('#view2d').click();
   assert.match(await page.locator('#plan').textContent(),/≈8,0/);
+  assert.match(await page.locator('#plan').textContent(),/≈3,6/);
   assert.match(await page.locator('#plan').textContent(),/120 × 200/);
   const soloDownloadPromise=page.waitForEvent('download');
   await page.locator('#download').click();
@@ -86,7 +95,7 @@ try{
   assert.match(await page.locator('#room-detail').textContent(),/транзит/);
 
   assert.deepEqual(errors,[]);
-  console.log('PASS: variants 03-05 + standalone Pass-through Plus, WebGL, 2D/3D, furniture, cutaway, camera, SVG download, mobile overflow, isolated navigation.');
+  console.log('PASS: variants 03-05 + standalone Pass-through Plus, walk-in wardrobe, bounded oriented chairs, WebGL, 2D/3D, furniture, cutaway, camera, SVG download, mobile overflow, isolated navigation.');
 } finally {
   if(browser)await browser.close();
   server.kill('SIGTERM');
