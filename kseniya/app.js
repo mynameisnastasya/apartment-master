@@ -3,7 +3,7 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {roomsFor,floorZones,wallData,windows,openings,furniture,layoutMeta} from './model.js';
 
 const $=s=>document.querySelector(s);
-let layout='full',is2d=false,showFurniture=true,cutaway=true,scene,camera,renderer,controls,group,ready=false;
+let layout='balanced',is2d=false,showFurniture=true,cutaway=true,scene,camera,renderer,controls,group,ready=false;
 const materials=new Map();
 function mat(color,opacity=1){const key=color+opacity;if(!materials.has(key))materials.set(key,new THREE.MeshStandardMaterial({color,roughness:.83,transparent:opacity<1,opacity}));return materials.get(key);}
 function box(x,z,w,d,h,color,y=0,opacity=1,parent=group){const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(color,opacity));mesh.position.set(x+w/2,y+h/2,z+d/2);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
@@ -12,6 +12,7 @@ function floor(r){box(r.x,r.z,r.w,r.d,.10,r.color,-.10);if(r.finish!=='tile'){fo
 function furnish(f){const {x,z,w,d,h,color,type}=f;
  if(type==='bed'){box(x,z,w,d,.22,'#ad9278',.08);box(x+.025,z+.04,w-.05,d-.08,.20,'#f5eee5',.30);box(x+.015,z+.55,w-.03,d-.58,.035,color==='#eee6dc'?'#b9ac97':'#a6b39c',.50);for(let i=0;i<(w>1.1?2:1);i++)box(x+.10+i*.75,z+.14,Math.min(.57,w-.2),.34,.09,'#fbf8f1',.50);box(x,z,w,.09,.90,'#a18c70',0);}
  else if(type==='sofa'){box(x,z,w,d,.28,color,.16);box(x,z,.17,d,.70,color,.10);box(x,z,w,.13,.58,color,.10);box(x,z+d-.13,w,.13,.58,color,.10);for(let i=0;i<2;i++)box(x+.18,z+.17+i*(d-.34)/2,w-.22,(d-.38)/2,.13,'#92a28a',.43);}
+ else if(type==='roundtable'){const top=new THREE.Mesh(new THREE.CylinderGeometry(w/2,w/2,.055,40),mat(color));top.position.set(x+w/2,h-.028,z+d/2);top.castShadow=true;group.add(top);const leg=new THREE.Mesh(new THREE.CylinderGeometry(.045,.055,h-.07,20),mat('#786e59'));leg.position.set(x+w/2,(h-.07)/2,z+d/2);group.add(leg);}
  else if(type==='desk'||type==='table'){box(x,z,w,d,.055,color,h-.055);for(let a of [x+.06,x+w-.09])for(let b of [z+.04,z+d-.07])box(a,b,.035,.035,h-.055,'#786e59');}
  else if(type==='chair'){box(x,z,w,d,.09,color,h-.09);box(x,z+d-.06,w,.06,.40,color,h);for(let a of [x+.03,x+w-.06])for(let b of [z+.03,z+d-.06])box(a,b,.035,.035,h-.09,'#8d765b');}
  else if(type==='shower'){box(x,z,w,d,.09,color);box(x+.05,z+.05,w-.1,d-.1,.015,'#cbd8d5',.09);box(x,z,.025,d,cutaway?.8:2,'#a1c8cb',.10,.30);}
@@ -32,12 +33,12 @@ function svg(){
  const rect=(x,y,w,h,fill,stroke='#a49c8c')=>a.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx=".025" fill="'+fill+'" stroke="'+stroke+'" stroke-width=".018"/>');
  const text=(x,y,t,size=.15,anchor='middle')=>a.push('<text x="'+x+'" y="'+y+'" font-family="Arial,sans-serif" font-size="'+size+'" text-anchor="'+anchor+'" fill="#364b3c">'+escapeHtml(t)+'</text>');
  floorZones(layout).forEach(r=>rect(r.x,r.z,r.w,r.d,r.color,'none'));
- if(showFurniture)furniture(layout).forEach(f=>{rect(f.x,f.z,f.w,f.d,f.color);if(f.type==='bed'){rect(f.x+.05,f.z+.10,f.w-.10,.35,'#fffaf0');rect(f.x+.03,f.z+.60,f.w-.06,f.d-.65,'#c6bca7');}if(f.type==='sofa')rect(f.x,f.z,.16,f.d,'#596f54');a.push('<title>'+escapeHtml(f.name)+'</title>');});
+ if(showFurniture)furniture(layout).forEach(f=>{if(f.type==='roundtable'){a.push('<circle cx="'+(f.x+f.w/2)+'" cy="'+(f.z+f.d/2)+'" r="'+(f.w/2)+'" fill="'+f.color+'" stroke="#a49c8c" stroke-width=".018"/>');}else{rect(f.x,f.z,f.w,f.d,f.color);if(f.type==='bed'){rect(f.x+.05,f.z+.10,f.w-.10,.35,'#fffaf0');rect(f.x+.03,f.z+.60,f.w-.06,f.d-.65,'#c6bca7');}if(f.type==='sofa')rect(f.x,f.z,.16,f.d,'#596f54');}a.push('<title>'+escapeHtml(f.name)+'</title>');});
  wallData(layout).forEach(([x,y,X,Y,type])=>a.push('<path d="M'+x+' '+y+'L'+X+' '+Y+'" stroke="'+(type==='glass'?'#bd7c4c':type==='proposed'?'#c9875d':'#566454')+'" stroke-width=".12" fill="none"/>'));
  windows.forEach(([x,y,X,Y])=>a.push('<path d="M'+x+' '+y+'L'+X+' '+Y+'" stroke="#7db4c0" stroke-width=".065"/>'));
  openings(layout).forEach(([x,y,X,Y])=>a.push('<path d="M'+x+' '+y+'L'+X+' '+Y+'" stroke="#9c8d79" stroke-width=".025" stroke-dasharray=".08 .05"/>'));
  roomsFor(layout).forEach(r=>{text(r.labelX??(r.x+r.w/2),r.labelZ??(r.z+r.d/2),r.name,.15);text(r.labelX??(r.x+r.w/2),(r.labelZ??(r.z+r.d/2))+.22,r.area+' м²',.125);});
- if(layout==='full'){text(2.55,2.15,'проход ≈ 98 см',.11);text(3.30,.98,'широкий проём',.11,'start');}
+ (layoutMeta[layout].annotations||[]).forEach(([,x,y,label])=>text(x,y,label,.11));
  text(1.52,-.30,'3,04 м',.16);text(4.42,-.30,'2,52 м',.16);text(1.17,11.68,'2,34 м',.16);text(-.28,2.80,'5,56',.14);text(-.28,8.50,'5,60',.14);text(6.03,5.10,'Вход',.15);a.push('<path d="M6.1 5.25H5.85m.10-.1-.10.1.10.1" stroke="#405843" stroke-width=".025" fill="none"/>');text(4.50,8,'Вне квартиры',.16);a.push('</svg>');return a.join('');
 }
 function drawPlan(){$('#plan').innerHTML=svg();}
