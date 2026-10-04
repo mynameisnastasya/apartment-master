@@ -30,7 +30,7 @@ try{
  await page.goto('http://127.0.0.1:4173/wardrobe-five.html');
  await page.getByRole('heading',{name:/Своя комната/}).waitFor();
  assert.equal(await page.locator('.card').count(),5);
- for(const img of await page.locator('.plan img').all())await img.evaluate(i=>i.decode());
+ for(const img of await page.locator('.plan img').all()){await img.scrollIntoViewIfNeeded();await img.evaluate(i=>i.decode());}
  assert.ok(await page.evaluate(()=>[...document.querySelectorAll('.plan img')].every(i=>i.naturalWidth>0)));
  await page.screenshot({path:'browser-reference-artifacts/five-wardrobes-desktop.png',fullPage:true});
  await page.setViewportSize({width:390,height:844});
