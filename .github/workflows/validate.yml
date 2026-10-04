@@ -26,6 +26,12 @@ jobs:
         with:
           name: kseniya-triroom-preview
           path: test-results/kseniya/
+      - run: node polina/verify.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: polina-layout-preview
+          path: test-results/polina/
       - run: node scripts/organic-qa.mjs
       - uses: actions/upload-artifact@v4
         if: always()
