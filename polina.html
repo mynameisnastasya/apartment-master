@@ -35,7 +35,7 @@ svg{width:100%;height:auto;display:block;background:#fff;border-radius:14px;bord
 section.card h2{font-size:27px;font-weight:520;line-height:1.2}.item{padding:17px 0;border-bottom:1px solid var(--line)}.item h3{font-size:17px;margin-bottom:5px}.item p{margin:0;color:#596255}
 .compare{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.choice{padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--paper)}.choice.star{border-color:#87947d;box-shadow:inset 0 0 0 1px #87947d}.choice h3{font-size:17px;margin-bottom:7px}.choice p{font-size:13px;color:#5d6658;margin-bottom:9px}.choice small{color:var(--muted)}
 .rooms{width:100%;border-collapse:collapse}.rooms td{padding:10px 4px;border-bottom:1px solid var(--line);font-size:14px}.rooms td:last-child{text-align:right;font-variant-numeric:tabular-nums}
-.footer-note{margin-top:30px;padding:19px 20px;border-radius:14px;background:#eadbd6;font-size:14px}footer{max-width:1320px;margin:auto;padding:0 30px 38px;color:var(--muted);font-size:12px}
+.footer-note{margin-top:30px;padding:19px 20px;border-radius:14px;background:#eadbd6;font-size:14px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.actionbtn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;cursor:pointer;font-size:12px}.actionbtn.primary{background:var(--ink);border-color:var(--ink);color:#fff}.sleepmap{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}.sleepmap div{border-top:1px solid var(--line);padding:10px 0;font-size:12px}.sleepmap b{display:block;font-size:14px}.furnlabel{font:600 9px system-ui,sans-serif;fill:#566056}.furnfill{fill:#fff8;stroke:#7a8478;stroke-width:2.5}footer{max-width:1320px;margin:auto;padding:0 30px 38px;color:var(--muted);font-size:12px}
 @media(max-width:920px){header{padding:20px 18px}.status{display:none}main{padding:20px 18px 60px}.hero,.grid{grid-template-columns:1fr}.side{padding:22px}.planwrap{padding:6px 8px 14px}.compare{grid-template-columns:1fr}.planhead{padding:16px 14px 10px}}
 </style>
 </head>
@@ -50,7 +50,7 @@ section.card h2{font-size:27px;font-weight:520;line-height:1.2}.item{padding:17p
 </div>
 <div class="hero">
 <div class="panel">
-<div class="planhead"><div><div class="eyebrow" id="plan-kicker">вариант 03 · фаворит</div><h2 id="plan-title">Три постоянные спальни и общая зона</h2></div><span>эскиз по скриншоту · не строительный чертёж</span></div>
+<div class="planhead"><div><div class="eyebrow" id="plan-kicker">вариант 03 · фаворит</div><h2 id="plan-title">Три постоянные спальни и общая зона</h2></div><span>геометрия по исходнику · мебель условно в масштабе зон</span></div>
 <div class="planwrap">
 <svg viewBox="0 0 620 790" role="img" aria-label="Схематичные варианты перепланировки квартиры Полины">
 <rect x="44" y="34" width="532" height="710" fill="#f7f6f2"/>
@@ -104,6 +104,22 @@ section.card h2{font-size:27px;font-weight:520;line-height:1.2}.item{padding:17p
 <text x="321" y="362" text-anchor="middle" class="roomlabel" font-size="18">гостиная</text><text x="321" y="383" text-anchor="middle" class="tiny">открыта в кухню 5,19</text>
 <text x="173" y="687" text-anchor="middle" class="roomlabel" font-size="18">прихожая + хранение</text><text x="173" y="707" text-anchor="middle" class="tiny">9,29 м² сохраняем</text>
 <rect x="430" y="315" width="110" height="26" rx="5" class="bunk"/><rect x="430" y="433" width="110" height="26" rx="5" class="bunk"/>
+<!-- variant 03: practical furniture zones -->
+<g aria-label="Расстановка мебели варианта 03">
+  <rect x="350" y="66" width="72" height="145" rx="5" class="furnfill"/><line x1="350" y1="105" x2="422" y2="105" class="furn"/><text x="386" y="224" text-anchor="middle" class="furnlabel">2-ярусная</text>
+  <rect x="462" y="73" width="74" height="145" rx="5" class="furnfill"/><text x="499" y="232" text-anchor="middle" class="furnlabel">1 кровать</text>
+  <rect x="436" y="237" width="105" height="15" rx="3" class="furnfill"/><text x="488" y="259" text-anchor="middle" class="furnlabel">общий стол</text>
+
+  <rect x="374" y="575" width="145" height="103" rx="6" class="furnfill"/><line x1="374" y1="605" x2="519" y2="605" class="furn"/><text x="447" y="699" text-anchor="middle" class="furnlabel">160 × 200</text>
+  <rect x="532" y="568" width="19" height="128" rx="3" class="furnfill"/><text x="542" y="711" text-anchor="middle" class="furnlabel">шкаф</text>
+
+  <rect x="426" y="294" width="55" height="118" rx="4" class="furnfill"/><line x1="426" y1="323" x2="481" y2="323" class="furn"/><text x="454" y="421" text-anchor="middle" class="furnlabel">2-ярусная</text>
+  <rect x="501" y="430" width="45" height="16" rx="3" class="furnfill"/><rect x="501" y="455" width="45" height="16" rx="3" class="furnfill"/><text x="523" y="483" text-anchor="middle" class="furnlabel">2 стола</text>
+
+  <rect x="270" y="310" width="94" height="42" rx="14" class="furnfill"/><text x="317" y="368" text-anchor="middle" class="furnlabel">диван</text>
+  <circle cx="333" cy="430" r="34" class="furnfill"/><text x="333" y="434" text-anchor="middle" class="furnlabel">стол</text>
+  <rect x="268" y="457" width="80" height="18" rx="3" class="furnfill"/><text x="308" y="493" text-anchor="middle" class="furnlabel">хранение</text>
+</g>
 </g>
 
 <g class="walls">
@@ -142,6 +158,8 @@ section.card h2{font-size:27px;font-weight:520;line-height:1.2}.item{padding:17p
 <div class="alloc" id="alloc">
 <div><span>11,35 м²</span><span>3 девочки</span></div><div><span>10,26 м²</span><span>родители</span></div><div><span>часть 14,75 м²</span><span>2 мальчика</span></div><div><span>5,19 + остаток 14,75</span><span>кухня-гостиная</span></div>
 </div>
+<div class="sleepmap" id="sleepmap"><div><b>3 места</b>девочки: 2-ярусная + односпальная</div><div><b>2 места</b>мальчики: 2-ярусная</div><div><b>2 места</b>родители: 160 × 200</div><div><b>7 мест</b>без ежедневного раскладывания</div></div>
+<div class="actions"><button class="actionbtn primary" id="download-plan">Скачать текущий SVG ↓</button><button class="actionbtn" id="copy-link">Скопировать ссылку варианта</button></div>
 </aside>
 </div>
 
@@ -164,7 +182,8 @@ section.card h2{font-size:27px;font-weight:520;line-height:1.2}.item{padding:17p
 <div class="eyebrow">что я бы не трогала без необходимости</div><h2>Ресурсы квартиры</h2>
 <div class="item"><h3>Два санузла / две мокрые зоны</h3><p>Для семи человек это важнее лишних полутора метров спальни. Сначала пытаемся сохранить оба.</p></div>
 <div class="item"><h3>Хранение в 9,29 м²</h3><p>Если не отдавать холл под спальню, туда можно собрать шкафы до потолка, хозяйственный блок и часть учебных мест.</p></div>
-<div class="item"><h3>Кухня открыта к общей зоне</h3><p>Даже после отделения части 14,75 м² оставшаяся гостиная не изолирована: она продолжает работать вместе с кухней.</p></div>
+<div class="item"><h3>Кухня открыта к общей зоне</h3><p>Даже после отделения части 14,75 м² оставшаяся гостиная не изолирована: она продолжает работать вместе с кухней. Для семерых логичнее круглый/овальный стол или стол с банкеткой у стены — так проход не режется стульями.</p></div>
+<div class="item"><h3>Семь постоянных мест сна</h3><p>В фаворите 03: у девочек двухъярусная + отдельная кровать, у мальчиков двухъярусная, у родителей 160 × 200. Диван остаётся диваном, а не обязательной кроватью на ночь.</p></div>
 </section>
 
 <section class="card">
@@ -175,7 +194,7 @@ section.card h2{font-size:27px;font-weight:520;line-height:1.2}.item{padding:17p
 </section>
 </div>
 
-<div class="footer-note"><b>Важно:</b> варианты сейчас функциональные, а не строительные. Геометрия восстановлена по скриншоту, поэтому я специально не подписываю выдуманные сантиметры проходов. После обмеров можно сделать следующий уровень: мебель в масштабе, реальные дверные проёмы и проверка каждого маршрута.</div>
+<div class="footer-note"><b>Важно:</b> это уже рабочее сравнение сценариев, но не строительный чертёж. Площади перенесены с исходника, а линейные размеры стен и мебели нельзя считать обмерными. Перед ремонтом нужны реальные окна, простенки, входная дверь, радиаторы, несущие элементы и вентиляция.</div>
 </main>
 <footer>ПОЛИНА · 2 ВЗРОСЛЫХ + 5 ДЕТЕЙ · ВАРИАНТЫ 01–03</footer>
 <script>
@@ -183,17 +202,34 @@ const data={
 original:{pk:"исходная схема",pt:"Текущая планировка",sk:"исходник / без изменений",st:"Сначала фиксируем то, что есть.",sc:"Две спальни, кухня, общая зона, две мокрые зоны и большой холл. Подписи площадей перенесены со скриншота; точных линейных размеров пока нет.",m:["2","существующие спальни","14,75 м²","общая зона","9,29 м²","холл / вход","61,51 м²","сумма подписей"],nt:"Зачем нужен исходник",nc:"Он позволяет сравнивать варианты по одной и той же геометрии и не маскировать компромиссы.",a:[["11,35 м²","спальня"],["10,26 м²","спальня"],["14,75 м²","гостиная"],["9,29 м²","холл / вход"]]},
 v1:{pk:"вариант 01",pt:"Спальня из холла",sk:"01 / максимум гостиной",st:"Три спальни, не режем гостиную.",sc:"Родители занимают 11,35 м², девочки — 10,26 м², а в нижней части холла пробуем выделить компактную комнату для двух мальчиков. Центральные 14,75 м² остаются полноценной гостиной.",m:["3","постоянные спальни","14,75 м²","гостиная сохраняется","часть 9,29","новая детская","!","нужна проверка входа"],nt:"Главный риск",nc:"В зоне 9,29 м² проходит входной маршрут. Без точного положения двери и окна нельзя обещать нормальный коридор и комнату одновременно.",a:[["11,35 м²","родители"],["10,26 м²","3 девочки"],["часть 9,29 м²","2 мальчика"],["14,75 м²","гостиная"]]},
 v2:{pk:"вариант 02",pt:"Родители-трансформер",sk:"02 / минимум стройки",st:"Детям — постоянные комнаты, взрослым — ночная зона.",sc:"Три девочки получают 11,35 м², два мальчика — 10,26 м². Взрослые используют часть гостиной как закрываемую ночную зону: раздвижная перегородка плюс шкаф-кровать или диван-кровать.",m:["2","детские спальни","1","трансформируемая зона","9,29 м²","хранение + учеба","↓","минимум новых стен"],nt:"Цена решения",nc:"Взрослым придётся ежедневно собирать спальное место, а гостиная вечером перестаёт быть общей. Зато схема меньше зависит от неизвестной геометрии входа.",a:[["11,35 м²","3 девочки"],["10,26 м²","2 мальчика"],["часть 14,75 м²","родители ночью"],["9,29 м²","хранение / учеба"]]},
-v3:{pk:"вариант 03 · фаворит",pt:"Три постоянные спальни и общая зона",sk:"03 / мой фаворит при возможности поставить перегородку",st:"Постоянная спальня каждому блоку семьи.",sc:"Родители остаются в отдельной комнате, девочки получают большую спальню, а мальчикам отрезаем компактную комнату от 14,75 м² у фасада. Остаток гостиной работает вместе с кухней 5,19 м² как единая общая зона.",m:["3","постоянные спальни","≈13–14 м²","кухня + оставшаяся гостиная","9,29 м²","прихожая и хранение","★","лучший баланс приватности"],nt:"Цена решения",nc:"Гостиная становится компактнее, а новая детская зависит от реального положения окна, радиатора и допустимости новой перегородки. Но никто не раскладывает кровать каждый вечер.",a:[["11,35 м²","3 девочки"],["10,26 м²","родители"],["часть 14,75 м²","2 мальчика"],["5,19 + остаток 14,75","кухня-гостиная"]]}
+v3:{pk:"вариант 03 · фаворит",pt:"Три постоянные спальни и общая зона",sk:"03 / финал до обмеров",st:"Семь постоянных мест сна без ежедневной трансформации.",sc:"Родители остаются в 10,26 м², девочки получают 11,35 м², а мальчикам выделяется компактная комната у фасада из части 14,75 м². Остаток общей зоны работает вместе с кухней 5,19 м²; на плане добавлена практическая расстановка сна, учебы и хранения.",m:["3","постоянные спальни","7","постоянных мест сна","9,29 м²","прихожая + хранение","★","финал до обмеров"],nt:"Что проверить перед стройкой",nc:"Критичны окно и радиатор новой детской, ширина оставшейся гостиной, положение входной двери и допустимость перегородки. После реальных обмеров уже можно честно проверить сантиметры проходов.",a:[["11,35 м²","3 девочки · 3 места"],["10,26 м²","родители · 160×200"],["часть 14,75 м²","2 мальчика · 2-ярусная"],["5,19 + остаток 14,75","кухня-гостиная"]]}
 };
-function show(v){
-document.querySelectorAll(".variant").forEach(x=>x.classList.toggle("active",x.dataset.v===v));
-document.querySelectorAll("#switcher button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===v)));
-const d=data[v];document.getElementById("plan-kicker").textContent=d.pk;document.getElementById("plan-title").textContent=d.pt;document.getElementById("side-kicker").textContent=d.sk;document.getElementById("side-title").textContent=d.st;document.getElementById("side-copy").textContent=d.sc;
-for(let i=0;i<4;i++){document.getElementById("m"+(i+1)).textContent=d.m[i*2];document.getElementById("m"+(i+1)+"s").textContent=d.m[i*2+1]}
-document.getElementById("notice-title").textContent=d.nt;document.getElementById("notice-copy").textContent=d.nc;document.getElementById("alloc").innerHTML=d.a.map(x=>"<div><span>"+x[0]+"</span><span>"+x[1]+"</span></div>").join("");
+let current="v3";
+function show(v,{updateHash=true}={}){
+ if(!data[v])v="v3";current=v;
+ document.querySelectorAll(".variant").forEach(x=>x.classList.toggle("active",x.dataset.v===v));
+ document.querySelectorAll("#switcher button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===v)));
+ const d=data[v];document.getElementById("plan-kicker").textContent=d.pk;document.getElementById("plan-title").textContent=d.pt;document.getElementById("side-kicker").textContent=d.sk;document.getElementById("side-title").textContent=d.st;document.getElementById("side-copy").textContent=d.sc;
+ for(let i=0;i<4;i++){document.getElementById("m"+(i+1)).textContent=d.m[i*2];document.getElementById("m"+(i+1)+"s").textContent=d.m[i*2+1]}
+ document.getElementById("notice-title").textContent=d.nt;document.getElementById("notice-copy").textContent=d.nc;document.getElementById("alloc").innerHTML=d.a.map(x=>"<div><span>"+x[0]+"</span><span>"+x[1]+"</span></div>").join("");
+ document.getElementById("sleepmap").hidden=v!=="v3";
+ if(updateHash)history.replaceState(null,"","#"+v);
 }
 document.querySelectorAll("#switcher button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.v)));
-show("v3");
+document.getElementById("download-plan").addEventListener("click",()=>{
+ const source=document.querySelector(".planwrap svg").cloneNode(true);
+ source.querySelectorAll(".variant").forEach(x=>{if(x.dataset.v!==current)x.remove();else x.classList.add("active")});
+ source.setAttribute("xmlns","http://www.w3.org/2000/svg");
+ const blob=new Blob([new XMLSerializer().serializeToString(source)],{type:"image/svg+xml"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="polina-"+current+".svg";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+document.getElementById("copy-link").addEventListener("click",async e=>{
+ const url=location.href.split("#")[0]+"#"+current;
+ try{await navigator.clipboard.writeText(url);e.currentTarget.textContent="Ссылка скопирована ✓";setTimeout(()=>e.currentTarget.textContent="Скопировать ссылку варианта",1400);}catch{location.hash=current;}
+});
+addEventListener("hashchange",()=>show(location.hash.slice(1),{updateHash:false}));
+const initial=data[location.hash.slice(1)]?location.hash.slice(1):"v3";show(initial,{updateHash:!location.hash});
+window.polinaDebug={getState:()=>({current,variants:Object.keys(data)}),show};
 </script>
 </body>
 </html>
