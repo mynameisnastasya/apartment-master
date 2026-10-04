@@ -127,6 +127,14 @@ export function createFurniture(o,m){
   b(m.joinery,x,y,w,d,34,h-34,10);
   b(m.bronze,x+28,y+35,16,d-70,h-44,0,5);b(m.bronze,x+w-44,y+35,16,d-70,h-44,0,5);
  }
+ else if(o.type==='bar'&&o.wallMounted){
+  b(m.joinery,x,y,w,d,40,h-40,24);
+  b(m.shadow,x+2,y+12,35,d-24,130,h-180,6);
+  for(const yy of [y+65,y+d-85]){
+   b(m.bronze,x+12,yy,w-45,20,18,h-60,5);
+   b(m.bronze,x+8,yy,18,20,140,h-180,4);
+  }
+ }
  else if(o.type==='bar'&&organic){
   b(m.marble,x+4,y+4,w-8,d-8,62,h-62,120);
   b(m.darkStone,x+70,y+65,240,d-130,h-120,58,95);

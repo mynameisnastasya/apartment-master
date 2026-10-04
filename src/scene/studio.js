@@ -14,7 +14,8 @@ export function roomSpec(layout,name,interior=false){
  const pos=name==='bath'?[cx-3.0,3.3,cy+3.6]:name==='adult'?[cx-4.1,3.8,cy+4.1]:name==='alice'?[cx-5,4.5,cy+5]:[cx+3.3,3.5,cy+3.8];
  const eye={kitchen:[[2.2,1.6,2.65],[.75,1.23,.65]],living:[[2.90,1.6,4.08],[.50,1.22,2.0]],adult:[[.10,1.55,8.13],[3.05,1.28,6.8]],alice:[[3.62,1.55,7.15],[6.1,1.18,5.5]],bath:[[3.56,1.60,1.86],[3.48,1.18,.15]]}[name];
  if(layout.id==='W4'&&name==='dressing')return{polygon,bounds,pos:interior?[1.65,1.60,5.02]:[4.8,4.4,7.0],target:interior?[1.12,1.26,4.00]:[.95,1.25,4.10],name};
- if(layout.id==='W4'&&['kitchen','living'].includes(name))return{polygon,bounds,pos:interior?[2.90,1.60,3.30]:[5.4,4.4,5.8],target:[1.15,1.1,1.7],name};
+ if(layout.id==='W4'&&name==='living')return{polygon,bounds,pos:interior?[2.90,1.60,2.45]:[5.4,4.4,5.8],target:[.85,1.0,3.05],name};
+ if(layout.id==='W4'&&name==='kitchen')return{polygon,bounds,pos:interior?[2.90,1.60,3.30]:[5.4,4.4,5.8],target:[1.15,1.1,1.7],name};
  if(name==='dressing')return{polygon,bounds,pos:interior?[4.99,1.60,3.23]:[2.3,4.2,6.4],target:[5.83,1.25,4.02],name};
  return{polygon,bounds,pos:interior&&eye?eye[0]:pos,target:interior&&eye?eye[1]:[cx,.85,cy],name};
 }
@@ -34,7 +35,7 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
 
  const furniture=new THREE.Group();furniture.name='FURNITURE_'+layout.id;root.add(furniture);
  for(const o of layout.furniture){
-  if(o.room===name||(['kitchen','living'].includes(name)&&o.room==='kitchen')||(name==='living'&&o.room==='living'))furniture.add(createFurniture(o,m));
+  if((layout.id==='W4'&&['kitchen','living'].includes(name)&&o.room==='living')||o.room===name||(['kitchen','living'].includes(name)&&o.room==='kitchen')||(name==='living'&&o.room==='living'))furniture.add(createFurniture(o,m));
  }
 
  const walls=new THREE.Group();walls.name='WALLS';root.add(walls);
@@ -60,6 +61,10 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   box(walls,m.bathFloor,x-80,y,80,y2-y,2450,0,'studio-west');
   box(walls,m.bronze,x-25,y+12,x2-x+50,6,7,950,'bath-bronze-datum');
  }else if(['kitchen','living'].includes(name)){
+  if(layout.id==='W4'&&interior){
+   box(walls,m.wall,0,3680,2325,120,2700,0,'studio-lounge-back');
+   box(walls,m.wall,2325,3680,850,120,600,2100,'studio-gallery-lintel');
+  }
   box(walls,m.wall,-90,-90,2500,90,2650,0,'studio-north');
   box(walls,m.wall,-90,0,90,y2,2650,0,'studio-west');
   box(walls,m.marble,0,0,1668,10,650,860,'studio-backsplash-n');

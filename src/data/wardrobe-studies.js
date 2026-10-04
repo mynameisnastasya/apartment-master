@@ -29,7 +29,7 @@ move(J,'alice-desk',{x:1550,y:7450,width:1400,depth:600,front:'north'});move(J,'
 endpoints(J,{adult:[4050,4050],adultBed:[3875,5900],child:[2750,5200],childBed:[1400,6500],desk:[1675,7100],childStorage:[2250,6250],dressing:[5150,3825],sofa:[2700,3500]});
 
 function suite(id,wide){
- const l=metadata(clone(base),id,wide?'Большая гардеробная-галерея':'Спальня через гардеробную',wide?'Полноширинная гардеробная становится входной зоной взрослой спальни.':'Компактный проходной гардероб образует приватный вход в спальню.',wide?'4,76 м² и ряд хранения 2280 мм; вторая комната полностью сохранена.':'Вторая комната полностью сохранена; остаётся отдельная небольшая зона с диваном.',wide?'Нет отдельной диванной гостиной: общая зона работает как кухня-столовая. Спальня 9,14 м².':'Диван сокращён до 1200 мм; спальня 9,14 м². Вход в спальню всегда через гардеробную.',wide?900:955,wide?2280:1800,'Проходная, перед спальней');
+ const l=metadata(clone(base),id,wide?'Большая гардеробная-галерея':'Спальня через гардеробную',wide?'Полноширинная гардеробная становится входной зоной взрослой спальни.':'Компактный проходной гардероб образует приватный вход в спальню.',wide?'Гардеробная 4,76 м², диван 2000 мм лицом к кухне и пристенная барная стойка.':'Вторая комната полностью сохранена; остаётся отдельная небольшая зона с диваном.',wide?'Вместо обеденного стола — стойка 1050 × 450 мм: одно свободное или два компактных места. Спальня 9,14 м².':'Диван сокращён до 1200 мм; спальня 9,14 м². Вход в спальню всегда через гардеробную.',wide?900:955,wide?2280:1800,'Проходная, перед спальней');
  const top=wide?3680:3380,left=wide?0:1500;
  part(l,'d-adult-north',{y:5300});part(l,'d-adult-door-lintel',{y:5300});part(l,'d-adult-divider',{y:top,depth:6850-top});
  const door=l.doors.find(d=>d.id==='door-adult');for(const k of ['hinge','arcStart','arcEnd','swing'])delete door[k];
@@ -40,12 +40,22 @@ function suite(id,wide){
  room(l,'adult',[[0,5420],[3175,5420],[3175,8300],[0,8300]],1600,5750);
  const x=wide?0:1620,y=top+120,p=[[x,y],[3175,y],[3175,5300],[x,5300]];
  l.rooms.push({id:'dressing',name:'Гардеробная',x:wide?1500:2700,y:wide?4850:4400,polygon:p,area:+area(p).toFixed(2)});
- l.furniture=l.furniture.filter(o=>!['adult-wardrobe','tv','media',...(wide?['sofa']:[])].includes(o.id));
+ l.furniture=l.furniture.filter(o=>!['adult-wardrobe','tv','media'].includes(o.id));
  move(l,'adult-nightstand',{x:0,y:5650});
  l.furniture.push({id:'dressing-rail',type:'dressing-rack',room:'dressing',x:wide?840:1620,y:wide?2960:3500,width:600,depth:wide?2280:1800,height:2400,rotation:wide?270:180,label:'Открытые секции · глубина 600'});
- if(wide){move(l,'dining',{x:650,y:2400});const chairs=l.furniture.filter(o=>o.type==='chair'&&o.room==='kitchen');Object.assign(chairs[0],{x:200,y:2525});Object.assign(chairs[1],{x:1800,y:2950});l.furniture.push({...clone(chairs[0]),id:'dining-chair-3',x:950,y:1950},{...clone(chairs[0]),id:'dining-chair-4',x:950,y:3100});}
+ if(wide){
+  move(l,'sofa',{x:80,y:2880,width:2000,depth:780,rotation:0,front:'north',label:'Диван 2000 × 780 · лицом к кухне'});
+  move(l,'dining',{x:0,y:1800,width:450,depth:1050,height:940,wallMounted:true,front:'east',label:'Пристенная барная стойка 1050 × 450 · 1–2 места',kneeDepth:400,seats:2,seatingMode:'одно свободное или два компактных места; стулья выдвигаются в общую зону'});
+  const chairs=l.furniture.filter(o=>o.type==='chair'&&o.room==='kitchen');
+  for(const [i,chair] of chairs.entries())Object.assign(chair,{x:550,y:1850+i*550,width:400,depth:400,height:960,type:'stool',front:'west',label:'Полубарный стул · место '+(i+1)});
+  part(l,'d-child-diagonal',{x:3295,y:3680,width:765,depth:120,rotation:0});
+  part(l,'d-child-north-right',{y:3680});part(l,'d-child-door-lintel',{y:3680});
+  Object.assign(l.doors.find(d=>d.id==='door-child'),{y:3680,openY:3720});
+  move(l,'alice-wardrobe',{y:3800});
+  room(l,'alice',[[3295,3800],[6400,3800],[6400,7440],[3425,7440],[3425,6850],[3295,6850]],4900,6350);
+ }
  else move(l,'sofa',{x:-200,y:3100,width:1200,depth:800,rotation:270});
- endpoints(l,{adult:[2750,5700],adultBed:[750,6200],child:[4450,4050],desk:[3820,6280],dressing:wide?[2750,4775]:[2700,4200],farRail:wide?[375,4775]:[2700,4925],dining:wide?[2450,2800]:[1700,2250],...(!wide?{sofa:[1125,3150]}:{})});return l;
+ endpoints(l,{adult:[2750,5700],adultBed:[750,6200],child:wide?[4450,4250]:[4450,4050],desk:[3820,6280],dressing:wide?[2750,4775]:[2700,4200],farRail:wide?[375,4775]:[2700,4925],dining:wide?[1250,2075]:[1700,2250],sofa:wide?[1700,2580]:[1125,3150]});return l;
 }
 const K=suite('W3',false),L=suite('W4',true);
 const M=metadata(clone(existing),'W5','Гардероб при второй комнате','Та же компактная зона хранения, но вход из второй комнаты: независимая приватная система для ребёнка или гостя.','Взрослая спальня 11,24 м², диван и санузел D сохранены. Шкаф прихожей удлиняется на 100 мм.','Гардеробная не доступна напрямую из взрослой спальни. Вторая комната 9,55 м²; семья делит хранение по комнатам.',1140,1500,'Из второй комнаты');

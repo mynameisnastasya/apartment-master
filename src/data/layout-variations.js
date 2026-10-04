@@ -93,9 +93,9 @@ export const layouts=[base,...options.map(option=>{
 layouts.push(...dressingLayouts(base));
 const gallery=createWardrobeStudies(base,layouts.find(l=>l.id==='I')).find(l=>l.id==='W4');
 Object.assign(gallery,{
- subtitle:'4,76 м² · проходная перед спальней · кухня-столовая',
+ subtitle:'4,76 м² · диван к кухне · барная стойка',
  recommended:false,
- pros:[gallery.study.idea,gallery.study.gain,'Проход 900 мм перед хранением глубиной 600 мм; вход в спальню через раздвижную дверь.'],
+ pros:[gallery.study.idea,gallery.study.gain,'Общая прямая стена объединяет входы в спальню через гардероб и детскую; диагональ убрана.','Проход 900 мм перед хранением глубиной 600 мм; вход в спальню через раздвижную дверь.'],
  cons:[gallery.study.cost,'Вход в спальню всегда через гардеробную. Требуются обмер, вентиляция и проверка конструкции дверного пенала.']
 });
 Object.assign(gallery.routes,{bathroom:gallery.routes.bath,alice:gallery.routes.child,aliceDesk:gallery.routes.desk,dressingFar:gallery.routes.farRail,bar:gallery.routes.dining});
@@ -106,8 +106,10 @@ gallery.clearances=[
  {id:'dressing-aisle',label:'Проход перед секциями',value:900,x:1300,y:4850,length:900,axis:'y'},
  {id:'dressing-entry',label:'Боковой вход в галерею',value:895,x:2727.5,y:4600,length:895,axis:'x'},
  {id:'dressing-storage',label:'Длина ряда хранения',value:2280,x:1140,y:4100,length:2280,axis:'x'},
+ {id:'sofa-side',label:'Проход справа от дивана',value:1095,x:2627.5,y:3250,length:1095,axis:'x'},
+ {id:'bar-seating',label:'Шаг компактных барных мест',value:550,x:1100,y:2325,length:550,axis:'y'},
  {id:'bedroom-door',label:'Проём в спальню',value:850,x:2750,y:5300,length:850,axis:'x'}
 ];
 const publicRoom=gallery.rooms.find(r=>r.id==='living');
-Object.assign(publicRoom,{name:'Кухня-столовая',x:1500,y:2950});
+Object.assign(publicRoom,{name:'Кухня-гостиная',x:1400,y:2700});
 layouts.push(gallery);
