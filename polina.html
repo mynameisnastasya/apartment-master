@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Полина · варианты квартиры для 7 человек</title>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"}}</script>
 <style>
 :root{--bg:#f4f0e7;--paper:#fbf8f1;--ink:#30382f;--muted:#737b6f;--line:#d4d7c9;--sage:#71806a;--sage2:#dfe7dc;--sand:#eee4d1;--rose:#eadfe6;--blue:#dfe8ef;--wet:#dde6e7;--hall:#ece9e1}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.58 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -19,7 +20,7 @@ main{max-width:1320px;margin:auto;padding:30px 30px 80px}
 .switcher button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
 .hero{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(340px,.82fr);gap:28px;align-items:start}
 .panel{background:var(--paper);border:1px solid var(--line);border-radius:22px;overflow:hidden}.planhead{display:flex;justify-content:space-between;gap:16px;align-items:end;padding:18px 22px 12px}
-.planhead h2{font-size:18px;margin:0}.planhead span{font-size:12px;color:var(--muted)}.planwrap{padding:8px 16px 18px}
+.planhead h2{font-size:18px;margin:0}.planhead span{font-size:12px;color:var(--muted)}.planwrap{padding:8px 16px 18px}.viewbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 16px 10px;flex-wrap:wrap}.viewtabs,.viewtools{display:flex;gap:6px;flex-wrap:wrap}.viewtabs button,.viewtools button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 11px;cursor:pointer;font-size:11px}.viewtabs button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}.viewtools label{font-size:11px;display:flex;align-items:center;gap:5px;color:var(--muted)}#polina-3d{height:650px;border-radius:14px;border:1px solid #e7e5df;overflow:hidden;background:#eeeae2;position:relative}#polina-3d canvas{display:block;width:100%;height:100%;touch-action:none}#polina-3d-error{position:absolute;z-index:2;left:18px;right:18px;top:42%;padding:12px;background:#fff;border:1px solid var(--line);border-radius:10px;font-size:12px}#polina-2d[hidden],#polina-3d[hidden]{display:none!important}
 svg{width:100%;height:auto;display:block;background:#fff;border-radius:14px;border:1px solid #e7e5df}
 .variant{display:none}.variant.active{display:inline}.walls{fill:none;stroke:#283128;stroke-width:8;stroke-linecap:square;stroke-linejoin:miter}
 .newwall{fill:none;stroke:#8b5a51;stroke-width:7;stroke-dasharray:12 7}.removed{stroke:#8b5a51;stroke-width:5;stroke-dasharray:6 6}
@@ -36,7 +37,7 @@ section.card h2{font-size:27px;font-weight:520;line-height:1.2}.item{padding:17p
 .compare{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.choice{padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--paper)}.choice.star{border-color:#87947d;box-shadow:inset 0 0 0 1px #87947d}.choice h3{font-size:17px;margin-bottom:7px}.choice p{font-size:13px;color:#5d6658;margin-bottom:9px}.choice small{color:var(--muted)}
 .rooms{width:100%;border-collapse:collapse}.rooms td{padding:10px 4px;border-bottom:1px solid var(--line);font-size:14px}.rooms td:last-child{text-align:right;font-variant-numeric:tabular-nums}
 .footer-note{margin-top:30px;padding:19px 20px;border-radius:14px;background:#eadbd6;font-size:14px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.actionbtn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;cursor:pointer;font-size:12px}.actionbtn.primary{background:var(--ink);border-color:var(--ink);color:#fff}.sleepmap{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}.sleepmap div{border-top:1px solid var(--line);padding:10px 0;font-size:12px}.sleepmap b{display:block;font-size:14px}.furnlabel{font:600 9px system-ui,sans-serif;fill:#566056}.furnfill{fill:#fff8;stroke:#7a8478;stroke-width:2.5}footer{max-width:1320px;margin:auto;padding:0 30px 38px;color:var(--muted);font-size:12px}
-@media(max-width:920px){header{padding:20px 18px}.status{display:none}main{padding:20px 18px 60px}.hero,.grid{grid-template-columns:1fr}.side{padding:22px}.planwrap{padding:6px 8px 14px}.compare{grid-template-columns:1fr}.planhead{padding:16px 14px 10px}}
+@media(max-width:920px){header{padding:20px 18px}.status{display:none}main{padding:20px 18px 60px}.hero,.grid{grid-template-columns:1fr}.side{padding:22px}.planwrap{padding:6px 8px 14px}.compare{grid-template-columns:1fr}.planhead{padding:16px 14px 10px}#polina-3d{height:560px}}@media(max-width:520px){#polina-3d{height:500px}.viewbar{padding:0 8px 8px}.viewtabs,.viewtools{width:100%}.viewtabs button,.viewtools button{flex:1}.viewtools label{flex:1 0 45%}}
 </style>
 </head>
 <body>
@@ -50,8 +51,11 @@ section.card h2{font-size:27px;font-weight:520;line-height:1.2}.item{padding:17p
 </div>
 <div class="hero">
 <div class="panel">
-<div class="planhead"><div><div class="eyebrow" id="plan-kicker">вариант 03 · фаворит</div><h2 id="plan-title">Три постоянные спальни и общая зона</h2></div><span>геометрия по исходнику · мебель условно в масштабе зон</span></div>
+<div class="planhead"><div><div class="eyebrow" id="plan-kicker">вариант 03 · фаворит</div><h2 id="plan-title">Три постоянные спальни и общая зона</h2></div><span>3D по пропорциям исходника · не обмерный чертёж</span></div>
+<div class="viewbar"><div class="viewtabs" aria-label="Вид"><button id="p-view3d" aria-pressed="true">3D</button><button id="p-view2d" aria-pressed="false">План 2D</button></div><div class="viewtools"><label><input id="p3d-cutaway" type="checkbox" checked> стены в разрезе</label><label><input id="p3d-furniture" type="checkbox" checked> мебель</label><button id="p3d-rotate" aria-label="Повернуть 3D">↻</button><button id="p3d-zoom-in" aria-label="Приблизить">+</button><button id="p3d-zoom-out" aria-label="Отдалить">−</button><button id="p3d-reset">Общий вид</button></div></div>
 <div class="planwrap">
+<div id="polina-3d"><p id="polina-3d-error" hidden>3D не запустилось в этом браузере — переключитесь на «План 2D».</p></div>
+<div id="polina-2d" hidden>
 <svg viewBox="0 0 620 790" role="img" aria-label="Схематичные варианты перепланировки квартиры Полины">
 <rect x="44" y="34" width="532" height="710" fill="#f7f6f2"/>
 
@@ -140,6 +144,7 @@ section.card h2{font-size:27px;font-weight:520;line-height:1.2}.item{padding:17p
 </g>
 </svg>
 </div>
+</div>
 <div class="legend"><span><i style="background:#eadfe6"></i>девочки</span><span><i style="background:#dfe8ef"></i>мальчики</span><span><i style="background:#dfe7dc"></i>родители</span><span><i style="background:#eee4d1"></i>общая зона</span><span><i style="background:#8b5a51"></i>новая перегородка</span></div>
 </div>
 
@@ -213,6 +218,7 @@ function show(v,{updateHash=true}={}){
  for(let i=0;i<4;i++){document.getElementById("m"+(i+1)).textContent=d.m[i*2];document.getElementById("m"+(i+1)+"s").textContent=d.m[i*2+1]}
  document.getElementById("notice-title").textContent=d.nt;document.getElementById("notice-copy").textContent=d.nc;document.getElementById("alloc").innerHTML=d.a.map(x=>"<div><span>"+x[0]+"</span><span>"+x[1]+"</span></div>").join("");
  document.getElementById("sleepmap").hidden=v!=="v3";
+ window.dispatchEvent(new CustomEvent("polina:variant",{detail:{variant:v}}));
  if(updateHash)history.replaceState(null,"","#"+v);
 }
 document.querySelectorAll("#switcher button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.v)));
@@ -228,8 +234,17 @@ document.getElementById("copy-link").addEventListener("click",async e=>{
  try{await navigator.clipboard.writeText(url);e.currentTarget.textContent="Ссылка скопирована ✓";setTimeout(()=>e.currentTarget.textContent="Скопировать ссылку варианта",1400);}catch{location.hash=current;}
 });
 addEventListener("hashchange",()=>show(location.hash.slice(1),{updateHash:false}));
-const initial=data[location.hash.slice(1)]?location.hash.slice(1):"v3";show(initial,{updateHash:!location.hash});
-window.polinaDebug={getState:()=>({current,variants:Object.keys(data)}),show};
+function setPolinaView(mode){
+ const is3d=mode==="3d";
+ document.getElementById("polina-3d").hidden=!is3d;document.getElementById("polina-2d").hidden=is3d;
+ document.getElementById("p-view3d").setAttribute("aria-pressed",String(is3d));document.getElementById("p-view2d").setAttribute("aria-pressed",String(!is3d));
+ document.querySelectorAll(".viewtools button,.viewtools input").forEach(x=>x.disabled=!is3d);
+}
+document.getElementById("p-view3d").addEventListener("click",()=>setPolinaView("3d"));
+document.getElementById("p-view2d").addEventListener("click",()=>setPolinaView("2d"));
+const initial=data[location.hash.slice(1)]?location.hash.slice(1):"v3";show(initial,{updateHash:!location.hash});setPolinaView("3d");
+window.polinaDebug={getState:()=>({current,variants:Object.keys(data),view:document.getElementById("polina-3d").hidden?"2d":"3d"}),show,setView:setPolinaView};
 </script>
+<script type="module" src="polina/3d.js"></script>
 </body>
 </html>
