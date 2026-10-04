@@ -1,0 +1,44 @@
+import fs from 'node:fs';
+import {layouts} from '../src/data/layout-variations.js';
+import geometry from '../src/data/geometry.json' with {type:'json'};
+const desk=layouts.find(l=>l.id==='W6').furniture.find(o=>o.id==='alice-desk');
+const win=geometry.windows.find(w=>w.id==='window-alice');
+const W=desk.width,D=desk.depth,H=desk.height,C=desk.underDeskDresser,S=.28,X=130;
+const leg=28,top=34,opening=W-C-leg,offset=win.x-desk.x;
+const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;');
+let svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1420" viewBox="0 0 1200 1420" role="img" aria-labelledby="title desc"><title id="title">W6 — размерная схема стола Алисы</title><desc id="desc">Вид сверху и со стороны комнаты. Стол ${W} на ${D}, высота ${H}, модуль комода ${C} мм. Размеры из модели, не для изготовления.</desc><style>text{font-family:Arial,sans-serif;fill:#343b32}.title{font:42px Georgia,serif}.small{font-size:17px}.label{font-size:20px}.dim{font-size:18px;font-weight:600}.line{stroke:#53604c;stroke-width:1.4;fill:none}.muted{fill:#686e61}</style><rect width="1200" height="1420" fill="#faf7f0"/>`;
+const text=(x,y,t,cls='label',anchor='start')=>svg+=`<text x="${x}" y="${y}" class="${cls}" font-family="${cls==='title'?'Georgia,serif':'Arial,sans-serif'}" font-size="${cls==='title'?42:cls==='small'?17:cls==='dim'?18:20}" fill="#343b32" text-anchor="${anchor}">${esc(t)}</text>`;
+const line=(x1,y1,x2,y2,dash='')=>svg+=`<path d="M${x1} ${y1}L${x2} ${y2}" stroke="#53604c" stroke-width="1.4" fill="none" ${dash?'stroke-dasharray="'+dash+'"':''}/>`;
+const rect=(x,y,w,h,fill,stroke='#7f8875')=>svg+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}"/>`;
+const hd=(a,b,y,label)=>{line(a,y,b,y);for(const x of[a,b])line(x-4,y+5,x+4,y-5);text((a+b)/2,y-9,label,'dim','middle');};
+const vd=(x,a,b,label)=>{line(x,a,x,b);for(const y of[a,b])line(x-5,y+4,x+5,y-4);svg+=`<text x="${x-11}" y="${(a+b)/2}" class="dim" font-family="Arial,sans-serif" font-size="18" fill="#343b32" text-anchor="middle" transform="rotate(-90 ${x-11} ${(a+b)/2})">${esc(label)}</text>`;};
+text(60,52,'W6 / МЕБЕЛЬ / 01','small');text(60,110,'Стол у окна. Размерная схема.','title');text(60,147,'Все размеры — мм. По текущей модели; не обмер и не чертёж для производства.','small');
+text(60,217,'01 / ВИД СВЕРХУ','label');text(60,247,'Окно сверху схемы; комод — со стороны простенка между комнатами.','small');
+const P=330;
+rect(X-15,P-30,W*S+30,20,'#e4e5dc');rect(X+offset*S,P-30,win.width*S,20,'#dce7e5');
+rect(X,P,W*S,D*S,'#e7d6be');rect(X,P,C*S,D*S,'none');
+rect(X+(W-leg)*S,P+35*S,leg*S,(D-70)*S,'#b6baa5');
+// Cabinet and beam below the worktop are dashed in plan.
+line(X+C*S,P,X+C*S,P+D*S,'6 5');line(X+C*S,P+(D-100)*S,X+(W-36)*S,P+(D-100)*S,'6 5');
+rect(X+(C+120)*S,P+28*S,90*S,8*S,'#46533d');
+hd(X,X+W*S,285,W);vd(1030,P,P+D*S,D);hd(X,X+C*S,545,C+' / модуль комода');hd(X+C*S,X+W*S,545,(W-C)+' / рабочая часть');
+text(X+C*S/2,P+95,'КОМОД ПОД СТОЛОМ','small','middle');text(X+(C+(W-C)/2)*S,P+95,'РАБОЧАЯ ПОВЕРХНОСТЬ','small','middle');
+line(X+(C+165)*S,P+32*S,X+(C+165)*S,590);text(X+(C+165)*S+12,590,'Кабельный вывод в модели: 90 × 8','small');
+text(60,670,'02 / ВИД ИЗ КОМНАТЫ НА ОКНО','label');text(60,700,'Комод справа; проекция развёрнута относительно вида сверху.','small');
+const floor=1080,ty=floor-H*S,wx=X+(W-offset-win.width)*S,wy=floor-win.sill*S;
+// Only the lower part of the window is shown; its top is intentionally cut.
+rect(wx,760,win.width*S,wy-760,'#e7efeb');line(wx,754,wx,wy);line(wx+win.width*S,754,wx+win.width*S,wy);line(wx,wy,wx+win.width*S,wy);text(wx+win.width*S/2,787,'ОКНО / НИЖНЯЯ ЧАСТЬ','small','middle');
+rect(X,ty,W*S,top*S,'#c5ad88');rect(X, floor-(H-44)*S,leg*S,(H-44)*S,'#b6baa5');
+const cx=X+(W-C)*S;rect(cx+4*S,floor-(H-38)*S,(C-8)*S,(H-98)*S,'#d9ddce');
+for(let i=0;i<3;i++){const z=72+i*211;rect(cx+9*S,floor-(z+202)*S,(C-18)*S,202*S,'#ebece4');line(cx+300*S,floor-(260+i*211)*S,cx+700*S,floor-(260+i*211)*S);}
+rect(cx+25*S,floor-60*S,(C-50)*S,60*S,'#a6ac9b');
+rect(X+36*S,floor-700*S,(W-C-36)*S,50*S,'#b5aa90');text(X+48,ty+72,'Открытая зона под столом','small');text(X+48,ty+101,'Балка показана условно','small');
+line(X-22,floor,X+W*S+22,floor);vd(90,ty,floor,H);vd(1050,wy,floor,win.sill+' / подоконник');
+hd(X+leg*S,cx,1130,opening+' / по модульной схеме');hd(cx,X+W*S,1130,C);text(X,1170,'Столешница: 34. Торцевая опора: 28. Зона под балкой в модели: 650 по высоте.','small');
+line(60,1210,1140,1210);text(60,1250,'ДО ЗАКАЗА МЕБЕЛИ','label');
+text(60,1282,'Обмерить стену и откосы; проверить створки, радиатор, трубы и доступ к вентилям.','small');
+text(60,1312,'Высоту рабочего места подобрать под рост Алисы. Монтажные зазоры здесь не заложены.','small');
+text(60,1342,'Опирание, усиление пролёта и крепёж рассчитывает изготовитель после выбора материала.','small');
+text(60,1385,'W6 · Эскиз для согласования · Геометрия совпадает с параметрами интерактивной модели','small');
+svg+='</svg>';fs.writeFileSync('views/W6-alice-desk.svg',svg);
+console.log(`W6 desk sheet: ${W} × ${D} × ${H}; dresser ${C}; opening ${opening}; window offset ${offset}`);
