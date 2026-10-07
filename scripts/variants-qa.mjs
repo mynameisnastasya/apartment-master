@@ -84,7 +84,15 @@ for(const layout of layouts){
   const obstacles=colliders(geometry,layout),routes=[];
   for(const [a,b] of layout.routePairs){
     const result=findRoute(layout.routes[a],layout.routes[b],geometry,obstacles,{radius:250});
-    if(layout.id==='L'&&!result.ok)console.log('L route diagnostic',a,'→',b,result);
+    if(layout.id==='L'&&!result.ok){
+      const diag={
+        noFurniture:findRoute(layout.routes[a],layout.routes[b],geometry,obstacles.filter(o=>o.kind!=='furniture'),{radius:250}),
+        noDoors:findRoute(layout.routes[a],layout.routes[b],geometry,obstacles.filter(o=>o.kind!=='door'),{radius:250}),
+        wallsOnly:findRoute(layout.routes[a],layout.routes[b],geometry,obstacles.filter(o=>o.kind==='wall'),{radius:250}),
+        radius200:findRoute(layout.routes[a],layout.routes[b],geometry,obstacles,{radius:200})
+      };
+      console.log('L route diagnostic',a,'→',b,result,diag);
+    }
     assert.ok(result.ok&&result.endpointSnapMm.every(n=>n<=150),`${layout.id}: blocked ${a} → ${b} or moved endpoint`);
     routes.push({from:a,to:b,lengthMm:result.lengthMm,snapMm:result.endpointSnapMm});
   }
