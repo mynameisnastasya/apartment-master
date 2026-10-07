@@ -50,7 +50,7 @@ export function createPhotoLayout(base){
  // Right bedroom: straight wall instead of the diagonal used by D.
  part('d-child-diagonal',{x:3295,y:4100,width:205,depth:120,rotation:0});
  part('d-child-door-lintel',{x:3500,y:4100,width:850,depth:120,rotation:0});
- part('d-child-north-right',{x:4350,y:4100,width:30,depth:120,rotation:0});
+ part('d-child-north-right',{x:4350,y:4100,width:150,depth:120,rotation:0});
  door('door-child',{x:3500,y:4100,width:850,axis:'x',openX:4310,openY:4220,openWidth:40,openDepth:850,room:'alice',mechanism:'hinged',swing:'inward',hinge:[4350,4220],arcStart:180,arcEnd:90});
 
  // Dressing-room enclosure from the reference. The current shell only allows
@@ -87,7 +87,7 @@ export function createPhotoLayout(base){
  l.furniture=l.furniture.filter(o=>!['media','tv','alice-wardrobe','adult-nightstand-2'].includes(o.id));
 
  move('adult-bed',{x:650,y:5000,width:1850,depth:2200,rotation:0,mattress:[1600,2000],front:'north',label:'Кровать · ориентир 1600 × 2000'});
- move('adult-wardrobe',{x:0,y:4060,width:2400,depth:550,height:2400,rotation:0,front:'south',label:'Шкаф / хранение 2400 × 550'});
+ move('adult-wardrobe',{x:0,y:4060,width:2200,depth:550,height:2400,rotation:0,front:'south',label:'Шкаф / хранение 2200 × 550'});
  move('adult-dresser',{x:2670,y:5200,width:420,depth:900,height:760,rotation:0,front:'west',label:'Консоль / туалетный столик 900 × 420'});
  move('adult-nightstand',{x:2600,y:6800,width:450,depth:350,rotation:0,front:'west',label:'Прикроватная тумба 450'});
 
