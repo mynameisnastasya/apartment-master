@@ -82,7 +82,7 @@ export function createPhotoLayout(base){
  move('washer',{x:3100,y:0,width:650,depth:650,rotation:0,front:'south'});
  move('basin',{x:2460,y:0,width:600,depth:400,rotation:0,front:'south'});
 
- move('sofa',{x:300,y:2850,width:2400,depth:850,rotation:0,front:'north',label:'Диван 2400 × 850 · по референсу'});
+ move('sofa',{x:150,y:2850,width:2400,depth:850,rotation:0,front:'north',label:'Диван 2400 × 850 · по референсу'});
  l.furniture=l.furniture.filter(o=>!['media','tv','alice-wardrobe','adult-nightstand-2','alice-toys'].includes(o.id));
 
  move('adult-bed',{x:650,y:5000,width:1850,depth:2200,rotation:0,mattress:[1600,2000],front:'north',label:'Кровать · ориентир 1600 × 2000'});
