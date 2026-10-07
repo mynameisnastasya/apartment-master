@@ -85,12 +85,12 @@ export function createPhotoLayout(base){
  move('sofa',{x:150,y:2850,width:2400,depth:850,rotation:0,front:'north',label:'Диван 2400 × 850 · по референсу'});
  l.furniture=l.furniture.filter(o=>!['media','tv','alice-wardrobe','adult-nightstand-2','alice-toys'].includes(o.id));
 
- move('adult-bed',{x:650,y:5000,width:1850,depth:2200,rotation:0,mattress:[1600,2000],front:'north',label:'Кровать · ориентир 1600 × 2000'});
+ move('adult-bed',{x:640,y:5050,width:1850,depth:2200,rotation:0,mattress:[1600,2000],front:'north',label:'Кровать · матрас 1600 × 2000 · изголовье к верхней стене'});
  move('adult-wardrobe',{x:0,y:4060,width:2200,depth:550,height:2400,rotation:0,front:'south',label:'Шкаф / хранение 2200 × 550'});
  move('adult-dresser',{x:2670,y:5200,width:420,depth:900,height:760,rotation:0,front:'west',label:'Консоль / туалетный столик 900 × 420'});
  move('adult-nightstand',{x:2600,y:6800,width:450,depth:350,rotation:0,front:'west',label:'Прикроватная тумба 450'});
 
- move('alice-bed',{x:4800,y:4700,width:1300,depth:1900,rotation:0,mattress:[1200,1800],front:'north',label:'Кровать / диван-кровать · ориентир 1200 × 1800'});
+ move('alice-bed',{x:4750,y:4700,width:1300,depth:1900,rotation:90,mattress:[1200,1800],front:'east',label:'Кровать / диван-кровать · матрас 1200 × 1800 · изголовье к правой стене'});
  move('alice-desk',{x:3650,y:6880,width:2200,depth:500,height:740,rotation:0,front:'north',label:'Стол / консоль 2200 × 500 · у окна'});
  move('alice-chair',{x:3900,y:6250,width:500,depth:500,rotation:0,front:'south'});
 
