@@ -45,7 +45,7 @@ export function createPhotoLayout(base){
  part('d-adult-north',{x:0,y:3880,width:2325,depth:120,rotation:0});
  part('d-adult-door-lintel',{x:2325,y:3880,width:850,depth:120,rotation:0});
  part('d-adult-divider',{x:3175,y:3880,width:120,depth:2970,rotation:0});
- door('door-adult',{x:2325,y:3880,width:850,axis:'x',openX:3135,openY:4000,openWidth:40,openDepth:850,room:'adult',mechanism:'hinged',swing:'inward',hinge:[3175,4000],arcStart:180,arcEnd:90});
+ door('door-adult',{x:2325,y:3880,width:850,axis:'x',openX:2325,openY:4000,openWidth:40,openDepth:850,room:'adult',mechanism:'hinged',swing:'inward',hinge:[2325,4000],arcStart:0,arcEnd:90});
 
  // Right bedroom: straight wall instead of the diagonal used by D.
  part('d-child-diagonal',{x:3295,y:4330,width:205,depth:120,rotation:0});
