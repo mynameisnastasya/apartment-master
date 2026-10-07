@@ -26,7 +26,7 @@ export function createPhotoLayout(base){
   ],
   cons:[
    'Это реконструкция по изображению, а не по обмеру: подписи площадей и текущий условный контур квартиры расходятся.',
-   'Узкий поперечный перешеек между ванной и гардеробной в модели около 530 мм; его обязательно перепроверить на реальных размерах.',
+   'Поперечный проход между ванной и гардеробной в модели около 680 мм; его обязательно перепроверить на реальных размерах.',
    'Правая спальня в текущем условном контуре получается меньше подписанных на референсе 10,41 м² из-за простенка и формы нижней стены.',
    'Перед строительством нужны точные размеры перегородок, дверей, стояков, вентиляции и допустимых границ мокрой зоны.'
   ]
@@ -48,33 +48,32 @@ export function createPhotoLayout(base){
  door('door-adult',{x:2325,y:3880,width:850,axis:'x',openX:3135,openY:4000,openWidth:40,openDepth:850,room:'adult',mechanism:'hinged',swing:'inward',hinge:[3175,4000],arcStart:180,arcEnd:90});
 
  // Right bedroom: straight wall instead of the diagonal used by D.
- part('d-child-diagonal',{x:3295,y:4100,width:205,depth:120,rotation:0});
- part('d-child-door-lintel',{x:3500,y:4100,width:850,depth:120,rotation:0});
- part('d-child-north-right',{x:4350,y:4100,width:150,depth:120,rotation:0});
- door('door-child',{x:3500,y:4100,width:850,axis:'x',openX:4310,openY:4220,openWidth:40,openDepth:850,room:'alice',mechanism:'hinged',swing:'inward',hinge:[4350,4220],arcStart:180,arcEnd:90});
+ part('d-child-diagonal',{x:3295,y:4330,width:205,depth:120,rotation:0});
+ part('d-child-door-lintel',{x:3500,y:4330,width:850,depth:120,rotation:0});
+ part('d-child-north-right',{x:4350,y:4330,width:150,depth:120,rotation:0});
+ door('door-child',{x:3500,y:4330,width:850,axis:'x',openX:4310,openY:4450,openWidth:40,openDepth:850,room:'alice',mechanism:'hinged',swing:'inward',hinge:[4350,4450],arcStart:180,arcEnd:90});
 
- // Dressing-room enclosure from the reference. The current shell only allows
- // about 2.85 m² geometrically while preserving a 500+ mm circulation neck;
- // the room keeps 3.04 m² as the source-plan label.
+ // Dressing-room enclosure from the reference: 1900 × 1600 mm clear, matching 3.04 m².
+ // Its north wall is shifted just enough to keep a compact but testable hall passage.
  l.partitions.push(
-  {id:'l-dressing-west',type:'wall',room:'architecture',x:4380,y:2580,width:120,depth:1500,height:2700,rotation:0,visible:true,proposed:true},
-  {id:'l-dressing-north-right',type:'wall',room:'architecture',x:5350,y:2460,width:1050,depth:120,height:2700,rotation:0,visible:true,proposed:true},
-  {id:'l-dressing-door-lintel',type:'wall',room:'architecture',x:4500,y:2460,width:850,depth:120,height:600,elevation:2100,rotation:0,visible:true,proposed:true,openingPart:true},
-  {id:'l-dressing-south',type:'wall',room:'architecture',x:4500,y:4080,width:1900,depth:120,height:2700,rotation:0,visible:true,proposed:true}
+  {id:'l-dressing-west',type:'wall',room:'architecture',x:4380,y:2730,width:120,depth:1600,height:2700,rotation:0,visible:true,proposed:true},
+  {id:'l-dressing-north-right',type:'wall',room:'architecture',x:5350,y:2610,width:1050,depth:120,height:2700,rotation:0,visible:true,proposed:true},
+  {id:'l-dressing-door-lintel',type:'wall',room:'architecture',x:4500,y:2610,width:850,depth:120,height:600,elevation:2100,rotation:0,visible:true,proposed:true,openingPart:true},
+  {id:'l-dressing-south',type:'wall',room:'architecture',x:4500,y:4330,width:1900,depth:120,height:2700,rotation:0,visible:true,proposed:true}
  );
- l.doors.push({id:'door-dressing',x:4500,y:2460,width:850,axis:'x',openX:5350,openY:2500,openWidth:850,openDepth:35,room:'dressing',mechanism:'pocket-sliding'});
+ l.doors.push({id:'door-dressing',x:4500,y:2610,width:850,axis:'x',openX:5350,openY:2650,openWidth:850,openDepth:35,room:'dressing',mechanism:'pocket-sliding'});
 
  const adult=find(l.rooms,'adult');
  Object.assign(adult,{x:1650,y:6100,polygon:[[0,4000],[3175,4000],[3175,8300],[0,8300]],area:13.68});
  const child=find(l.rooms,'alice');
- Object.assign(child,{name:'Вторая спальня',x:5200,y:5700,polygon:[[3295,4220],[6400,4220],[6400,7440],[3425,7440],[3425,6850],[3295,6850]],area:10.41});
+ Object.assign(child,{name:'Вторая спальня',x:5200,y:5700,polygon:[[3295,4450],[6400,4450],[6400,7440],[3425,7440],[3425,6850],[3295,6850]],area:10.41});
  const bath=find(l.rooms,'bath');
  Object.assign(bath,{x:3690,y:1100,polygon:[[2440,0],[4940,0],[4940,1810],[2440,1810]],area:4.53});
  const living=find(l.rooms,'living');
  Object.assign(living,{name:'Кухня-гостиная',x:1350,y:2850,area:18.85});
  const entry=find(l.rooms,'entry');
  Object.assign(entry,{x:5550,y:1450});
- l.rooms.push({id:'dressing',name:'Гардеробная',x:5450,y:3350,polygon:[[4500,2580],[6400,2580],[6400,4080],[4500,4080]],area:3.04});
+ l.rooms.push({id:'dressing',name:'Гардеробная',x:5450,y:3500,polygon:[[4500,2730],[6400,2730],[6400,4330],[4500,4330]],area:3.04});
 
  // Kitchen stays on the same plumbing wall as D; furniture is rearranged to
  // follow the reference while retaining the project's verified appliance blocks.
@@ -139,7 +138,7 @@ export function createPhotoLayout(base){
   {id:'adult-door-clear',label:'Проём спальни до коробки',value:850,unit:'мм',status:'good',x:2750,y:3940,axis:'x',length:850},
   {id:'child-door-clear',label:'Проём второй спальни до коробки',value:850,unit:'мм',status:'good',x:3925,y:4160,axis:'x',length:850},
   {id:'dressing-door',label:'Проём гардеробной до коробки',value:850,unit:'мм',status:'good',x:4925,y:2520,axis:'x',length:850},
-  {id:'hall-neck',label:'Перешеек между ванной и гардеробной · модель',value:530,unit:'мм',status:'compact',x:4700,y:2195,axis:'y',length:530},
+  {id:'hall-neck',label:'Перешеек между ванной и гардеробной · модель',value:680,unit:'мм',status:'compact',x:4700,y:2270,axis:'y',length:680},
   {id:'adult-foot',label:'Проход у изножья кровати',value:650,unit:'мм',status:'compact',x:325,y:6100,axis:'x',length:650},
   {id:'dressing-aisle',label:'Проход перед хранением',value:830,unit:'мм',status:'compact',x:5385,y:3500,axis:'x',length:830}
  ];
