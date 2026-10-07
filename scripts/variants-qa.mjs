@@ -91,7 +91,8 @@ for(const layout of layouts){
         wallsOnly:findRoute(layout.routes[a],layout.routes[b],geometry,obstacles.filter(o=>o.kind==='wall'),{radius:250}),
         radius200:findRoute(layout.routes[a],layout.routes[b],geometry,obstacles,{radius:200})
       };
-      console.log('L route diagnostic',a,'→',b,result,diag);
+      const singleFurnitureBlockers=obstacles.filter(o=>o.kind==='furniture').filter(candidate=>findRoute(layout.routes[a],layout.routes[b],geometry,obstacles.filter(o=>o!==candidate),{radius:250}).ok).map(o=>o.id);
+      console.log('L route diagnostic',a,'→',b,result,diag,'singleFurnitureBlockers',singleFurnitureBlockers);
     }
     assert.ok(result.ok&&result.endpointSnapMm.every(n=>n<=150),`${layout.id}: blocked ${a} → ${b} or moved endpoint`);
     routes.push({from:a,to:b,lengthMm:result.lengthMm,snapMm:result.endpointSnapMm});
