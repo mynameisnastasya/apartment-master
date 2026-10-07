@@ -9901,14 +9901,14 @@
           "id": "adult-bed",
           "type": "bed",
           "room": "adult",
-          "x": 650,
-          "y": 5000,
+          "x": 640,
+          "y": 5050,
           "width": 1850,
           "depth": 2200,
           "height": 850,
           "rotation": 0,
           "visible": true,
-          "label": "Кровать · ориентир 1600 × 2000",
+          "label": "Кровать · матрас 1600 × 2000 · изголовье к верхней стене",
           "mattress": [
             1600,
             2000
@@ -9963,19 +9963,19 @@
           "id": "alice-bed",
           "type": "bed",
           "room": "alice",
-          "x": 4800,
+          "x": 4750,
           "y": 4700,
           "width": 1300,
           "depth": 1900,
           "height": 850,
-          "rotation": 0,
+          "rotation": 90,
           "visible": true,
-          "label": "Кровать / диван-кровать · ориентир 1200 × 1800",
+          "label": "Кровать / диван-кровать · матрас 1200 × 1800 · изголовье к правой стене",
           "mattress": [
             1200,
             1800
           ],
-          "front": "north"
+          "front": "east"
         },
         {
           "id": "alice-desk",
