@@ -78,7 +78,7 @@ export function createPhotoLayout(base){
  // Kitchen stays on the same plumbing wall as D; furniture is rearranged to
  // follow the reference while retaining the project's verified appliance blocks.
  move('bath-tub',{x:4160,y:55,width:750,depth:1700,rotation:0,front:'west',label:'Ванна 1700 × 750'});
- move('wc',{x:2580,y:1110,width:600,depth:500,rotation:0,front:'east'});
+ move('wc',{x:2580,y:1170,width:600,depth:500,rotation:0,front:'east'});
  move('washer',{x:3100,y:0,width:650,depth:650,rotation:0,front:'south'});
  move('basin',{x:2460,y:0,width:600,depth:400,rotation:0,front:'south'});
 
