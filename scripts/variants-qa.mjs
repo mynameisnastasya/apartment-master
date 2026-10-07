@@ -84,6 +84,7 @@ for(const layout of layouts){
   const obstacles=colliders(geometry,layout),routes=[];
   for(const [a,b] of layout.routePairs){
     const result=findRoute(layout.routes[a],layout.routes[b],geometry,obstacles,{radius:250});
+    if(layout.id==='L'&&!result.ok)console.log('L route diagnostic',a,'→',b,result);
     assert.ok(result.ok&&result.endpointSnapMm.every(n=>n<=150),`${layout.id}: blocked ${a} → ${b} or moved endpoint`);
     routes.push({from:a,to:b,lengthMm:result.lengthMm,snapMm:result.endpointSnapMm});
   }
