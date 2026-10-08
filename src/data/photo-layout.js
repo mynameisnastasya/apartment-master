@@ -89,9 +89,9 @@ export function createPhotoLayout(base){
  move('adult-bed',{x:1080,y:5050,width:1850,depth:2200,rotation:90,mattress:[1600,2000],front:'east',label:'Двуспальная кровать · матрас 1600 × 2000 · изголовье к правой стене'});
  move('adult-wardrobe',{x:0,y:4060,width:2200,depth:550,height:2400,rotation:0,front:'south',label:'Шкаф / хранение 2200 × 550'});
 
- move('alice-bed',{x:4750,y:4700,width:1300,depth:1900,rotation:90,mattress:[1200,1800],front:'east',label:'Односпальная / диван-кровать · спальное место 1200 × 1800 · изголовье к правой стене'});
- move('alice-desk',{x:3650,y:6880,width:2200,depth:500,height:740,rotation:0,front:'north',label:'Стол / консоль 2200 × 500 · у окна'});
- move('alice-chair',{x:3900,y:6250,width:500,depth:500,rotation:0,front:'south'});
+ move('alice-bed',{x:4750,y:4490,width:1300,depth:1900,rotation:90,mattress:[1200,1800],front:'east',label:'Односпальная / диван-кровать · спальное место 1200 × 1800 · изголовье к правой стене'});
+ move('alice-desk',{x:3650,y:6940,width:2200,depth:500,height:740,rotation:0,front:'north',label:'Стол / консоль 2200 × 500 · у окна'});
+ move('alice-chair',{x:5400,y:6330,width:500,depth:500,rotation:0,front:'south'});
 
  // The front door is on the east wall, y=100..1100. A tall closet here
  // previously blocked the entire threshold (x=6020..6400, y=200..2100).
@@ -114,7 +114,7 @@ export function createPhotoLayout(base){
   adultBed:[525,6200],
   adultWardrobe:[2600,4660],
   aliceBed:[3975,5400],
-  aliceDesk:[5000,6400],
+  aliceDesk:[4750,6520],
   bathroom:[3650,1350],
   fridge:[1940,1050],
   dishwasher:[950,1500],
@@ -143,7 +143,7 @@ export function createPhotoLayout(base){
 
  l.clearances=[
   {id:'entry-aisle',label:'Между стеной ванной и обувницей у входа',value:1000,unit:'мм',status:'good',x:5560,y:1750,axis:'x',length:1000},
-  {id:'entry-landing',label:'Свободная зона сразу за входной дверью · без мебели',value:1050,unit:'мм',status:'good',x:6075,y:600,axis:'y',length:1050},
+  {id:'entry-landing',label:'Свободный входной проём без мебели',value:1000,unit:'мм',status:'good',x:6075,y:600,axis:'y',length:1000},
   {id:'bath-door-clear',label:'Проём ванной до коробки',value:850,unit:'мм',status:'good',x:3515,y:1870,axis:'x',length:850},
   {id:'adult-door-clear',label:'Проём спальни до коробки',value:850,unit:'мм',status:'good',x:2750,y:3940,axis:'x',length:850},
   {id:'child-door-clear',label:'Проём второй спальни до коробки',value:850,unit:'мм',status:'good',x:3925,y:4160,axis:'x',length:850},
