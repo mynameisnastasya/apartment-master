@@ -131,6 +131,26 @@ try{
  }
  await page.getByRole('button',{name:'План',exact:true}).click();
  await page.screenshot({path:'browser-reference-artifacts/plan-N.png'});
+ await page.goto('http://127.0.0.1:4173/model.html?variant=O&room=dressing');
+ await page.waitForFunction(()=>window.apartment?.ready&&window.apartment.state.variant==='O');
+ assert.equal(await page.evaluate(()=>window.apartment.state.style),'warm','O: boutique wardrobe should be warm modern by default');
+ assert.ok(await page.evaluate(()=>{
+  const a=window.apartment,l=a.layout;
+  return l.rooms.find(r=>r.id==='dressing').area===2.91
+   &&l.rooms.find(r=>r.id==='alice').area===8.94
+   &&a.routeResult('entry','dressing').ok
+   &&a.routeResult('entry','dressingRail').ok
+   &&a.routeResult('entry','dressingShelves').ok
+   &&!!a.root.getObjectByName('studio-dressing-south')
+   &&!!a.root.getObjectByName('o-wardrobe-full-length-mirror')
+   &&!!a.root.getObjectByName('o-wardrobe-soft-light');
+ }),'O: premium wardrobe, explicit room tradeoff and working access must render together');
+ await saveRender('browser-reference-artifacts/boutique-O-dressing.png');
+ await page.locator('[data-room="alice"]').click();
+ assert.ok(await page.evaluate(()=>!!window.apartment.root.getObjectByName('studio-window-glass')),'O: smaller room still has genuine exterior window');
+ await saveRender('browser-reference-artifacts/boutique-O-bedroom.png');
+ await page.getByRole('button',{name:'План',exact:true}).click();
+ await page.screenshot({path:'browser-reference-artifacts/plan-O.png'});
  await page.locator('[data-variant="D"]').click();
  await page.getByRole('button',{name:'Прогулка',exact:true}).click();
  const visits=await page.evaluate(()=>{const app=window.apartment;return ['adult','alice','kitchen','living','bath'].map(room=>{app.viewRoom(room);const p=app.camera.position;return {room,ok:app.canStand(p.x*1000,p.z*1000)};});});assert.ok(visits.every(v=>v.ok));
