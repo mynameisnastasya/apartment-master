@@ -42,6 +42,20 @@ for(const layout of layouts){
     assert.equal(child.rotation,90,'L: second bed must face the right wall');
     assert.equal(layout.rooms.find(r=>r.id==='alice').area,9.21,'L: do not present image estimate as modeled area');
     assert.equal(layout.rooms.find(r=>r.id==='alice').referenceArea,10.41);
+    const dressing=layout.rooms.find(r=>r.id==='dressing');
+    const bathSouth=layout.partitions.find(w=>w.id==='d-bath-south-left');
+    const dressingNorth=layout.partitions.find(w=>w.id==='l-dressing-north-right');
+    const actualNeck=dressingNorth.y-(bathSouth.y+bathSouth.depth);
+    assert.equal(actualNeck,930,'L: corridor between bathroom and dressing must be widened to 930 mm');
+    assert.ok(actualNeck>=914,'L: do not silently restore unsafe 680 mm neck');
+    assert.equal(layout.clearances.find(c=>c.id==='hall-neck').value,actualNeck,'L: labeled neck width does not match geometry');
+    assert.equal(dressing.area,2.57,'L: modeled dressing area after corridor widening');
+    assert.equal(dressing.referenceArea,3.04,'L: retain reference image area separately');
+    const area=dressing.polygon.reduce((sum,p,i)=>{const next=dressing.polygon[(i+1)%dressing.polygon.length];return sum+p[0]*next[1]-p[1]*next[0]},0)/2e6;
+    assert.ok(Math.abs(Math.abs(area)-dressing.area)<.01,'L: room area must match the polygon');
+    const rail=layout.furniture.find(o=>o.id==='l-dressing-rail'),shelves=layout.furniture.find(o=>o.id==='l-dressing-shelves');
+    for(const item of [rail,shelves])for(const [x,y] of corners(item))
+      assert.ok(insidePolygon(x+(5450-x)*1e-6,y+(3650-y)*1e-6,dressing.polygon),'L: storage outside revised dressing room');
     assert.ok(!layout.furniture.some(f=>f.id==='adult-dresser'),'L: keep bedroom side route free');
     const minY=item=>Math.min(...corners(item).map(p=>p[1]));
     const maxY=item=>Math.max(...corners(item).map(p=>p[1]));

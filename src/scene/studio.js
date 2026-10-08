@@ -53,9 +53,24 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   }
   const light=new THREE.PointLight(0xffe1b1,8,4,2);light.position.set(1.65,2.35,4.70);root.add(light);
  }else if(name==='dressing'){
-  box(walls,m.wall,6400,3120,120,1500,2700,0,'studio-east');
-  box(walls,m.joinery,4660,4620,1740,120,2700,0,'studio-south');
-  box(walls,m.wall,4540,3120,120,1500,2700,0,'studio-west');
+  if(layout.id==='L'){
+   // Stay congruent with L's real partitions when the walkable hall neck
+   // and the dressing room size change. Do not render old hard-coded W4 walls.
+   const left=layout.partitions.find(o=>o.id==='l-dressing-west');
+   const north=layout.partitions.find(o=>o.id==='l-dressing-north-right');
+   const south=layout.partitions.find(o=>o.id==='l-dressing-south');
+   const lintel=layout.partitions.find(o=>o.id==='l-dressing-door-lintel');
+   const floorY=layout.rooms.find(r=>r.id==='dressing').polygon[0][1];
+   box(walls,m.wall,left.x,left.y,left.width,left.depth,2700,0,'studio-dressing-west');
+   box(walls,m.wall,6400,floorY,120,south.y-floorY,2700,0,'studio-dressing-east');
+   box(walls,m.joinery,south.x,south.y,south.width,south.depth,2700,0,'studio-dressing-south');
+   box(walls,m.wall,north.x,north.y,north.width,north.depth,2700,0,'studio-dressing-north');
+   box(walls,m.wall,lintel.x,lintel.y,lintel.width,lintel.depth,lintel.height,lintel.elevation,'studio-dressing-door-lintel');
+  }else{
+   box(walls,m.wall,6400,3120,120,1500,2700,0,'studio-east');
+   box(walls,m.joinery,4660,4620,1740,120,2700,0,'studio-south');
+   box(walls,m.wall,4540,3120,120,1500,2700,0,'studio-west');
+  }
   const light=new THREE.PointLight(0xffe1b1,8,4,2);light.position.set(5.4,2.35,3.8);root.add(light);
  }else if(name==='bath'){
   box(walls,m.wall.userData.organic?m.slate:m.marble,x-80,y-80,x2-x+160,80,2450,0,'studio-north');
@@ -96,7 +111,10 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   }
   const bed=layout.furniture.find(o=>o.room===name&&o.type==='bed');
   if(bed){const bx=bed.x+bed.width/2,bz=bed.y+bed.depth/2;
-   const rug=box(root,m.rug,bx-1300,bz-900,2400,1850,12,1,'room-rug');rug.castShadow=false;
+   const margin=layout.id==='L'?140:0;
+   const rugX=layout.id==='L'?Math.max(x+margin,Math.min(bx-1200,x2-2400-margin)):bx-1300;
+   const rugY=layout.id==='L'?Math.max(y+margin,Math.min(bz-900,y2-1780-margin)):bz-900;
+   const rug=box(root,m.rug,rugX,rugY,layout.id==='L'?Math.min(2400,x2-x-2*margin):2400,layout.id==='L'?1780:1850,12,1,'room-rug');rug.castShadow=false;
   }
  }
 
@@ -113,7 +131,7 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   const after=win.x+win.width;
   if(after<right)box(walls,m.wall,after,wy,right-after,100,win.height,win.sill,'studio-window-right');
   if(head>0)box(walls,m.wall,win.x,wy,win.width,100,head,win.sill+win.height,'studio-window-head');
-  box(walls,m.glass,win.x,wy+20,win.width,14,win.height,win.sill,'studio-window-glass');
+  box(walls,m.glass,win.x,wy+20,win.width,14,win.height,win.sill,layout.familyDesign&&name==='alice'?'alice-window-glass':'studio-window-glass');
   for(let i=0;i<=3;i++)box(walls,m.worktop,win.x+i*win.width/3-10,wy-12,20,35,win.height,win.sill,'studio-window-frame');
   for(const z of [win.sill,win.sill+win.height-25])box(walls,m.worktop,win.x,wy-12,win.width,35,25,z,'studio-window-frame');
   box(walls,m.joinery,win.x-12,wy-20,win.width+24,132,24,win.sill-24,'studio-window-sill');
