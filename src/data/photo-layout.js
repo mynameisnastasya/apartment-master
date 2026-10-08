@@ -86,7 +86,7 @@ export function createPhotoLayout(base){
  move('sofa',{x:150,y:2850,width:2400,depth:850,rotation:0,front:'north',label:'Диван 2400 × 850 · по референсу'});
  l.furniture=l.furniture.filter(o=>!['media','tv','alice-wardrobe','adult-dresser','adult-nightstand','adult-nightstand-2','alice-toys'].includes(o.id));
 
- move('adult-bed',{x:1080,y:5050,width:1850,depth:2200,rotation:90,mattress:[1600,2000],front:'east',label:'Двуспальная кровать · матрас 1600 × 2000 · изголовье к правой стене'});
+ move('adult-bed',{x:1080,y:5290,width:1850,depth:2200,rotation:90,mattress:[1600,2000],front:'east',label:'Двуспальная кровать · матрас 1600 × 2000 · изголовье к правой стене'});
  move('adult-wardrobe',{x:0,y:4060,width:2200,depth:550,height:2400,rotation:0,front:'south',label:'Шкаф / хранение 2200 × 550'});
 
  move('alice-bed',{x:4750,y:4490,width:1300,depth:1900,rotation:90,mattress:[1200,1800],front:'east',label:'Односпальная / диван-кровать · спальное место 1200 × 1800 · изголовье к правой стене'});
@@ -150,7 +150,8 @@ export function createPhotoLayout(base){
   {id:'dressing-door',label:'Проём гардеробной до коробки',value:850,unit:'мм',status:'good',x:4925,y:2520,axis:'x',length:850},
   {id:'hall-neck',label:'Перешеек между ванной и гардеробной · модель',value:680,unit:'мм',status:'compact',x:4700,y:2270,axis:'y',length:680},
   {id:'adult-foot',label:'Основной боковой проход вдоль кровати',value:905,unit:'мм',status:'good',x:452.5,y:6200,axis:'x',length:905},
-  {id:'adult-window',label:'Свободное пространство до оконной стены',value:1225,unit:'мм',status:'good',x:1600,y:7687.5,axis:'y',length:1225},
+  {id:'adult-wardrobe-aisle',label:'Проход между шкафом и кроватью',value:855,unit:'мм',status:'compact',x:1500,y:5037.5,axis:'y',length:855},
+  {id:'adult-window',label:'Свободное пространство до оконной стены',value:985,unit:'мм',status:'good',x:1600,y:7807.5,axis:'y',length:985},
   {id:'dressing-aisle',label:'Проход перед хранением',value:830,unit:'мм',status:'compact',x:5385,y:3500,axis:'x',length:830}
  ];
 
