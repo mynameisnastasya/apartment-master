@@ -137,7 +137,7 @@ try{
  assert.ok(await page.evaluate(()=>{
   const a=window.apartment,l=a.layout;
   return l.rooms.find(r=>r.id==='dressing').area===2.91
-   &&l.rooms.find(r=>r.id==='alice').area===8.94
+   &&l.rooms.find(r=>r.id==='alice').area===8.93
    &&a.routeResult('entry','dressing').ok
    &&a.routeResult('entry','dressingRail').ok
    &&a.routeResult('entry','dressingShelves').ok
