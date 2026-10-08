@@ -107,7 +107,7 @@ function createSoftModernDecor(layout,m){
 }
 
 export function createSignatureDecor(layout,m){
- if(m.wall.userData.warmModern&&['L','M','N'].includes(layout.id))return createSoftModernDecor(layout,m);
+ if(m.wall.userData.warmModern&&['L','M','N','O'].includes(layout.id))return createSoftModernDecor(layout,m);
  if(m.wall.userData.organic||layout.id==='W4'||layout.familyDesign)return createOrganicDecor(layout,m);
  const g=new THREE.Group();g.name='EDITORIAL_ARCHITECTURE';
  const byId=id=>layout.furniture.find(o=>o.id===id);
