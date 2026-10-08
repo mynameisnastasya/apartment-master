@@ -53,9 +53,24 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   }
   const light=new THREE.PointLight(0xffe1b1,8,4,2);light.position.set(1.65,2.35,4.70);root.add(light);
  }else if(name==='dressing'){
-  box(walls,m.wall,6400,3120,120,1500,2700,0,'studio-east');
-  box(walls,m.joinery,4660,4620,1740,120,2700,0,'studio-south');
-  box(walls,m.wall,4540,3120,120,1500,2700,0,'studio-west');
+  if(layout.id==='L'){
+   // Stay congruent with L's real partitions when the walkable hall neck
+   // and the dressing room size change. Do not render old hard-coded W4 walls.
+   const left=layout.partitions.find(o=>o.id==='l-dressing-west');
+   const north=layout.partitions.find(o=>o.id==='l-dressing-north-right');
+   const south=layout.partitions.find(o=>o.id==='l-dressing-south');
+   const lintel=layout.partitions.find(o=>o.id==='l-dressing-door-lintel');
+   const floorY=layout.rooms.find(r=>r.id==='dressing').polygon[0][1];
+   box(walls,m.wall,left.x,left.y,left.width,left.depth,2700,0,'studio-dressing-west');
+   box(walls,m.wall,6400,floorY,120,south.y-floorY,2700,0,'studio-dressing-east');
+   box(walls,m.joinery,south.x,south.y,south.width,south.depth,2700,0,'studio-dressing-south');
+   box(walls,m.wall,north.x,north.y,north.width,north.depth,2700,0,'studio-dressing-north');
+   box(walls,m.wall,lintel.x,lintel.y,lintel.width,lintel.depth,lintel.height,lintel.elevation,'studio-dressing-door-lintel');
+  }else{
+   box(walls,m.wall,6400,3120,120,1500,2700,0,'studio-east');
+   box(walls,m.joinery,4660,4620,1740,120,2700,0,'studio-south');
+   box(walls,m.wall,4540,3120,120,1500,2700,0,'studio-west');
+  }
   const light=new THREE.PointLight(0xffe1b1,8,4,2);light.position.set(5.4,2.35,3.8);root.add(light);
  }else if(name==='bath'){
   box(walls,m.wall.userData.organic?m.slate:m.marble,x-80,y-80,x2-x+160,80,2450,0,'studio-north');
