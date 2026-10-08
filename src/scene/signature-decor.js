@@ -44,16 +44,24 @@ function createSoftModernDecor(layout,m){
  // One slender bronze line follows the upper edge of the wainscot.
  box(g,m.bronze,52,2820,7,830,8,2158,2);
  box(g,m.lamp,51,2868,8,734,11,2125,3).name='warm-indirect-wall-light';
- // Full-height walnut panel behind the rotated adult bed's headboard,
- // aligned with the right partition, with a linen-light slit.
- box(g,m.joinery,3121,5230,45,1660,1650,680,8).name='adult-walnut-headboard-panel';
- box(g,m.bronze,3106,5280,12,1550,9,2175,2);
- box(g,m.lamp,3102,5290,8,1530,8,2160,2).name='adult-headboard-light';
- // A second oak datum gives the compact room the same language.
- box(g,m.joinery,6361,4750,30,1500,1480,620,8).name='alice-oak-headboard-panel';
- box(g,m.lamp,6352,4810,8,1380,9,2070,2);
- // Slim vanity-like shelf in the large bedroom, raised above the floor.
- box(g,m.marble,3090,7240,66,520,35,790,10).name='floating-stone-shelf';
+ // Follow the *rotated* bed footprints, not historic hard-coded positions.
+ // For a 90° bed, its east/headboard edge is centreX + depth/2 and its
+ // north/south span is centreY ± width/2 in the floor plan.
+ const adult=layout.furniture.find(o=>o.id==='adult-bed');
+ const child=layout.furniture.find(o=>o.id==='alice-bed');
+ const adultHeadX=adult.x+(adult.width+adult.depth)/2;
+ const adultNorthY=adult.y+(adult.depth-adult.width)/2;
+ const adultPanelY=adultNorthY-64;
+ box(g,m.joinery,adultHeadX+14,adultPanelY,42,adult.width+128,1660,630,8).name='adult-walnut-headboard-panel';
+ box(g,m.bronze,adultHeadX+8,adultPanelY+50,6,adult.width+28,10,2220,2).name='adult-headboard-bronze-trim';
+ box(g,m.lamp,adultHeadX+5,adultPanelY+64,6,adult.width,9,2202,2).name='adult-headboard-light';
+ const childHeadX=child.x+(child.width+child.depth)/2;
+ const childNorthY=child.y+(child.depth-child.width)/2;
+ box(g,m.joinery,childHeadX+13,childNorthY-55,28,child.width+110,1450,625,7).name='alice-oak-headboard-panel';
+ box(g,m.lamp,childHeadX+8,childNorthY+12,7,child.width-24,9,2010,2).name='alice-headboard-light';
+ // A floating shelf belongs to the side wall, beyond the bed's footprint
+ // and away from the 985 mm window approach, never clipping its headboard.
+ box(g,m.marble,3087,7600,70,310,35,790,8).name='floating-stone-shelf';
  // Travertine towel recess; works with either warm daylight or evening light.
  box(g,m.marble,4923,850,13,530,1150,900,3).name='bath-travertine-inset';
  return g;
