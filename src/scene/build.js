@@ -26,13 +26,22 @@ export function createArchitecture(geometry,layout,m,{cut=true,plan=false,walls=
   const bathSouth=layout.partitions.find(o=>o.id==='d-bath-south-left').y;
   const bathFloor=box(root,m.bathFloor,2440,0,bathEast-2440,bathSouth,10,1,'bath-floor');bathFloor.castShadow=false;
   const sofa=layout.furniture.find(o=>o.id==='sofa');
-  if(sofa){const livingRug=['L','M'].includes(layout.id)?softBox(root,m.rug,120,2680,2420,1010,8,3,120):layout.familyDesign?softBox(root,m.rug,sofa.x+30,sofa.y-600,sofa.width-60,1400,8,3,120):layout.id==='W4'?softBox(root,m.rug,100,2600,1960,1060,8,3,120):softBox(root,m.rug,360,sofa.y+70,1910,1130,8,3,120);livingRug.name='living-rug';livingRug.castShadow=false;}
+  if(sofa){const livingRug=['L','M','N'].includes(layout.id)?softBox(root,m.rug,120,2680,2420,1010,8,3,120):layout.familyDesign?softBox(root,m.rug,sofa.x+30,sofa.y-600,sofa.width-60,1400,8,3,120):layout.id==='W4'?softBox(root,m.rug,100,2600,1960,1060,8,3,120):softBox(root,m.rug,360,sofa.y+70,1910,1130,8,3,120);livingRug.name='living-rug';livingRug.castShadow=false;}
  }
 
  const wallGroup=new THREE.Group();wallGroup.name='WALLS';root.add(wallGroup);wallGroup.visible=walls;
  for(const o of [...geometry.walls,...layout.partitions]){
   const max=plan?100:cut?1050:geometry.ceilingHeight;const elev=o.elevation||0;if(elev>=max)continue;
-  const mesh=box(wallGroup,m.wall,o.x,o.y,o.width,o.depth,Math.min(o.height,max-elev),elev,o.id,o.rotation||0);lineBox(mesh,m.line);
+  const finish=o.transomGlass?m.glass:m.wall;
+  const mesh=box(wallGroup,finish,o.x,o.y,o.width,o.depth,Math.min(o.height,max-elev),elev,o.id,o.rotation||0);
+  if(o.transomGlass&&!plan&&!cut){
+   // Privacy-level borrowed daylight over an interior door; these are
+   // project partitions only, not openings in load-bearing fabric.
+   box(wallGroup,m.joinery,o.x,o.y,o.width,24,18,elev,'N-transom-bottom');
+   box(wallGroup,m.joinery,o.x,o.y,o.width,24,18,elev+o.height-18,'N-transom-top');
+   for(const px of [o.x,o.x+o.width-18])box(wallGroup,m.joinery,px,o.y,18,24,o.height,elev,'N-transom-jamb');
+  }
+  lineBox(mesh,m.line);
  }
 
  if(walls&&!plan){
