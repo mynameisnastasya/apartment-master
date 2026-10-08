@@ -91,6 +91,22 @@ function createSoftModernDecor(layout,m){
   glow.lookAt(M(px),.75,M(py));g.add(glow);
  }
 
+ // Boutique dressing for O: wall-mounted full-length mirror + 2.5 m
+ // high ribbon light. Both float above finished floor: no extra furniture
+ // obstructs the 990-mm clear aisle between shallow shelves and hangers.
+ if(layout.id==='O'){
+  const glass=new THREE.Mesh(new THREE.PlaneGeometry(.55,1.69),m.mirror);
+  glass.name='o-wardrobe-full-length-mirror';
+  glass.rotation.y=Math.PI;
+  glass.position.set(5.35,1.01,4.458);
+  glass.castShadow=false;glass.receiveShadow=false;g.add(glass);
+  box(g,m.bronze,5060,4453,580,6,12,1865,2).name='o-wardrobe-mirror-top-trim';
+  box(g,m.lamp,5766,3050,12,1200,13,2492,3).name='o-wardrobe-hanging-led';
+  const glow=new THREE.RectAreaLight(0xffe8d2,1.9,.12,1.18);
+  glow.position.set(5.75,2.37,3.69);
+  glow.lookAt(5.12,1.25,3.69);
+  glow.name='o-wardrobe-soft-light';g.add(glow);
+ }
  // TREND 2026: restrained, handmade-looking wall relief rather than more
  // floor furniture. The east entrance wall is free above the 900 mm shoe
  // bench; pieces sit at x<6400 and y>1100, outside the entrance aperture.
