@@ -126,6 +126,7 @@ try{
  for(const room of ['adult','alice','dressing']){
   await page.locator('[data-room="'+room+'"]').click();
   assert.ok(await page.evaluate(r=>!!window.apartment.root.getObjectByName(r==='dressing'?'studio-dressing-north':'studio-window-glass'),room),'N: missing accurate room-specific shell in '+room);
+  if(room!=='dressing')assert.ok(await page.evaluate(()=>!!window.apartment.root.getObjectByName('studio-borrowed-light-transom')),'N: privacy glass above '+room+' bedroom door is missing');
   await saveRender('browser-reference-artifacts/soft-modern-N-'+room+'.png');
  }
  await page.getByRole('button',{name:'План',exact:true}).click();
