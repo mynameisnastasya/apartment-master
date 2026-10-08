@@ -46,10 +46,10 @@ export function createSecondSketchLayout(base){
  Object.assign(adult,{area:area(adult.polygon),referenceArea:13.99,x:1590,y:6090});
  // An independent second-bedroom door placed between the central corridor
  // and the west side of the wardrobe front, as in the hand sketch.
- change(l.partitions,'d-child-diagonal',{width:185});
- change(l.partitions,'d-child-door-lintel',{x:3480,width:850});
- change(l.partitions,'d-child-north-right',{x:4330,width:170});
- change(l.doors,'door-child',{x:3480,width:850,openX:4290,hinge:[4330,4450]});
+ change(l.partitions,'d-child-diagonal',{width:75});
+ change(l.partitions,'d-child-door-lintel',{x:3370,width:850});
+ change(l.partitions,'d-child-north-right',{x:4220,width:120});
+ change(l.doors,'door-child',{x:3370,width:850,openX:4180,hinge:[4220,4450]});
  const child=byId(l.rooms,'alice');
  child.referenceArea=8.94; // 2.98 x 3.00 is shown approximately on the photo.
  // Expand dressing slightly to the west, without narrowing the 930 mm
@@ -70,9 +70,9 @@ export function createSecondSketchLayout(base){
  l.clearances=l.clearances.map(c=>({
    ...c,
    ...(c.id==='adult-door-clear'?{y:3840}:{}),
-   ...(c.id==='child-door-clear'?{x:3905}:{}),
+   ...(c.id==='child-door-clear'?{x:3795}:{}),
    ...(c.id==='dressing-door'?{x:4765}:{}),
-   ...(c.id==='dressing-aisle'?{value:670,length:670,status:'compact',label:'Локальный подход к хранению · требует проверки'}:{})
+   ...(c.id==='dressing-aisle'?{value:990,length:990,status:'good',label:'Подход между секциями хранения'}:{})
  }));
  l.walkViews={...l.walkViews,adult:{walk:l.routes.adult,look:[2150,6400]},alice:{walk:l.routes.alice,look:[5350,5500]},dressing:{walk:l.routes.dressing,look:[6100,3700]}};
  return l;
