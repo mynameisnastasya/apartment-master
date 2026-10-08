@@ -97,6 +97,22 @@ try{
  }),'L: dressing studio walls must match revised model dimensions');
  await saveRender('browser-reference-artifacts/soft-modern-L-dressing.png');
  await page.getByRole('button',{name:'План',exact:true}).click();await page.screenshot({path:'browser-reference-artifacts/plan-L.png'});
+ await page.goto('http://127.0.0.1:4173/model.html?variant=M&style=warm&room=adult');
+ await page.waitForFunction(()=>window.apartment?.ready&&window.apartment.state.variant==='M'&&window.apartment.state.focus==='adult');
+ assert.ok(await page.evaluate(()=>{
+   const l=window.apartment.layout;
+   return l.rooms.find(r=>r.id==='adult').area===13.97
+     &&l.rooms.find(r=>r.id==='dressing').area===2.78
+     &&l.furniture.find(f=>f.id==='adult-bed').rotation===90
+     &&window.apartment.routeResult('entry','alice').ok
+     &&window.apartment.routeResult('entry','dressing').ok;
+ }),'M: second sketch should preserve clear doors, proper bedroom and independent wardrobe');
+ await saveRender('browser-reference-artifacts/soft-modern-M-adult.png');
+ await page.locator('[data-room="dressing"]').click();
+ assert.ok(await page.evaluate(()=>!!window.apartment.root.getObjectByName('studio-dressing-north')),'M: studio dressing should follow revised wall coordinates');
+ await saveRender('browser-reference-artifacts/soft-modern-M-dressing.png');
+ await page.getByRole('button',{name:'План',exact:true}).click();
+ await page.screenshot({path:'browser-reference-artifacts/plan-M.png'});
  await page.locator('[data-variant="D"]').click();
  await page.getByRole('button',{name:'Прогулка',exact:true}).click();
  const visits=await page.evaluate(()=>{const app=window.apartment;return ['adult','alice','kitchen','living','bath'].map(room=>{app.viewRoom(room);const p=app.camera.position;return {room,ok:app.canStand(p.x*1000,p.z*1000)};});});assert.ok(visits.every(v=>v.ok));
