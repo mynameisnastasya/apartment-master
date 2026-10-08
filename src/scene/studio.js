@@ -106,6 +106,10 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
     if(door){
      if(door.x>lo)box(walls,m.wall,lo,a[1]-80,door.x-lo,80,2600);
      if(door.x+door.width<hi)box(walls,m.wall,door.x+door.width,a[1]-80,hi-door.x-door.width,80,2600);
+     if(layout.optimizationStudy&&['adult','alice'].includes(name)){
+      box(walls,m.glass,door.x,a[1]-45,door.width,26,560,2120,'studio-borrowed-light-transom');
+      box(walls,m.joinery,door.x,a[1]-50,door.width,29,18,2112,'studio-transom-frame');
+     }
     }else box(walls,m.wall,lo,a[1]-80,hi-lo,80,2600);
    }
   }
