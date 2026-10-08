@@ -113,6 +113,23 @@ try{
  await saveRender('browser-reference-artifacts/soft-modern-M-dressing.png');
  await page.getByRole('button',{name:'План',exact:true}).click();
  await page.screenshot({path:'browser-reference-artifacts/plan-M.png'});
+ await page.goto('http://127.0.0.1:4173/model.html?variant=N&room=living');
+ await page.waitForFunction(()=>window.apartment?.ready&&window.apartment.state.variant==='N');
+ assert.equal(await page.evaluate(()=>window.apartment.state.style),'warm','N: premium finish should load by default');
+ assert.ok(await page.evaluate(()=>{
+  const a=window.apartment,l=a.layout;
+  return l.rooms.find(r=>r.id==='adult').area===13.34&&l.rooms.find(r=>r.id==='dressing').area===2.51
+   &&a.routeResult('entry','adult').ok&&a.routeResult('entry','alice').ok&&a.routeResult('entry','dressing').ok
+   &&!!a.root.getObjectByName('trend-sculptural-pendant')&&!!a.root.getObjectByName('trend-pendant-warm-pool');
+ }),'N: optimized plan, safe routes and full layered light must be present in 3D');
+ await saveRender('browser-reference-artifacts/soft-modern-N-living.png');
+ for(const room of ['adult','alice','dressing']){
+  await page.locator('[data-room="'+room+'"]').click();
+  assert.ok(await page.evaluate(r=>!!window.apartment.root.getObjectByName(r==='dressing'?'studio-dressing-north':'studio-window-glass'),room),'N: missing accurate room-specific shell in '+room);
+  await saveRender('browser-reference-artifacts/soft-modern-N-'+room+'.png');
+ }
+ await page.getByRole('button',{name:'План',exact:true}).click();
+ await page.screenshot({path:'browser-reference-artifacts/plan-N.png'});
  await page.locator('[data-variant="D"]').click();
  await page.getByRole('button',{name:'Прогулка',exact:true}).click();
  const visits=await page.evaluate(()=>{const app=window.apartment;return ['adult','alice','kitchen','living','bath'].map(room=>{app.viewRoom(room);const p=app.camera.position;return {room,ok:app.canStand(p.x*1000,p.z*1000)};});});assert.ok(visits.every(v=>v.ok));
