@@ -73,7 +73,13 @@ try{
  assert.ok(await page.evaluate(()=>{const a=window.apartment,l=a.layout;return l.id==='L'&&a.state.style==='warm'&&l.furniture.find(f=>f.id==='adult-bed').rotation===90&&l.rooms.find(r=>r.id==='alice').area===9.21;}));
  assert.ok(await page.evaluate(()=>{const a=window.apartment,shoe=a.layout.furniture.find(f=>f.id==='hall-wardrobe');return shoe.type==='storage'&&shoe.y>=1400&&a.canStand(6150,600)&&a.routeResult('entry','storage').ok&&a.routeResult('alice','aliceDesk').ok;}),'L: front-door landing and desk access reachable in actual browser scene');
  assert.ok(await page.evaluate(()=>{const a=window.apartment,face=a.root.getObjectByName('mirror-face');return !!face&&face.isMesh&&face.geometry.type==='PlaneGeometry'&&face.material.name==='mirror';}),'L: entry mirror must be a reflective plane');
- await page.locator('[data-room="living"]').click();assert.ok(await page.evaluate(()=>window.apartment.root.getObjectByName('warm-oak-fluting')!==undefined));await saveRender('browser-reference-artifacts/soft-modern-L-living.png');
+ assert.ok(await page.evaluate(()=>!!window.apartment.root.getObjectByName('trend-entry-ceramic-relief')),'L: artisan wall relief should render without occupying entrance floor space');
+ await page.locator('[data-room="living"]').click();
+ assert.ok(await page.evaluate(()=>!!window.apartment.root.getObjectByName('warm-oak-fluting')&&!!window.apartment.root.getObjectByName('trend-sculptural-pendant')&&!!window.apartment.root.getObjectByName('trend-pendant-warm-pool')),'L: layered sculptural light must appear in living studio');
+ await saveRender('browser-reference-artifacts/soft-modern-L-living.png');
+ await page.locator('[data-room="kitchen"]').click();
+ assert.ok(await page.evaluate(()=>!!window.apartment.root.getObjectByName('trend-integrated-fridge-front')&&!!window.apartment.root.getObjectByName('trend-concealed-kitchen-front')),'L: concealed kitchen must appear in kitchen studio');
+ await saveRender('browser-reference-artifacts/soft-modern-L-invisible-kitchen.png');
  for(const room of ['adult','alice']){
   await page.locator('[data-room="'+room+'"]').click();
   assert.ok(await page.evaluate(()=>!!window.apartment.root.getObjectByName('studio-window-glass')),'L: '+room+' room must include its real exterior window');
