@@ -10,12 +10,12 @@ try{
  const page=await browser.newPage({viewport:{width:1440,height:1050}});
  const saveRender=async path=>{const data=await page.evaluate(()=>{window.apartment.render();return window.apartment.renderer.domElement.toDataURL('image/png');});fs.writeFileSync(path,Buffer.from(data.split(',')[1],'base64'));};page.on('pageerror',e=>errors.push(e.message));
  await page.goto('http://127.0.0.1:4173/variants.html');
- await page.getByRole('heading',{name:'Лиза. Десять планировок для выбора.'}).waitFor();
+ await page.getByRole('heading',{name:'Лиза. 11 вариантов планировки.'}).waitFor();
  assert.ok((await page.locator('body').innerText()).includes('50,199 м²'));
  assert.ok((await page.locator('body').innerText()).includes('ТРЕБУЕТ ОБМЕРА'));
  assert.equal(await page.locator('[data-inspect^="E"]').count()>0,true);
  assert.equal(await page.locator('.design-card').count(),5);
- assert.equal(await page.locator('a[href^="model.html?variant="]').count(),10);
+ assert.equal(await page.locator('a[href^="model.html?variant="]').count(),11);
  for(const image of await page.locator('.design-card img').all()){
   await image.scrollIntoViewIfNeeded();
   await image.evaluate(img=>img.decode());
@@ -54,10 +54,10 @@ try{
  await page.getByRole('button',{name:'План',exact:true}).click();await page.waitForTimeout(400);await page.screenshot({path:'browser-reference-artifacts/plan.png'});
  await page.getByRole('button',{name:'Решения и проходы →'}).click();await page.locator('#details').waitFor({state:'visible'});assert.equal(await page.locator('[data-route]').count(),16);assert.ok((await page.locator('#dialog-content').innerText()).includes('960 мм'));await page.locator('#close-dialog').click();
  await page.getByRole('button',{name:'О проекте',exact:true}).click();assert.ok((await page.locator('#dialog-content').innerText()).includes('Лиза'));await page.locator('#close-dialog').click();
- assert.equal(await page.locator('.variant').count(),10);
- assert.equal(await page.evaluate(()=>new Set(window.apartment.layouts.map(l=>JSON.stringify(l.partitions))).size),8);
+ assert.equal(await page.locator('.variant').count(),11);
+ assert.equal(await page.evaluate(()=>new Set(window.apartment.layouts.map(l=>JSON.stringify(l.partitions))).size),9);
  assert.equal(await page.locator('[data-variant="A"], [data-variant="B"], [data-variant="C"]').count(),0);
- for(const id of ['D','E','F','G','H','I','J','K','W4','W6']){
+ for(const id of ['D','E','F','G','H','I','J','K','L','W4','W6']){
   await page.locator(`[data-variant="${id}"]`).click();
   assert.equal(await page.evaluate(()=>window.apartment.state.variant),id);
   assert.equal(await page.evaluate(()=>window.apartment.routeResult('entry',['W4','W6'].includes(window.apartment.layout.id)?'bathroom':'bathBasin').ok),true);
@@ -69,6 +69,9 @@ try{
  await page.goto('http://127.0.0.1:4173/model.html?variant=F');await page.waitForFunction(()=>window.apartment?.ready);
  assert.equal(await page.evaluate(()=>window.apartment.layout.id),'F');
  await page.getByRole('button',{name:'План',exact:true}).click();await page.screenshot({path:'browser-reference-artifacts/plan-F.png'});
+ await page.goto('http://127.0.0.1:4173/model.html?variant=L');await page.waitForFunction(()=>window.apartment?.ready);
+ assert.ok(await page.evaluate(()=>{const l=window.apartment.layout;return l.id==='L'&&l.furniture.find(f=>f.id==='adult-bed').rotation===90&&l.rooms.find(r=>r.id==='alice').area===9.21;}));
+ await page.getByRole('button',{name:'План',exact:true}).click();await page.screenshot({path:'browser-reference-artifacts/plan-L.png'});
  await page.locator('[data-variant="D"]').click();
  await page.getByRole('button',{name:'Прогулка',exact:true}).click();
  const visits=await page.evaluate(()=>{const app=window.apartment;return ['adult','alice','kitchen','living','bath'].map(room=>{app.viewRoom(room);const p=app.camera.position;return {room,ok:app.canStand(p.x*1000,p.z*1000)};});});assert.ok(visits.every(v=>v.ok));

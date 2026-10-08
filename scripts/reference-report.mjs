@@ -20,12 +20,12 @@ for(const o of d.furniture){if(o.type==='mirror')continue;n++;legend.push([n,o])
  const cx=o.x+o.width/2,cy=o.y+o.depth/2;s+=`<circle cx="${cx}" cy="${cy}" r="77" fill="#faf9f1" stroke="#a2aa95" stroke-width="8"/>${tx(cx,cy+29,n,82,'text-anchor="middle"')}`;
 }
 for(const door of [g.entry,...d.doors]){s+=rect({x:door.openX,y:door.openY,width:door.openWidth,depth:door.openDepth},'#bea27b');if(door.hinge){const a=door.arcStart*Math.PI/180,b=door.arcEnd*Math.PI/180,[x,y]=door.hinge;s+=`<path d="M${x+Math.cos(a)*door.width} ${y+Math.sin(a)*door.width}A${door.width} ${door.width} 0 0 ${door.arcEnd>door.arcStart?1:0} ${x+Math.cos(b)*door.width} ${y+Math.sin(b)*door.width}" stroke="#a38d66" stroke-dasharray="30 25" stroke-width="10" fill="none"/>`;}}
-for(const r of d.rooms)s+=`<g>${tx(r.x,r.y,r.name+(r.area?' · '+r.area.toFixed(2)+' м²*':''),100,'text-anchor="middle" fill="#343d31"')}</g>`;
+for(const r of d.rooms){s+=`<g>${tx(r.x,r.y,r.name+(r.area?' · '+r.area.toFixed(2)+' м²*':''),100,'text-anchor="middle" fill="#343d31"')}`;if(d.referenceDerived&&r.referenceArea&&Math.abs(r.referenceArea-r.area)>.1)s+=tx(r.x,r.y+135,'На фото: '+r.referenceArea.toFixed(2)+' м²',75,'text-anchor="middle"');s+='</g>';}
 // Dimension each critical clearance where it is measured; long descriptions live in the report.
 for(const c of d.clearances){const x1=c.x-(c.axis==='x'?c.length/2:0),x2=c.x+(c.axis==='x'?c.length/2:0),y1=c.y-(c.axis==='y'?c.length/2:0),y2=c.y+(c.axis==='y'?c.length/2:0);s+=`<path d="M${x1} ${y1}L${x2} ${y2}" stroke="#6e8770" stroke-width="11"/>${tx(c.x,c.y-55,c.value,92,'text-anchor="middle" fill="#395a3c"')}`;}
 s+=tx(3200,-80,'6400 мм · внутренняя ширина',100,'text-anchor="middle"');s+=tx(6800,-80,'МЕБЕЛЬ / ГАБАРИТЫ',110);
 for(let i=0;i<legend.length;i++){const [n,o]=legend[i],name=o.label.split(' · ')[0];s+=tx(6800,380+i*265,`${n}. ${name}`,85)+tx(6800,480+i*265,`${o.width} × ${o.depth} × ${o.height} мм`,76);}
-s+=tx(-300,8980,'* Площади по условной модели. Окна, высоты и вертикальные цепочки требуют обмера.',104)+tx(-300,9180,'Проёмы указаны до коробок. Исходная ширина спальни 3175 мм, а не 3474 мм со скриншота.',98)+tx(-300,9380,'Квартира показана в масштабе координат; лист без установленного печатного масштаба.',95)+'</svg>';
+s+=tx(-300,8980,d.referenceDerived?'* План L — модельные площади; на фото другие размеры. Нужен контрольный обмер.':'* Площади по условной модели. Окна, высоты и вертикальные цепочки требуют обмера.',104)+tx(-300,9180,'Проёмы указаны до коробок. Исходная ширина спальни 3175 мм, а не 3474 мм со скриншота.',98)+tx(-300,9380,'Квартира показана в масштабе координат; лист без установленного печатного масштаба.',95)+'</svg>';
 return s;
 }
 for(const variant of layouts)fs.writeFileSync(`views/${variant.id}-floor-plan.svg`,makePlan(variant));
