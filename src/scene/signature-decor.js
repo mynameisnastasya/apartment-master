@@ -64,6 +64,45 @@ function createSoftModernDecor(layout,m){
  box(g,m.marble,3087,7600,70,310,35,790,8).name='floating-stone-shelf';
  // Travertine towel recess; works with either warm daylight or evening light.
  box(g,m.marble,4923,850,13,530,1150,900,3).name='bath-travertine-inset';
+
+ // TREND 2026: an "invisible kitchen". Slim, handleless upper fronts and
+ // a continuous shadow reveal unify the work wall. Decorative faces remain
+ // on the existing 318 mm deep overhead cabinet; they are not new obstacles.
+ for(const [cx,width] of [[1207,212],[1423,227]]){
+  box(g,m.lacquer,cx,319,width,8,642,1790,4).name='trend-concealed-kitchen-front';
+  box(g,m.shadow,cx+width-4,327,2,2,602,1810,1).name='trend-kitchen-door-reveal';
+ }
+ box(g,m.joinery,1205,331,449,8,24,1745,2).name='trend-wood-kitchen-datum';
+
+ // TREND 2026: a single sculptural alabaster-like pendant over the EXISTING
+ // dining peninsula. Lowest glass is 2060 mm above floor, so no circulation
+ // or appliance opening is sacrificed in this compact kitchen.
+ const dining=layout.furniture.find(o=>o.id==='dining');
+ if(dining){
+  const px=dining.x+dining.width*.56,py=dining.y+dining.depth*.50;
+  tube(g,m.bronze,[[px,py,2670],[px,py,2330]],4).name='trend-pendant-drop';
+  pebble(g,m.lamp,px,py,2060,350,270,110).name='trend-sculptural-pendant';
+  const halo=new THREE.Mesh(new THREE.TorusGeometry(.150,.007,8,64),m.bronze);
+  halo.rotation.x=Math.PI/2;
+  halo.position.set(M(px),2.120,M(py));
+  halo.name='trend-pendant-bronze-rim';halo.castShadow=false;g.add(halo);
+  const glow=new THREE.RectAreaLight(0xffdfbc,2.6,.32,.24);
+  glow.name='trend-pendant-warm-pool';glow.position.set(M(px),2.055,M(py));
+  glow.lookAt(M(px),.75,M(py));g.add(glow);
+ }
+
+ // TREND 2026: restrained, handmade-looking wall relief rather than more
+ // floor furniture. The east entrance wall is free above the 900 mm shoe
+ // bench; pieces sit at x<6400 and y>1100, outside the entrance aperture.
+ const entryArt=[
+  [1570,1530,235,170,m.marble],
+  [1780,1650,195,210,m.olive],
+  [1555,1840,165,130,m.wine]
+ ];
+ for(let i=0;i<entryArt.length;i++){
+  const [cy,height,diameter,depth,material]=entryArt[i];
+  pebble(g,material,6368,cy, height,24,diameter,depth).name='trend-entry-ceramic-relief';
+ }
  return g;
 }
 
