@@ -53,7 +53,7 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   }
   const light=new THREE.PointLight(0xffe1b1,8,4,2);light.position.set(1.65,2.35,4.70);root.add(light);
  }else if(name==='dressing'){
-  if(['L','M'].includes(layout.id)){
+  if(['L','M','N'].includes(layout.id)){
    // Stay congruent with L's real partitions when the walkable hall neck
    // and the dressing room size change. Do not render old hard-coded W4 walls.
    const left=layout.partitions.find(o=>o.id==='l-dressing-west');
@@ -111,17 +111,17 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   }
   const bed=layout.furniture.find(o=>o.room===name&&o.type==='bed');
   if(bed){const bx=bed.x+bed.width/2,bz=bed.y+bed.depth/2;
-   const margin=['L','M'].includes(layout.id)?140:0;
-   const rugX=['L','M'].includes(layout.id)?Math.max(x+margin,Math.min(bx-1200,x2-2400-margin)):bx-1300;
-   const rugY=['L','M'].includes(layout.id)?Math.max(y+margin,Math.min(bz-900,y2-1780-margin)):bz-900;
-   const rug=box(root,m.rug,rugX,rugY,['L','M'].includes(layout.id)?Math.min(2400,x2-x-2*margin):2400,['L','M'].includes(layout.id)?1780:1850,12,1,'room-rug');rug.castShadow=false;
+   const margin=['L','M','N'].includes(layout.id)?140:0;
+   const rugX=['L','M','N'].includes(layout.id)?Math.max(x+margin,Math.min(bx-1200,x2-2400-margin)):bx-1300;
+   const rugY=['L','M','N'].includes(layout.id)?Math.max(y+margin,Math.min(bz-900,y2-1780-margin)):bz-900;
+   const rug=box(root,m.rug,rugX,rugY,['L','M','N'].includes(layout.id)?Math.min(2400,x2-x-2*margin):2400,['L','M','N'].includes(layout.id)?1780:1850,12,1,'room-rug');rug.castShadow=false;
   }
  }
 
  // The room camera must show the actual façade openings, including L's
  // adult bedroom. Previously L interiors ended in blank walls without windows.
  // Keep the opening position and sill tied to the shared measured/assumed shell.
- if((layout.familyDesign&&name==='alice')||(['L','M'].includes(layout.id)&&['alice','adult'].includes(name))){
+ if((layout.familyDesign&&name==='alice')||(['L','M','N'].includes(layout.id)&&['alice','adult'].includes(name))){
   const win=geometry.windows.find(w=>w.id==='window-'+name);
   const wy=name==='adult'?8300:7440;
   const left=name==='adult'?0:3425,right=name==='adult'?3175:6400;
@@ -135,7 +135,7 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   for(let i=0;i<=3;i++)box(walls,m.worktop,win.x+i*win.width/3-10,wy-12,20,35,win.height,win.sill,'studio-window-frame');
   for(const z of [win.sill,win.sill+win.height-25])box(walls,m.worktop,win.x,wy-12,win.width,35,25,z,'studio-window-frame');
   box(walls,m.joinery,win.x-12,wy-20,win.width+24,132,24,win.sill-24,'studio-window-sill');
-  if(['L','M'].includes(layout.id)&&m.wall.userData.warmModern){
+  if(['L','M','N'].includes(layout.id)&&m.wall.userData.warmModern){
    // Soft sky bounce from the REAL window into the interior. The area emitter
    // stays just inside the glazing, not in a phantom ceiling light panel.
    const daylight=new THREE.RectAreaLight(0xfff5e6,3.4,Math.min(2.25,win.width/1000*.86),1.28);
