@@ -14,6 +14,7 @@ export class RealismRenderer {
   this.ao.blendIntensity=.65;this.composer.addPass(this.ao);
   this.composer.addPass(new OutputPass());this.composer.addPass(new SMAAPass());
  }
+ setPhotographic(value){this.ao.blendIntensity=value?.78:.65;}
  resize(w,h){this.composer.setPixelRatio(Math.min(this.renderer.getPixelRatio(),1.5));this.composer.setSize(w,h);}
  render(camera,enabled){
   // Plan/orthographic views stay crisp; mobile can use the same detailed models without AO.
