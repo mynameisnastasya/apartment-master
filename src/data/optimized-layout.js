@@ -27,7 +27,8 @@ export function createOptimizedLayout(base){
    'Проход вдоль гардеробной расширен с 925 до 1125 мм, а между ванной и гардеробной оставлен 930 мм.',
    'Гардеробная компактнее, но расстановка двух секций обеспечивает 920 мм между фасадами.',
    'Кровать взрослых имеет 855 мм до шкафа и 925 мм до оконной стены, вторая спальня — отдельный вход и стол у окна.',
-   'Входная дверь не перекрыта крупным шкафом; мокрые зоны, оба окна и несущеподобный пилон оставлены на месте.'
+   'Входная дверь не перекрыта крупным шкафом; мокрые зоны, оба окна и несущеподобный пилон оставлены на месте.',
+   'Высокие матовые фрамуги над двумя дверями визуально проводят дневной свет из спален в общую зону.'
   ],
   cons:[
    'Концепция намеренно уступает часть гардеробной (2,51 м²) проходу; хранение нужно уточнить по вещам семьи.',
@@ -38,7 +39,7 @@ export function createOptimizedLayout(base){
  // Move just the PROPOSED adult north wall towards the south by 200 mm;
  // the structural pier starts at y=6850 and stays exactly where it was.
  put(l.partitions,'d-adult-north',{y:3980});
- put(l.partitions,'d-adult-door-lintel',{y:3980});
+ put(l.partitions,'d-adult-door-lintel',{y:3980,transomGlass:true});
  put(l.partitions,'d-adult-divider',{y:3980,depth:2870});
  put(l.doors,'door-adult',{y:3980,openY:4100,hinge:[3175,4100]});
  const adult=get(l.rooms,'adult');
@@ -57,7 +58,7 @@ export function createOptimizedLayout(base){
  put(l.doors,'door-dressing',{x:4540,openX:5390});
  // Independent 850 mm bedroom door, joined seamlessly to the dressing wall.
  put(l.partitions,'d-child-diagonal',{x:3295,width:255});
- put(l.partitions,'d-child-door-lintel',{x:3550,width:850});
+ put(l.partitions,'d-child-door-lintel',{x:3550,width:850,transomGlass:true});
  put(l.partitions,'d-child-north-right',{x:4400,width:140});
  put(l.doors,'door-child',{x:3550,openX:4360,hinge:[4400,4450]});
  const dressing=get(l.rooms,'dressing');
