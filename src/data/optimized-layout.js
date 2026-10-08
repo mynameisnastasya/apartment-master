@@ -79,6 +79,10 @@ export function createOptimizedLayout(base){
   dressingShelves:[5330,3770],
   sofa:[2780,3440]
  });
+ l.clearances.push({
+  id:'hall-to-child',label:'Холл перед второй спальней',value:1125,unit:'мм',status:'good',
+  x:3857.5,y:3590,axis:'x',length:1125
+ });
  l.clearances=l.clearances.map(c=>({
   ...c,
   ...(c.id==='adult-door-clear'?{y:4040}:{}),
