@@ -2,8 +2,8 @@
 // It keeps the measured/assumed outer shell used by the project, while translating
 // the reference's room program: 18.85 m² living/kitchen, 4.53 m² bath,
 // 3.04 m² dressing room, 13.68 m² bedroom and 10.41 m² second room.
-// Because the reference drawing and the current shell do not close to the same
-// dimensions, labelled areas below preserve the reference values where useful.
+// Source labels are stored separately from computed polygon areas: this is a
+// concept inside the project's provisional shell, NOT a measured/surveyed plan.
 
 export function createPhotoLayout(base){
  const l=structuredClone(base);
@@ -15,19 +15,19 @@ export function createPhotoLayout(base){
  Object.assign(l,{
   id:'L',
   name:'По референсу',
-  subtitle:'Кухня-гостиная 18,85 · ванная 4,53 · гардеробная 3,04 · предварительно',
+  subtitle:'По фото: гостиная 18,85 · ванная 4,53 · гардеробная 3,04 м² · эскиз',
   recommended:false,
-  revision:'2026-10-07',
+  revision:'2026-10-08',
   referenceDerived:true,
   pros:[
-   'Две спальни собраны у окон, а кухня-гостиная остаётся единым помещением в верхней левой части квартиры.',
+   'Две спальни расположены у окон, а кухня-гостиная остаётся единой зоной в верхней левой части квартиры.',
    'Отдельная гардеробная разгружает спальни от части шкафов и создаёт самостоятельную зону хранения.',
    'Санузел по референсу близок к 2500 × 1810 мм, поэтому его можно сопоставлять с текущей моделью без переноса кухни на другую сторону.'
   ],
   cons:[
    'Это реконструкция по изображению, а не по обмеру: подписи площадей и текущий условный контур квартиры расходятся.',
-   'Поперечный проход между ванной и гардеробной в модели около 680 мм; его обязательно перепроверить на реальных размерах.',
-   'Правая спальня в текущем условном контуре получается меньше подписанных на референсе 10,41 м² из-за простенка и формы нижней стены.',
+   'Проход между ванной и гардеробной в условной модели около 680 мм — узкое место, не подтверждённое реальным обмером.',
+   'По координатам модельной оболочки вторая спальня 9,21 м², хотя на референсе подписано 10,41 м²: расхождение требует обмера и проверки стен.',
    'Перед строительством нужны точные размеры перегородок, дверей, стояков, вентиляции и допустимых границ мокрой зоны.'
   ]
  });
@@ -64,16 +64,16 @@ export function createPhotoLayout(base){
  l.doors.push({id:'door-dressing',x:4500,y:2610,width:850,axis:'x',openX:5350,openY:2650,openWidth:850,openDepth:35,room:'dressing',mechanism:'pocket-sliding'});
 
  const adult=find(l.rooms,'adult');
- Object.assign(adult,{x:1650,y:6100,polygon:[[0,4000],[3175,4000],[3175,8300],[0,8300]],area:13.68});
+ Object.assign(adult,{x:1650,y:6100,polygon:[[0,4000],[3175,4000],[3175,8300],[0,8300]],area:13.65,referenceArea:13.68});
  const child=find(l.rooms,'alice');
- Object.assign(child,{name:'Вторая спальня',x:5200,y:5700,polygon:[[3295,4450],[6400,4450],[6400,7440],[3425,7440],[3425,6850],[3295,6850]],area:10.41});
+ Object.assign(child,{name:'Вторая спальня',x:5200,y:5700,polygon:[[3295,4450],[6400,4450],[6400,7440],[3425,7440],[3425,6850],[3295,6850]],area:9.21,referenceArea:10.41});
  const bath=find(l.rooms,'bath');
- Object.assign(bath,{x:3690,y:1100,polygon:[[2440,0],[4940,0],[4940,1810],[2440,1810]],area:4.53});
+ Object.assign(bath,{x:3690,y:1100,polygon:[[2440,0],[4940,0],[4940,1810],[2440,1810]],area:4.53,referenceArea:4.53});
  const living=find(l.rooms,'living');
- Object.assign(living,{name:'Кухня-гостиная',x:1350,y:2850,area:18.85});
+ Object.assign(living,{name:'Кухня-гостиная',x:1350,y:2850,area:18.85,areaBasis:'reference',referenceArea:18.85});
  const entry=find(l.rooms,'entry');
  Object.assign(entry,{x:5550,y:1450});
- l.rooms.push({id:'dressing',name:'Гардеробная',x:5450,y:3500,polygon:[[4500,2730],[6400,2730],[6400,4330],[4500,4330]],area:3.04});
+ l.rooms.push({id:'dressing',name:'Гардеробная',x:5450,y:3500,polygon:[[4500,2730],[6400,2730],[6400,4330],[4500,4330]],area:3.04,referenceArea:3.04});
 
  // Kitchen stays on the same plumbing wall as D; furniture is rearranged to
  // follow the reference while retaining the project's verified appliance blocks.
@@ -83,14 +83,13 @@ export function createPhotoLayout(base){
  move('basin',{x:2460,y:0,width:600,depth:400,rotation:0,front:'south'});
 
  move('sofa',{x:150,y:2850,width:2400,depth:850,rotation:0,front:'north',label:'Диван 2400 × 850 · по референсу'});
- l.furniture=l.furniture.filter(o=>!['media','tv','alice-wardrobe','adult-nightstand-2','alice-toys'].includes(o.id));
+ l.furniture=l.furniture.filter(o=>!['media','tv','alice-wardrobe','adult-dresser','adult-nightstand-2','alice-toys'].includes(o.id));
 
- move('adult-bed',{x:640,y:5050,width:1850,depth:2200,rotation:0,mattress:[1600,2000],front:'north',label:'Кровать · матрас 1600 × 2000 · изголовье к верхней стене'});
+ move('adult-bed',{x:850,y:5050,width:1850,depth:2200,rotation:90,mattress:[1600,2000],front:'east',label:'Двуспальная кровать · матрас 1600 × 2000 · изголовье к правой стене'});
  move('adult-wardrobe',{x:0,y:4060,width:2200,depth:550,height:2400,rotation:0,front:'south',label:'Шкаф / хранение 2200 × 550'});
- move('adult-dresser',{x:2670,y:5200,width:420,depth:900,height:760,rotation:0,front:'west',label:'Консоль / туалетный столик 900 × 420'});
- move('adult-nightstand',{x:2600,y:6800,width:450,depth:350,rotation:0,front:'west',label:'Прикроватная тумба 450'});
+ move('adult-nightstand',{x:2900,y:5480,width:250,depth:320,height:460,rotation:0,front:'west',label:'Компактная прикроватная полка 250 × 320'});
 
- move('alice-bed',{x:4750,y:4700,width:1300,depth:1900,rotation:90,mattress:[1200,1800],front:'east',label:'Кровать / диван-кровать · матрас 1200 × 1800 · изголовье к правой стене'});
+ move('alice-bed',{x:4750,y:4700,width:1300,depth:1900,rotation:90,mattress:[1200,1800],front:'east',label:'Односпальная / диван-кровать · спальное место 1200 × 1800 · изголовье к правой стене'});
  move('alice-desk',{x:3650,y:6880,width:2200,depth:500,height:740,rotation:0,front:'north',label:'Стол / консоль 2200 × 500 · у окна'});
  move('alice-chair',{x:3900,y:6250,width:500,depth:500,rotation:0,front:'south'});
 
@@ -109,9 +108,9 @@ export function createPhotoLayout(base){
   bar:[1700,2350],
   adult:[2820,4450],
   alice:[3900,4550],
-  adultBed:[2750,5850],
-  adultWardrobe:[2600,4650],
-  aliceBed:[4470,5400],
+  adultBed:[475,6200],
+  adultWardrobe:[2600,4660],
+  aliceBed:[3975,5400],
   aliceDesk:[5000,6400],
   bathroom:[3650,1350],
   fridge:[1940,1050],
@@ -139,14 +138,15 @@ export function createPhotoLayout(base){
   {id:'child-door-clear',label:'Проём второй спальни до коробки',value:850,unit:'мм',status:'good',x:3925,y:4160,axis:'x',length:850},
   {id:'dressing-door',label:'Проём гардеробной до коробки',value:850,unit:'мм',status:'good',x:4925,y:2520,axis:'x',length:850},
   {id:'hall-neck',label:'Перешеек между ванной и гардеробной · модель',value:680,unit:'мм',status:'compact',x:4700,y:2270,axis:'y',length:680},
-  {id:'adult-foot',label:'Проход у изножья кровати',value:650,unit:'мм',status:'compact',x:325,y:6100,axis:'x',length:650},
+  {id:'adult-foot',label:'Основной боковой проход вдоль кровати',value:675,unit:'мм',status:'compact',x:337.5,y:6200,axis:'x',length:675},
+  {id:'adult-window',label:'Свободное пространство до оконной стены',value:1225,unit:'мм',status:'good',x:1600,y:7687.5,axis:'y',length:1225},
   {id:'dressing-aisle',label:'Проход перед хранением',value:830,unit:'мм',status:'compact',x:5385,y:3500,axis:'x',length:830}
  ];
 
  l.walkViews={
   living:{walk:l.routes.sofa,look:[1200,1000]},
   kitchen:{walk:l.routes.kitchen,look:[600,700]},
-  adult:{walk:l.routes.adult,look:[1500,6200]},
+  adult:{walk:l.routes.adult,look:[2200,6200]},
   alice:{walk:l.routes.alice,look:[5350,5600]},
   bath:{walk:l.routes.bathroom,look:[4300,900]},
   dressing:{walk:l.routes.dressing,look:[6100,3500]}
