@@ -112,6 +112,13 @@ export function createFurniture(o,m){
   b(m.upholstery,x+8,y+50,120,d-95,330,248,52);b(m.upholstery,x+w-128,y+50,120,d-95,330,248,52);
   const p=cushion(g,m.wine,M(x+270),M(y+d-275),.28,.28,.12,.575,{upright:true,seed:4});p.rotation.z=-.14;
   const q=cushion(g,m.bedding,M(x+w-295),M(y+d-270),.26,.25,.11,.56,{upright:true,seed:7});q.rotation.z=.13;
+  if(m.wall.userData.warmModern&&o.id==='sofa'){
+   // Piped upholstery reads naturally in grazing light; slim recessed feet
+   // avoid the old floating sofa silhouette without enlarging its footprint.
+   tube(g,m.bedding,[[x+45,y+48,492],[x+w-45,y+48,492],[x+w-45,y+d-192,492]],3).name='sofa-front-piping';
+   for(const xx of [x+100,x+w-115])for(const yy of [y+90,y+d-100])
+    b(m.bronze,xx,yy,15,15,74,0,3).name='sofa-recessed-foot';
+  }
  }
  else if(['chair','stool'].includes(o.type)){
   const seat=o.type==='stool'?650:435;
