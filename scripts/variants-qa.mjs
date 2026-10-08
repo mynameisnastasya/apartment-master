@@ -36,6 +36,14 @@ assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,9,'Each 
 for(const layout of layouts){
   assert.deepEqual(layout.rooms.filter(r=>!['dressing','childDressing'].includes(r.id)).map(r=>r.id),base.rooms.map(r=>r.id));
   assert.equal(layout.doors.length,3+layout.rooms.filter(r=>['dressing','childDressing'].includes(r.id)).length);
+  if(layout.id==='L'){
+    const bed=layout.furniture.find(f=>f.id==='adult-bed'),child=layout.furniture.find(f=>f.id==='alice-bed');
+    assert.equal(bed.rotation,90,'L: adult pillows must face the right wall');
+    assert.equal(child.rotation,90,'L: second bed must face the right wall');
+    assert.equal(layout.rooms.find(r=>r.id==='alice').area,9.21,'L: do not present image estimate as modeled area');
+    assert.equal(layout.rooms.find(r=>r.id==='alice').referenceArea,10.41);
+    assert.ok(!layout.furniture.some(f=>f.id==='adult-dresser'),'L: keep bedroom side route free');
+  }
   if(layout.id==='W6'){
     const desk=layout.furniture.find(o=>o.id==='alice-desk');
     assert.equal(desk.x,3425);assert.equal(desk.x+desk.width,6400);assert.equal(desk.y+desk.depth,7440);
