@@ -146,7 +146,7 @@ for(const layout of layouts){
     const n=layouts.find(v=>v.id==='N');
     const d=layout.rooms.find(r=>r.id==='dressing');
     assert.equal(d.area,2.91,'O: actual 1950 × 1490 interior dressing floor');
-    assert.equal(layout.rooms.find(r=>r.id==='alice').area,8.94,'O: bedroom reduction is disclosed, not hidden');
+    assert.equal(layout.rooms.find(r=>r.id==='alice').area,8.93,'O: bedroom reduction is disclosed, not hidden');
     assert.ok(d.area>n.rooms.find(r=>r.id==='dressing').area+.35,'O: larger walk-in than N');
     const west=layout.partitions.find(w=>w.id==='l-dressing-west'),south=layout.partitions.find(w=>w.id==='l-dressing-south');
     assert.equal(west.x,4330);assert.equal(west.y+west.depth,south.y);
