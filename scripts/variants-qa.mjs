@@ -22,7 +22,7 @@ const overlap = (a,b) => {
   return true;
 };
 
-assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I','J','K','L','W4','W6']);
+assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I','J','K','L','M','W4','W6']);
 const base=layouts[0],results=[];
 const gallery=layouts.find(l=>l.id==='W4'),study=wardrobeOptions.find(l=>l.id==='W4');
 for(const key of ['partitions','doors','furniture'])assert.deepEqual(gallery[key],study[key],'W4 3D must use the selected study geometry');
@@ -32,7 +32,7 @@ assert.equal(gallery.partitions.find(w=>w.id==='d-child-north-right').y,gallery.
 assert.equal(gallery.furniture.find(o=>o.id==='sofa').rotation,0);
 assert.equal(gallery.furniture.find(o=>o.id==='dining').wallMounted,true);
 assert.equal(gallery.clearances.find(c=>c.id==='dressing-aisle').value,900);
-assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,9,'Each architectural option must have genuinely different walls');
+assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,10,'Each architectural option must have genuinely different walls');
 for(const layout of layouts){
   assert.deepEqual(layout.rooms.filter(r=>!['dressing','childDressing'].includes(r.id)).map(r=>r.id),base.rooms.map(r=>r.id));
   assert.equal(layout.doors.length,3+layout.rooms.filter(r=>['dressing','childDressing'].includes(r.id)).length);
@@ -92,6 +92,16 @@ for(const layout of layouts){
     for(const [id,room] of [['adult-bed','adult'],['adult-wardrobe','adult'],['alice-bed','alice'],['alice-desk','alice'],['l-dressing-rail','dressing'],['l-dressing-shelves','dressing']]){
       assert.ok(layout.furniture.some(item=>item.id===id&&item.room===room),`L: missing ${id} in ${room}`);
     }
+  }
+  if(layout.id==='M'){
+    const adult=layout.rooms.find(r=>r.id==='adult');
+    const dressing=layout.rooms.find(r=>r.id==='dressing');
+    assert.equal(adult.area,13.97,'M: 3180 × 4400 photo bedroom expressed in current shell');
+    assert.equal(adult.referenceArea,13.99,'M: visible 3.18 × 4.40 photo label');
+    assert.equal(dressing.area,2.78,'M: wardrobe widened west of L');
+    assert.ok(layout.partitions.find(w=>w.id==='l-dressing-west').x<layouts.find(v=>v.id==='L').partitions.find(w=>w.id==='l-dressing-west').x,'M: genuinely distinct closet geometry');
+    assert.equal(layout.clearances.find(c=>c.id==='hall-neck').value,930);
+    assert.equal(layout.doors.find(d=>d.id==='door-child').x,3370,'M: shifted doorway clear of enlarged dressing');
   }
   if(layout.id==='W6'){
     const desk=layout.furniture.find(o=>o.id==='alice-desk');
