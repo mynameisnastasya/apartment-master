@@ -124,7 +124,8 @@ export function createPhotoLayout(base){
   bathWasher:[3430,950],
   bathTub:[3900,1420],
   dressing:[5200,3050],
-  dressingRail:[5450,3500]
+  dressingRail:[5450,3500],
+  dressingShelves:[5400,3830]
  };
  l.routePairs=[
   ['entry','kitchen'],
@@ -138,7 +139,14 @@ export function createPhotoLayout(base){
   ['entry','dressing'],
   ['adult','adultWardrobe'],
   ['alice','aliceDesk'],
-  ['dressing','dressingRail']
+  ['dressing','dressingRail'],
+  ['dressing','dressingShelves'],
+  ['bathroom','bathBasin'],
+  ['bathroom','bathToilet'],
+  ['bathroom','bathWasher'],
+  ['bathroom','bathTub'],
+  ['kitchen','fridge'],
+  ['kitchen','dishwasher']
  ];
 
  l.clearances=[
