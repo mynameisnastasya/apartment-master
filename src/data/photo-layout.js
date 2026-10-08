@@ -21,6 +21,7 @@ export function createPhotoLayout(base){
   referenceDerived:true,
   pros:[
    'Две спальни расположены у окон, а кухня-гостиная остаётся единой зоной в верхней левой части квартиры.',
+   'У входа оставлена свободная зона для открывания двери и прохода с сумками; большая часть хранения находится в гардеробной.',
    'Отдельная гардеробная разгружает спальни от части шкафов и создаёт самостоятельную зону хранения.',
    'Санузел по референсу близок к 2500 × 1810 мм, поэтому его можно сопоставлять с текущей моделью без переноса кухни на другую сторону.'
   ],
@@ -92,7 +93,10 @@ export function createPhotoLayout(base){
  move('alice-desk',{x:3650,y:6880,width:2200,depth:500,height:740,rotation:0,front:'north',label:'Стол / консоль 2200 × 500 · у окна'});
  move('alice-chair',{x:3900,y:6250,width:500,depth:500,rotation:0,front:'south'});
 
- move('hall-wardrobe',{x:6020,y:200,width:380,depth:1900,height:2400,rotation:0,front:'west',label:'Прихожая · неглубокий встроенный шкаф'});
+ // The front door is on the east wall, y=100..1100. A tall closet here
+ // previously blocked the entire threshold (x=6020..6400, y=200..2100).
+ // Reserve a clear entry landing; coats go to the separate dressing room.
+ move('hall-wardrobe',{type:'storage',x:6060,y:1400,width:340,depth:700,height:900,rotation:0,front:'west',opening:'pull-out',label:'Прихожая · компактная обувница 700 × 340 · высота 900'});
  move('mirror',{x:5200,y:250,width:25,depth:750,height:1800,rotation:0,front:'east'});
 
  l.furniture.push(
@@ -101,8 +105,8 @@ export function createPhotoLayout(base){
  );
 
  l.routes={
-  entry:[5500,800],
-  storage:[5580,2050],
+  entry:[6150,600],
+  storage:[5560,1750],
   kitchen:[1400,1100],
   bar:[1700,2350],
   adult:[2820,4450],
@@ -124,16 +128,22 @@ export function createPhotoLayout(base){
  };
  l.routePairs=[
   ['entry','kitchen'],
+  ['entry','storage'],
+  ['entry','sofa'],
   ['entry','adult'],
   ['adult','adultBed'],
   ['entry','alice'],
   ['alice','aliceBed'],
   ['entry','bathroom'],
-  ['entry','dressing']
+  ['entry','dressing'],
+  ['adult','adultWardrobe'],
+  ['alice','aliceDesk'],
+  ['dressing','dressingRail']
  ];
 
  l.clearances=[
-  {id:'entry-aisle',label:'Между ванной и шкафом прихожей',value:960,unit:'мм',status:'good',x:5540,y:1500,axis:'x',length:960},
+  {id:'entry-aisle',label:'Между стеной ванной и обувницей у входа',value:1000,unit:'мм',status:'good',x:5560,y:1750,axis:'x',length:1000},
+  {id:'entry-landing',label:'Свободная зона сразу за входной дверью · без мебели',value:1050,unit:'мм',status:'good',x:6075,y:600,axis:'y',length:1050},
   {id:'bath-door-clear',label:'Проём ванной до коробки',value:850,unit:'мм',status:'good',x:3515,y:1870,axis:'x',length:850},
   {id:'adult-door-clear',label:'Проём спальни до коробки',value:850,unit:'мм',status:'good',x:2750,y:3940,axis:'x',length:850},
   {id:'child-door-clear',label:'Проём второй спальни до коробки',value:850,unit:'мм',status:'good',x:3925,y:4160,axis:'x',length:850},
