@@ -96,7 +96,10 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   }
   const bed=layout.furniture.find(o=>o.room===name&&o.type==='bed');
   if(bed){const bx=bed.x+bed.width/2,bz=bed.y+bed.depth/2;
-   const rug=box(root,m.rug,bx-1300,bz-900,2400,1850,12,1,'room-rug');rug.castShadow=false;
+   const margin=layout.id==='L'?140:0;
+   const rugX=layout.id==='L'?Math.max(x+margin,Math.min(bx-1200,x2-2400-margin)):bx-1300;
+   const rugY=layout.id==='L'?Math.max(y+margin,Math.min(bz-900,y2-1780-margin)):bz-900;
+   const rug=box(root,m.rug,rugX,rugY,layout.id==='L'?Math.min(2400,x2-x-2*margin):2400,layout.id==='L'?1780:1850,12,1,'room-rug');rug.castShadow=false;
   }
  }
 
@@ -113,7 +116,7 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   const after=win.x+win.width;
   if(after<right)box(walls,m.wall,after,wy,right-after,100,win.height,win.sill,'studio-window-right');
   if(head>0)box(walls,m.wall,win.x,wy,win.width,100,head,win.sill+win.height,'studio-window-head');
-  box(walls,m.glass,win.x,wy+20,win.width,14,win.height,win.sill,'studio-window-glass');
+  box(walls,m.glass,win.x,wy+20,win.width,14,win.height,win.sill,layout.familyDesign&&name==='alice'?'alice-window-glass':'studio-window-glass');
   for(let i=0;i<=3;i++)box(walls,m.worktop,win.x+i*win.width/3-10,wy-12,20,35,win.height,win.sill,'studio-window-frame');
   for(const z of [win.sill,win.sill+win.height-25])box(walls,m.worktop,win.x,wy-12,win.width,35,25,z,'studio-window-frame');
   box(walls,m.joinery,win.x-12,wy-20,win.width+24,132,24,win.sill-24,'studio-window-sill');
