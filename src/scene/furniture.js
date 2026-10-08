@@ -216,6 +216,14 @@ export function createFurniture(o,m){
   for(let i=1;i<count;i++)face(m.shadow,i*step-1,e+85,2,h-130,2,-2);
   if(o.type==='wardrobe'&&o.id!=='hall-wardrobe')face(m.joinery,Math.max(14,span-34),e+110,14,h-180,7,-5);
   if(o.type==='fridge')face(m.shadow,12,e+730,(front==='east'||front==='west'?d:w)-24,3,3,-2);
+  if(o.id==='hall-wardrobe'&&o.type==='storage'){
+   // Shallow shoe cabinet: tactile ribbed walnut door, finger pull and a
+   // honed stone top. All accents remain inside its surveyed bounding box.
+   b(m.marble,x+8,y+8,w-16,d-16,20,e+h-22,8).name='shoe-cabinet-stone-top';
+   for(let i=0;i<9;i++)face(m.shadow,45+i*70,e+135,2,h-260,2,5).name='shoe-cabinet-fluting';
+   face(m.bronze,258,e+h-120,185,8,3,5).name='shoe-cabinet-pull';
+   b(m.shadow,x+18,y+18,w-36,d-36,44,e,4).name='shoe-cabinet-recessed-plinth';
+  }
  }
  else if(o.type==='shelf'){
   b(m.joinery,x,y,w,18,h,0);for(let z=0;z<h;z+=315)b(m.joinery,x,y,w,d,18,z);
@@ -235,11 +243,14 @@ export function createFurniture(o,m){
  else if(o.type==='tv'){const mount=organic?80:0;b(m.shadow,x+mount,y,w,d,h,e,9);b(m.screen,x+mount+w-2,y+12,4,d-24,h-24,e+12,2);}
  else if(o.type==='mirror'){
   b(m.bronze,x,y,w,d,h,e,5);
-  if(o.id==='dressing-mirror'){
-   const face=new THREE.Mesh(new THREE.PlaneGeometry(M(d-24),M(h-24)),m.mirror);
-   face.rotation.y=Math.PI/2;face.position.set(M(x+w+2),M(e+h/2),M(y+d/2));face.name='mirror-face';g.add(face);
-   for(const yy of [y-4,y+d])b(m.lamp,x+w,yy,5,5,h,e,1);
-  }else b(m.glass,x+w,y+12,2,d-24,h-24,e+12);
+  // An actual reflective PBR plane, not translucent glass. Room views can
+  // replace it with a planar reflector for perspective-correct reflections.
+  const mirrorFace=new THREE.Mesh(new THREE.PlaneGeometry(M(d-30),M(h-40)),m.mirror);
+  mirrorFace.rotation.y=Math.PI/2;
+  mirrorFace.position.set(M(x+w+3),M(e+h/2),M(y+d/2));
+  mirrorFace.name='mirror-face';
+  mirrorFace.castShadow=false;mirrorFace.receiveShadow=false;g.add(mirrorFace);
+  if(o.id==='dressing-mirror')for(const yy of [y+4,y+d-8])b(m.lamp,x+w-3,yy,4,4,h-40,e+20,1);
  }
  else {
   cabinet();b(m.marble,x,y,w,d,28,h-28,5);
