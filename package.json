@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node scripts/build.mjs && node scripts/reference-report.mjs",
     "start": "node scripts/serve.mjs",
-    "qa": "node scripts/reference-qa.mjs && node scripts/variants-qa.mjs && node scripts/wardrobe-options-qa.mjs"
+    "qa": "node scripts/reference-qa.mjs && node scripts/variants-qa.mjs && node scripts/wardrobe-options-qa.mjs && node scripts/liza-visual-qa.mjs"
   },
   "dependencies": {
     "three": "0.185.1"
