@@ -76,6 +76,10 @@ export function createFurniture(o,m){
   }
  }
  else if(o.type==='bed'){
+  // A padded headboard makes the sleeping direction legible in every camera,
+  // including the rotated L reference beds. It stays within the bed footprint.
+  b(m.upholstery,x+22,y+12,w-44,90,910,0,24).name='bed-upholstered-headboard';
+  b(m.joinery,x+34,y+98,w-68,18,135,0,8);
   b(m.shadow,x+50,y+70,w-100,d-120,68,48,22);
   b(m.upholstery,x+18,y+26,w-36,d-52,165,102,32);
   const mw=o.mattress[0],md=o.mattress[1],mx=x+(w-mw)/2,my=y+(d-md)/2;
