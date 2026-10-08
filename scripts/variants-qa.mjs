@@ -127,6 +127,8 @@ for(const layout of layouts){
     const maxY=o=>Math.max(...corners(o).map(p=>p[1]));
     assert.equal(minY(bed)-(wardrobe.y+wardrobe.depth),855,'N: leave room to open wardrobe in bedroom');
     assert.equal(8300-maxY(bed),925,'N: preserve daylight and window access');
+    assert.equal(layout.partitions.filter(p=>p.transomGlass).length,2,'N: glazed door tops in project partitions only');
+    assert.ok(layout.partitions.filter(p=>p.transomGlass).every(p=>p.openingPart&&p.elevation>=2100),'N: transoms must stay above standing head clearance');
     assert.equal(layout.doors.find(d=>d.id==='door-child').width,850);
     assert.equal(layout.doors.find(d=>d.id==='door-dressing').width,850);
     assert.ok(!layout.furniture.some(o=>o.id==='adult-dresser'),'N: no dressing table pinching bedroom');
