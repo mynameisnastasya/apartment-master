@@ -103,6 +103,43 @@ for(const layout of layouts){
     assert.equal(layout.clearances.find(c=>c.id==='hall-neck').value,930);
     assert.equal(layout.doors.find(d=>d.id==='door-child').x,3370,'M: shifted doorway clear of enlarged dressing');
   }
+  if(layout.id==='N'){
+    const m=layouts.find(v=>v.id==='M');
+    const adult=layout.rooms.find(r=>r.id==='adult'),dressing=layout.rooms.find(r=>r.id==='dressing');
+    assert.equal(adult.area,13.34,'N: primary bedroom area must reflect shifted project partition');
+    assert.equal(dressing.area,2.51,'N: dressing area tradeoff must be explicit');
+    assert.equal(layout.rooms.find(r=>r.id==='alice').area,9.21,'N: keep independent windowed second bedroom');
+    assert.equal(layout.partitions.find(w=>w.id==='d-adult-north').y-m.partitions.find(w=>w.id==='d-adult-north').y,200,'N: architectural revision must be genuine');
+    const corridor=layout.partitions.find(w=>w.id==='l-dressing-west').x
+      -(layout.partitions.find(w=>w.id==='d-adult-divider').x+layout.partitions.find(w=>w.id==='d-adult-divider').width);
+    assert.equal(corridor,1125,'N: second bedroom approach must have 1125 mm gross corridor');
+    assert.equal(layout.clearances.find(c=>c.id==='hall-to-child').value,corridor);
+    const bath=layout.partitions.find(w=>w.id==='d-bath-south-left');
+    const dNorth=layout.partitions.find(w=>w.id==='l-dressing-north-right');
+    assert.equal(dNorth.y-(bath.y+bath.depth),930,'N: north-south hall minimum 930 mm');
+    const rail=layout.furniture.find(o=>o.id==='l-dressing-rail');
+    const shelves=layout.furniture.find(o=>o.id==='l-dressing-shelves');
+    const shelvesEast=Math.max(...corners(shelves).map(([x])=>x));
+    assert.equal(rail.x-shelvesEast,920,'N: wardrobe drawer/rail approach must be 920 mm');
+    assert.equal(layout.clearances.find(c=>c.id==='dressing-aisle').value,920);
+    const bed=layout.furniture.find(o=>o.id==='adult-bed'),wardrobe=layout.furniture.find(o=>o.id==='adult-wardrobe');
+    const minY=o=>Math.min(...corners(o).map(p=>p[1]));
+    const maxY=o=>Math.max(...corners(o).map(p=>p[1]));
+    assert.equal(minY(bed)-(wardrobe.y+wardrobe.depth),855,'N: leave room to open wardrobe in bedroom');
+    assert.equal(8300-maxY(bed),925,'N: preserve daylight and window access');
+    assert.equal(layout.doors.find(d=>d.id==='door-child').width,850);
+    assert.equal(layout.doors.find(d=>d.id==='door-dressing').width,850);
+    assert.ok(!layout.furniture.some(o=>o.id==='adult-dresser'),'N: no dressing table pinching bedroom');
+    for(const [id] of [['outer-west'],['outer-east-lower'],['pier'],['adult-window-sill'],['child-window-sill']])
+      assert.ok(geometry.walls.some(w=>w.id===id),'N: structural shell or pier missing');
+    const obstaclesN=colliders(geometry,layout);
+    const entryPt=[6150,600];
+    assert.ok(canStand(...entryPt,geometry,obstaclesN,250),'N: entrance must be unobstructed');
+    for(const target of ['kitchen','sofa','adult','adultBed','adultWardrobe','alice','aliceBed','aliceDesk','dressing','dressingRail','dressingShelves','bathroom','storage']){
+      const route=findRoute(entryPt,layout.routes[target],geometry,obstaclesN,{radius:250});
+      assert.ok(route.ok&&route.endpointSnapMm.every(n=>n<=150),`N: inaccessible ${target} from the REAL doorway`);
+    }
+  }
   if(layout.id==='W6'){
     const desk=layout.furniture.find(o=>o.id==='alice-desk');
     assert.equal(desk.x,3425);assert.equal(desk.x+desk.width,6400);assert.equal(desk.y+desk.depth,7440);
