@@ -117,6 +117,15 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   for(let i=0;i<=3;i++)box(walls,m.worktop,win.x+i*win.width/3-10,wy-12,20,35,win.height,win.sill,'studio-window-frame');
   for(const z of [win.sill,win.sill+win.height-25])box(walls,m.worktop,win.x,wy-12,win.width,35,25,z,'studio-window-frame');
   box(walls,m.joinery,win.x-12,wy-20,win.width+24,132,24,win.sill-24,'studio-window-sill');
+  if(layout.id==='L'&&m.wall.userData.warmModern){
+   // Soft sky bounce from the REAL window into the interior. The area emitter
+   // stays just inside the glazing, not in a phantom ceiling light panel.
+   const daylight=new THREE.RectAreaLight(0xfff5e6,3.4,Math.min(2.25,win.width/1000*.86),1.28);
+   daylight.name='studio-window-daylight';
+   daylight.position.set((win.x+win.width/2)/1000,1.56,(wy-55)/1000);
+   daylight.lookAt((win.x+win.width/2)/1000,1.20,(wy-1350)/1000);
+   root.add(daylight);
+  }
   if(layout.familyDesign&&name==='alice')box(walls,m.curtain,win.x-15,wy-28,win.width+30,25,300,win.sill+win.height-260,'alice-roman-blind');
  }
  const decor=createDecor(layout,m);
