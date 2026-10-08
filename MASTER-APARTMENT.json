@@ -9907,7 +9907,7 @@
           "id": "adult-bed",
           "type": "bed",
           "room": "adult",
-          "x": 850,
+          "x": 1080,
           "y": 5050,
           "width": 1850,
           "depth": 2200,
@@ -9936,20 +9936,6 @@
           "label": "Шкаф / хранение 2200 × 550",
           "front": "south",
           "opening": "sliding"
-        },
-        {
-          "id": "adult-nightstand",
-          "visible": true,
-          "rotation": 0,
-          "height": 460,
-          "x": 2900,
-          "y": 5480,
-          "width": 250,
-          "depth": 320,
-          "type": "storage",
-          "room": "adult",
-          "front": "west",
-          "label": "Компактная прикроватная полка 250 × 320"
         },
         {
           "id": "alice-bed",
@@ -10346,13 +10332,13 @@
         {
           "id": "adult-foot",
           "label": "Основной боковой проход вдоль кровати",
-          "value": 675,
+          "value": 905,
           "unit": "мм",
-          "status": "compact",
-          "x": 337.5,
+          "status": "good",
+          "x": 452.5,
           "y": 6200,
           "axis": "x",
-          "length": 675
+          "length": 905
         },
         {
           "id": "adult-window",
@@ -10403,7 +10389,7 @@
           4550
         ],
         "adultBed": [
-          375,
+          525,
           6200
         ],
         "adultWardrobe": [
@@ -10489,7 +10475,7 @@
           "dressing"
         ]
       ],
-      "revision": "2026-10-08",
+      "revision": "2026-10-08 · Warm Modern",
       "areaBasis": "Площади вычислены по полигонам условной модели, не перенесены со скриншота.",
       "design": {
         "concept": "Walnut Ribbon / Stone Lantern",
