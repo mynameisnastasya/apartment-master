@@ -155,7 +155,16 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   const a=polygon[i],b=polygon[j];if((a[1]>py)!==(b[1]>py)&&px<(b[0]-a[0])*(py-a[1])/(b[1]-a[1])+a[0])hit=!hit;
  }return hit;};
  for(const c of [...decor.children]){
-  const bounds=new THREE.Box3().setFromObject(c),cx=(bounds.min.x+bounds.max.x)*500,cy=(bounds.min.z+bounds.max.z)*500;
+  // Lights do not have geometry, so Box3.setFromObject(light) is empty.
+  // Check their world position instead: the suspended pendant must carry
+  // its real illumination into the room preview, not only its bulb mesh.
+  if(c.isLight){
+   if(inside(c.position.x*1000,c.position.z*1000))root.add(c);
+   continue;
+  }
+  const bounds=new THREE.Box3().setFromObject(c);
+  if(bounds.isEmpty())continue;
+  const cx=(bounds.min.x+bounds.max.x)*500,cy=(bounds.min.z+bounds.max.z)*500;
   if(inside(cx,cy))root.add(c);
  }
  // Room views get actual planar reflections; the full apartment/export retains PBR mirrors.
