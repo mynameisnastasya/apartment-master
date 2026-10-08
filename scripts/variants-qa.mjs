@@ -22,7 +22,7 @@ const overlap = (a,b) => {
   return true;
 };
 
-assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I','J','K','L','M','N','W4','W6']);
+assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I','J','K','L','M','N','O','W4','W6']);
 const base=layouts[0],results=[];
 const gallery=layouts.find(l=>l.id==='W4'),study=wardrobeOptions.find(l=>l.id==='W4');
 for(const key of ['partitions','doors','furniture'])assert.deepEqual(gallery[key],study[key],'W4 3D must use the selected study geometry');
@@ -32,7 +32,7 @@ assert.equal(gallery.partitions.find(w=>w.id==='d-child-north-right').y,gallery.
 assert.equal(gallery.furniture.find(o=>o.id==='sofa').rotation,0);
 assert.equal(gallery.furniture.find(o=>o.id==='dining').wallMounted,true);
 assert.equal(gallery.clearances.find(c=>c.id==='dressing-aisle').value,900);
-assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,11,'Each architectural option must have genuinely different walls');
+assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,12,'Each architectural option must have genuinely different walls');
 for(const layout of layouts){
   assert.deepEqual(layout.rooms.filter(r=>!['dressing','childDressing'].includes(r.id)).map(r=>r.id),base.rooms.map(r=>r.id));
   assert.equal(layout.doors.length,3+layout.rooms.filter(r=>['dressing','childDressing'].includes(r.id)).length);
@@ -142,6 +142,44 @@ for(const layout of layouts){
       assert.ok(route.ok&&route.endpointSnapMm.every(n=>n<=150),`N: inaccessible ${target} from the REAL doorway`);
     }
   }
+  if(layout.id==='O'){
+    const n=layouts.find(v=>v.id==='N');
+    const d=layout.rooms.find(r=>r.id==='dressing');
+    assert.equal(d.area,2.91,'O: actual 1950 × 1490 interior dressing floor');
+    assert.equal(layout.rooms.find(r=>r.id==='alice').area,8.93,'O: bedroom reduction is disclosed, not hidden');
+    assert.ok(d.area>n.rooms.find(r=>r.id==='dressing').area+.35,'O: larger walk-in than N');
+    const west=layout.partitions.find(w=>w.id==='l-dressing-west'),south=layout.partitions.find(w=>w.id==='l-dressing-south');
+    assert.equal(west.x,4330);assert.equal(west.y+west.depth,south.y);
+    assert.equal(south.y,4470);
+    const neck=layout.partitions.find(w=>w.id==='l-dressing-north-right').y
+      -(layout.partitions.find(w=>w.id==='d-bath-south-left').y+layout.partitions.find(w=>w.id==='d-bath-south-left').depth);
+    assert.equal(neck,930,'O: keep bathroom corridor clear');
+    const westCorridor=west.x-(layout.partitions.find(w=>w.id==='d-adult-divider').x+layout.partitions.find(w=>w.id==='d-adult-divider').width);
+    assert.equal(westCorridor,1035,'O: keep 1.035 m to the second bedroom');
+    assert.equal(layout.clearances.find(c=>c.id==='hall-to-child').value,westCorridor);
+    const rail=layout.furniture.find(o=>o.id==='l-dressing-rail');
+    const shelves=layout.furniture.find(o=>o.id==='l-dressing-shelves');
+    assert.equal(rail.width,600,'O: hanging clothes really have 600 mm depth');
+    assert.equal(shelves.width,340,'O: shoes and folded garments use shallow shelves');
+    const aisle=rail.x-(shelves.x+shelves.width);
+    assert.equal(aisle,990,'O: directly measurable 990 mm closet aisle');
+    assert.equal(layout.clearances.find(c=>c.id==='dressing-aisle').value,aisle);
+    const top=layout.furniture.find(o=>o.id==='o-dressing-upper');
+    assert.ok(top.elevation>=2000&&top.collidable===false,'O: seasonal luggage is overhead, not obstructing floor');
+    for(const piece of [rail,shelves,top])
+      for(const [x,y] of corners(piece))
+        assert.ok(insidePolygon(x+(5350-x)*.0001,y+(3750-y)*.0001,d.polygon),'O: dressing section extends outside its room');
+    const actualArea=Math.abs(d.polygon.reduce((sum,p,i)=>{
+      const q=d.polygon[(i+1)%d.polygon.length];return sum+p[0]*q[1]-p[1]*q[0];
+    },0))/2e6;
+    assert.ok(Math.abs(actualArea-d.area)<.01,'O: geometry and displayed square metres disagree');
+    const obstaclesO=colliders(geometry,layout),threshold=[6150,600];
+    assert.ok(canStand(...threshold,geometry,obstaclesO,250));
+    for(const target of ['dressing','dressingRail','dressingShelves','dressingBags','adult','alice','aliceDesk','bathroom','storage']){
+      const route=findRoute(threshold,layout.routes[target],geometry,obstaclesO,{radius:250});
+      assert.ok(route.ok&&route.endpointSnapMm.every(v=>v<=150),`O: entrance to ${target} is blocked`);
+    }
+  }
   if(layout.id==='W6'){
     const desk=layout.furniture.find(o=>o.id==='alice-desk');
     assert.equal(desk.x,3425);assert.equal(desk.x+desk.width,6400);assert.equal(desk.y+desk.depth,7440);
@@ -221,5 +259,5 @@ for(const layout of layouts){
   assert.ok(layout.id==='D'||wallChanges.length>0,`${layout.id}: no architectural changes`);
   results.push({id:layout.id,rooms:layout.rooms.filter(r=>r.area).map(r=>({id:r.id,area:r.area})),wallChanges,furniture:layout.furniture.length,routeCount:routes.length,routes,applianceAccess,collisions});
 }
-fs.writeFileSync('variants-qa-results.json',JSON.stringify({scope:'Eleven interactive options in one architectural shell, including layout L reconstructed from a client reference image; shifted partitions and doors, rotated solids, shell, 500 mm avatar routes, independent room access, swing and appliance leaves. Conceptual, subject to survey.',results},null,2));
-console.log('Eleven interactive layouts validated:',results.map(r=>`${r.id}: ${r.routeCount} routes`).join(', '));
+fs.writeFileSync('variants-qa-results.json',JSON.stringify({scope:'Fourteen interactive options in one architectural shell, including layout L reconstructed from a client reference image; shifted partitions and doors, rotated solids, shell, 500 mm avatar routes, independent room access, swing and appliance leaves. Conceptual, subject to survey.',results},null,2));
+console.log('Fourteen interactive layouts validated:',results.map(r=>`${r.id}: ${r.routeCount} routes`).join(', '));
