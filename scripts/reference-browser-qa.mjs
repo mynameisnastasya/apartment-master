@@ -77,6 +77,7 @@ try{
  for(const room of ['adult','alice']){
   await page.locator('[data-room="'+room+'"]').click();
   assert.ok(await page.evaluate(()=>!!window.apartment.root.getObjectByName('studio-window-glass')),'L: '+room+' room must include its real exterior window');
+  assert.ok(await page.evaluate(()=>!!window.apartment.root.getObjectByName('studio-window-daylight')),'L: '+room+' room must include real-window soft daylight');
   await saveRender('browser-reference-artifacts/soft-modern-L-'+room+'.png');
  }
  await page.getByRole('button',{name:'План',exact:true}).click();await page.screenshot({path:'browser-reference-artifacts/plan-L.png'});
