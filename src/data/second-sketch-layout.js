@@ -52,6 +52,11 @@ export function createSecondSketchLayout(base){
  change(l.doors,'door-child',{x:3370,width:850,openX:4180,hinge:[4220,4450]});
  const child=byId(l.rooms,'alice');
  child.referenceArea=8.94; // 2.98 x 3.00 is shown approximately on the photo.
+ // Do not misattribute room-area labels from the FIRST photo to this second
+ // sketch: no unambiguous kitchen/living or bathroom area is given here.
+ const living=byId(l.rooms,'living');
+ living.area=null;delete living.referenceArea;living.areaBasis='unmeasured';
+ delete byId(l.rooms,'bath').referenceArea;
  // Expand dressing slightly to the west, without narrowing the 930 mm
  // corridor between the bathroom south wall and the dressing north wall.
  change(l.partitions,'l-dressing-west',{x:4220});
