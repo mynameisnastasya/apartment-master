@@ -55,7 +55,7 @@ try{
  await page.getByRole('button',{name:'Решения и проходы →'}).click();await page.locator('#details').waitFor({state:'visible'});assert.equal(await page.locator('[data-route]').count(),16);assert.ok((await page.locator('#dialog-content').innerText()).includes('960 мм'));await page.locator('#close-dialog').click();
  await page.getByRole('button',{name:'О проекте',exact:true}).click();assert.ok((await page.locator('#dialog-content').innerText()).includes('Лиза'));await page.locator('#close-dialog').click();
  assert.equal(await page.locator('.variant').count(),13);
- assert.equal(await page.evaluate(()=>new Set(window.apartment.layouts.map(l=>JSON.stringify(l.partitions))).size),9);
+ assert.equal(await page.evaluate(()=>new Set(window.apartment.layouts.map(l=>JSON.stringify(l.partitions))).size),11,'13 variants include 11 genuinely different partition schemes');
  assert.equal(await page.locator('[data-variant="A"], [data-variant="B"], [data-variant="C"]').count(),0);
  for(const id of ['D','E','F','G','H','I','J','K','L','M','N','W4','W6']){
   await page.locator(`[data-variant="${id}"]`).click();
