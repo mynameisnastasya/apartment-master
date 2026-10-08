@@ -42,6 +42,25 @@ export function addLighting(scene){
  scene.add(g);return g;
 }
 
+// A softer, more neutral photographic daylight pass for the warm-modern concept.
+// Keep the light list stable: other views and the camera controls refer to indices.
+export function setPhotographicLighting(group,enabled=false){
+ const hemi=group.children[0],key=group.children[1],fill=group.children.find(o=>o.isDirectionalLight&&o!==key);
+ hemi.color.set(enabled?0xfff7ee:0xfff2df);
+ hemi.intensity=enabled?.68:.58;
+ hemi.userData.dayIntensity=hemi.intensity;
+ key.color.set(enabled?0xfff2e4:0xfff0dd);
+ key.intensity=enabled?1.52:1.65;
+ key.shadow.radius=enabled?4.4:3;
+ key.shadow.normalBias=enabled?.009:.012;
+ key.userData.dayIntensity=key.intensity;
+ if(fill){
+  fill.color.set(enabled?0xe7eef0:0xdde3e1);
+  fill.intensity=enabled?.32:.24;
+  fill.userData.dayIntensity=fill.intensity;
+ }
+}
+
 // Named scenarios retain the broad daylight direction and use only compositional accents.
 export function setLightingMode(group,evening=false){
  group.children.forEach(light=>{
