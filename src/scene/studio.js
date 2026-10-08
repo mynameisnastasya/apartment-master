@@ -100,18 +100,24 @@ export function createStudio(geometry,layout,m,name,{interior=false}={}){
   }
  }
 
- // The W6 desk faces the actual model window, so include its reveal and sill.
- if(layout.familyDesign&&name==='alice'){
-  const win=geometry.windows.find(w=>w.id==='window-alice'),wy=7440;
-  box(walls,m.wall,3425,wy,2975,100,win.sill,0,'studio-window-apron');
-  box(walls,m.wall,3425,wy,win.x-3425,100,1850,win.sill,'studio-window-left');
-  box(walls,m.wall,win.x+win.width,wy,6400-win.x-win.width,100,1850,win.sill,'studio-window-right');
-  box(walls,m.wall,win.x,wy,win.width,100,2700-win.sill-win.height,win.sill+win.height,'studio-window-head');
-  box(walls,m.glass,win.x,win.y,win.width,15,win.height,win.sill,'alice-window-glass');
-  for(let i=0;i<=3;i++)box(walls,m.worktop,win.x+i*win.width/3-10,win.y-12,20,35,win.height,win.sill,'alice-window-frame');
-  for(const z of [win.sill,win.sill+win.height-25])box(walls,m.worktop,win.x,win.y-12,win.width,35,25,z,'alice-window-frame');
-  box(walls,m.joinery,win.x-12,wy-20,win.width+24,132,24,win.sill-24,'alice-window-sill');
-  box(walls,m.curtain,win.x-15,wy-28,win.width+30,25,300,win.sill+win.height-260,'alice-roman-blind');
+ // The room camera must show the actual façade openings, including L's
+ // adult bedroom. Previously L interiors ended in blank walls without windows.
+ // Keep the opening position and sill tied to the shared measured/assumed shell.
+ if((layout.familyDesign&&name==='alice')||(layout.id==='L'&&['alice','adult'].includes(name))){
+  const win=geometry.windows.find(w=>w.id==='window-'+name);
+  const wy=name==='adult'?8300:7440;
+  const left=name==='adult'?0:3425,right=name==='adult'?3175:6400;
+  const head=geometry.ceilingHeight-win.sill-win.height;
+  box(walls,m.wall,left,wy,right-left,100,win.sill,0,'studio-window-apron');
+  if(win.x>left)box(walls,m.wall,left,wy,win.x-left,100,win.height,win.sill,'studio-window-left');
+  const after=win.x+win.width;
+  if(after<right)box(walls,m.wall,after,wy,right-after,100,win.height,win.sill,'studio-window-right');
+  if(head>0)box(walls,m.wall,win.x,wy,win.width,100,head,win.sill+win.height,'studio-window-head');
+  box(walls,m.glass,win.x,wy+20,win.width,14,win.height,win.sill,'studio-window-glass');
+  for(let i=0;i<=3;i++)box(walls,m.worktop,win.x+i*win.width/3-10,wy-12,20,35,win.height,win.sill,'studio-window-frame');
+  for(const z of [win.sill,win.sill+win.height-25])box(walls,m.worktop,win.x,wy-12,win.width,35,25,z,'studio-window-frame');
+  box(walls,m.joinery,win.x-12,wy-20,win.width+24,132,24,win.sill-24,'studio-window-sill');
+  if(layout.familyDesign&&name==='alice')box(walls,m.curtain,win.x-15,wy-28,win.width+30,25,300,win.sill+win.height-260,'alice-roman-blind');
  }
  const decor=createDecor(layout,m);
  if((['I','J','K'].includes(layout.id)||layout.familyDesign)&&name==='alice'){
