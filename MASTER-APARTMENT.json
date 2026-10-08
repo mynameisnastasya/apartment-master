@@ -9908,7 +9908,7 @@
           "type": "bed",
           "room": "adult",
           "x": 1080,
-          "y": 5050,
+          "y": 5290,
           "width": 1850,
           "depth": 2200,
           "height": 850,
@@ -9942,7 +9942,7 @@
           "type": "bed",
           "room": "alice",
           "x": 4750,
-          "y": 4700,
+          "y": 4490,
           "width": 1300,
           "depth": 1900,
           "height": 850,
@@ -9960,7 +9960,7 @@
           "type": "desk",
           "room": "alice",
           "x": 3650,
-          "y": 6880,
+          "y": 6940,
           "width": 2200,
           "depth": 500,
           "height": 740,
@@ -9973,8 +9973,8 @@
           "id": "alice-chair",
           "type": "chair",
           "room": "alice",
-          "x": 3900,
-          "y": 6250,
+          "x": 5400,
+          "y": 6330,
           "width": 500,
           "depth": 500,
           "height": 850,
@@ -10186,18 +10186,18 @@
         },
         {
           "id": "hall-wardrobe",
-          "type": "wardrobe",
+          "type": "storage",
           "room": "entry",
-          "x": 6020,
-          "y": 200,
-          "width": 380,
-          "depth": 1900,
-          "height": 2400,
+          "x": 6060,
+          "y": 1400,
+          "width": 340,
+          "depth": 700,
+          "height": 900,
           "rotation": 0,
           "visible": true,
-          "label": "Прихожая · неглубокий встроенный шкаф",
+          "label": "Прихожая · компактная обувница 700 × 340 · высота 900",
           "front": "west",
-          "opening": "sliding",
+          "opening": "pull-out",
           "contents": [
             "верхняя одежда",
             "обувь",
@@ -10251,6 +10251,7 @@
       ],
       "pros": [
         "Две спальни расположены у окон, а кухня-гостиная остаётся единой зоной в верхней левой части квартиры.",
+        "У входа оставлена свободная зона для открывания двери и прохода с сумками; большая часть хранения находится в гардеробной.",
         "Отдельная гардеробная разгружает спальни от части шкафов и создаёт самостоятельную зону хранения.",
         "Санузел по референсу близок к 2500 × 1810 мм, поэтому его можно сопоставлять с текущей моделью без переноса кухни на другую сторону."
       ],
@@ -10265,14 +10266,25 @@
       "clearances": [
         {
           "id": "entry-aisle",
-          "label": "Между ванной и шкафом прихожей",
-          "value": 960,
+          "label": "Между стеной ванной и обувницей у входа",
+          "value": 1000,
           "unit": "мм",
           "status": "good",
-          "x": 5540,
-          "y": 1500,
+          "x": 5560,
+          "y": 1750,
           "axis": "x",
-          "length": 960
+          "length": 1000
+        },
+        {
+          "id": "entry-landing",
+          "label": "Свободный входной проём без мебели",
+          "value": 1000,
+          "unit": "мм",
+          "status": "good",
+          "x": 6075,
+          "y": 600,
+          "axis": "y",
+          "length": 1000
         },
         {
           "id": "bath-door-clear",
@@ -10341,15 +10353,26 @@
           "length": 905
         },
         {
+          "id": "adult-wardrobe-aisle",
+          "label": "Проход между шкафом и кроватью",
+          "value": 855,
+          "unit": "мм",
+          "status": "compact",
+          "x": 1500,
+          "y": 5037.5,
+          "axis": "y",
+          "length": 855
+        },
+        {
           "id": "adult-window",
           "label": "Свободное пространство до оконной стены",
-          "value": 1225,
+          "value": 985,
           "unit": "мм",
           "status": "good",
           "x": 1600,
-          "y": 7687.5,
+          "y": 7807.5,
           "axis": "y",
-          "length": 1225
+          "length": 985
         },
         {
           "id": "dressing-aisle",
@@ -10365,12 +10388,12 @@
       ],
       "routes": {
         "entry": [
-          5500,
-          800
+          6150,
+          600
         ],
         "storage": [
-          5580,
-          2050
+          5560,
+          1750
         ],
         "kitchen": [
           1400,
@@ -10401,8 +10424,8 @@
           5400
         ],
         "aliceDesk": [
-          5000,
-          6400
+          4750,
+          6520
         ],
         "bathroom": [
           3650,
@@ -10443,12 +10466,24 @@
         "dressingRail": [
           5450,
           3500
+        ],
+        "dressingShelves": [
+          5400,
+          3830
         ]
       },
       "routePairs": [
         [
           "entry",
           "kitchen"
+        ],
+        [
+          "entry",
+          "storage"
+        ],
+        [
+          "entry",
+          "sofa"
         ],
         [
           "entry",
@@ -10473,6 +10508,46 @@
         [
           "entry",
           "dressing"
+        ],
+        [
+          "adult",
+          "adultWardrobe"
+        ],
+        [
+          "alice",
+          "aliceDesk"
+        ],
+        [
+          "dressing",
+          "dressingRail"
+        ],
+        [
+          "dressing",
+          "dressingShelves"
+        ],
+        [
+          "bathroom",
+          "bathBasin"
+        ],
+        [
+          "bathroom",
+          "bathToilet"
+        ],
+        [
+          "bathroom",
+          "bathWasher"
+        ],
+        [
+          "bathroom",
+          "bathTub"
+        ],
+        [
+          "kitchen",
+          "fridge"
+        ],
+        [
+          "kitchen",
+          "dishwasher"
         ]
       ],
       "revision": "2026-10-08 · Warm Modern",
