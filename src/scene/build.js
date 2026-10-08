@@ -32,7 +32,16 @@ export function createArchitecture(geometry,layout,m,{cut=true,plan=false,walls=
  const wallGroup=new THREE.Group();wallGroup.name='WALLS';root.add(wallGroup);wallGroup.visible=walls;
  for(const o of [...geometry.walls,...layout.partitions]){
   const max=plan?100:cut?1050:geometry.ceilingHeight;const elev=o.elevation||0;if(elev>=max)continue;
-  const mesh=box(wallGroup,m.wall,o.x,o.y,o.width,o.depth,Math.min(o.height,max-elev),elev,o.id,o.rotation||0);lineBox(mesh,m.line);
+  const finish=o.transomGlass?m.glass:m.wall;
+  const mesh=box(wallGroup,finish,o.x,o.y,o.width,o.depth,Math.min(o.height,max-elev),elev,o.id,o.rotation||0);
+  if(o.transomGlass&&!plan&&!cut){
+   // Privacy-level borrowed daylight over an interior door; these are
+   // project partitions only, not openings in load-bearing fabric.
+   box(wallGroup,m.joinery,o.x,o.y,o.width,24,18,elev,'N-transom-bottom');
+   box(wallGroup,m.joinery,o.x,o.y,o.width,24,18,elev+o.height-18,'N-transom-top');
+   for(const px of [o.x,o.x+o.width-18])box(wallGroup,m.joinery,px,o.y,18,24,o.height,elev,'N-transom-jamb');
+  }
+  lineBox(mesh,m.line);
  }
 
  if(walls&&!plan){
