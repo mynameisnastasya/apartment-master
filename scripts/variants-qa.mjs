@@ -43,6 +43,18 @@ for(const layout of layouts){
     assert.equal(layout.rooms.find(r=>r.id==='alice').area,9.21,'L: do not present image estimate as modeled area');
     assert.equal(layout.rooms.find(r=>r.id==='alice').referenceArea,10.41);
     assert.ok(!layout.furniture.some(f=>f.id==='adult-dresser'),'L: keep bedroom side route free');
+    const minY=item=>Math.min(...corners(item).map(p=>p[1]));
+    const maxY=item=>Math.max(...corners(item).map(p=>p[1]));
+    const adultCloset=layout.furniture.find(f=>f.id==='adult-wardrobe');
+    const adultAisle=minY(bed)-(adultCloset.y+adultCloset.depth);
+    const adultWindow=8300-maxY(bed);
+    assert.ok(adultAisle>=850,`L: bedroom wardrobe access only ${adultAisle} mm`);
+    assert.ok(adultWindow>=850,`L: bedroom window access only ${adultWindow} mm`);
+    assert.equal(layout.clearances.find(c=>c.id==='adult-wardrobe-aisle').value,adultAisle);
+    assert.equal(layout.clearances.find(c=>c.id==='adult-window').value,adultWindow);
+    const childDesk=layout.furniture.find(f=>f.id==='alice-desk');
+    const childBedToDesk=childDesk.y-maxY(child);
+    assert.ok(childBedToDesk>=800,`L: chair route at child desk only ${childBedToDesk} mm`);
     // Unlike old tests, check the physical doorway, not just a waypoint already
     // on the safe side of a cabinet. East-wall door: x=6400, y=100..1100.
     const entry=geometry.entry,shoe=layout.furniture.find(f=>f.id==='hall-wardrobe');
