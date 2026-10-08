@@ -179,6 +179,11 @@ export function createFurniture(o,m){
   b(m.joinery,x+210,y+92,w-265,d-184,110,h-174,28);
   b(m.bronze,x+218,y+100,w-281,12,8,h-192,2);
   b(m.darkStone,x+210,y+d-86,w-258,42,26,h-122,10);
+  if(m.wall.userData.warmModern){
+   // Laminated honed-stone edge: sculptural without stealing floor area.
+   b(m.marble,x+8,y+8,w-16,d-16,22,h-24,45).name='trend-stone-peninsula-lip';
+   b(m.shadow,x+28,y+d-30,w-56,6,5,h-34,2).name='trend-peninsula-stacked-edge';
+  }
  }
  else if(o.type==='tub'){
   vessel(g,m.fixture,x,y,w,d,70,h-70,62,160);
@@ -223,6 +228,14 @@ export function createFurniture(o,m){
   for(let i=1;i<count;i++)face(m.shadow,i*step-1,e+85,2,h-130,2,-2);
   if(o.type==='wardrobe'&&o.id!=='hall-wardrobe')face(m.joinery,Math.max(14,span-34),e+110,14,h-180,7,-5);
   if(o.type==='fridge')face(m.shadow,12,e+730,(front==='east'||front==='west'?d:w)-24,3,3,-2);
+  if(o.type==='fridge'&&m.wall.userData.warmModern){
+   // Appliance is visually absorbed into the same quiet, handleless joinery
+   // as the kitchen. Nothing extends past the fridge's collision footprint.
+   const span=['east','west'].includes(front)?d:w;
+   face(m.lacquer,12,e+66,span-24,h-135,10,3).name='trend-integrated-fridge-front';
+   face(m.shadow,21,e+72,3,h-160,3,2).name='trend-fridge-shadow-reveal';
+   face(m.bronze,span-34,e+940,3,220,3,2).name='trend-fridge-finger-channel';
+  }
   if(o.id==='hall-wardrobe'&&o.type==='storage'){
    // Shallow shoe cabinet: tactile ribbed walnut door, finger pull and a
    // honed stone top. All accents remain inside its surveyed bounding box.
