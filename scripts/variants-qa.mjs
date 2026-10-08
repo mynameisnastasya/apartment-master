@@ -22,7 +22,7 @@ const overlap = (a,b) => {
   return true;
 };
 
-assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I','J','K','L','M','W4','W6']);
+assert.deepEqual(layouts.map(l=>l.id),['D','E','F','G','H','I','J','K','L','M','N','W4','W6']);
 const base=layouts[0],results=[];
 const gallery=layouts.find(l=>l.id==='W4'),study=wardrobeOptions.find(l=>l.id==='W4');
 for(const key of ['partitions','doors','furniture'])assert.deepEqual(gallery[key],study[key],'W4 3D must use the selected study geometry');
@@ -32,7 +32,7 @@ assert.equal(gallery.partitions.find(w=>w.id==='d-child-north-right').y,gallery.
 assert.equal(gallery.furniture.find(o=>o.id==='sofa').rotation,0);
 assert.equal(gallery.furniture.find(o=>o.id==='dining').wallMounted,true);
 assert.equal(gallery.clearances.find(c=>c.id==='dressing-aisle').value,900);
-assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,10,'Each architectural option must have genuinely different walls');
+assert.equal(new Set(layouts.map(l=>JSON.stringify(l.partitions))).size,11,'Each architectural option must have genuinely different walls');
 for(const layout of layouts){
   assert.deepEqual(layout.rooms.filter(r=>!['dressing','childDressing'].includes(r.id)).map(r=>r.id),base.rooms.map(r=>r.id));
   assert.equal(layout.doors.length,3+layout.rooms.filter(r=>['dressing','childDressing'].includes(r.id)).length);
