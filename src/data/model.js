@@ -1,6 +1,6 @@
-import geometry from './geometry.json';
+import geometry from './geometry.json' with {type:'json'};
 import {layouts} from './layout-variations.js';
-import project from './project.json';
+import project from './project.json' with {type:'json'};
 export {layouts};
 export {geometry,project};
 export const mm = value => value / 1000;
