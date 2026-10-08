@@ -5,6 +5,7 @@ import {dressingLayouts} from './dressing-layout.js';
 import {createPhotoLayout} from './photo-layout.js';
 import {createSecondSketchLayout} from './second-sketch-layout.js';
 import {createOptimizedLayout} from './optimized-layout.js';
+import {createWardrobeFirstLayout} from './wardrobe-first-layout.js';
 
 const move=(layout,id,changes)=>Object.assign(layout.furniture.find(o=>o.id===id),changes);
 const wall=(layout,id,changes)=>Object.assign(layout.partitions.find(o=>o.id===id),changes);
@@ -98,6 +99,7 @@ layouts.push(...dressingLayouts(base));
 layouts.push(createPhotoLayout(base));
 layouts.push(createSecondSketchLayout(base));
 layouts.push(createOptimizedLayout(base));
+layouts.push(createWardrobeFirstLayout(base));
 const gallery=createWardrobeStudies(base,layouts.find(l=>l.id==='I')).find(l=>l.id==='W4');
 Object.assign(gallery,{
  subtitle:'4,76 м² · диван к кухне · барная стойка',
