@@ -43,4 +43,33 @@ const mirrorRender=createFurniture(mirror,m);
 const face=mirrorRender.getObjectByName('mirror-face');
 assert.ok(face?.isMesh&&face.material===m.mirror,'Entry mirror must be reflective, not see-through glass');
 assert.ok(face.geometry.parameters.width>.5&&face.geometry.parameters.height>1.5,'Mirror glass too small');
+// Trend-led decorations must not repeat the old mistake: a beautiful mesh
+// visually blocking a room while staying invisible to 2D circulation tests.
+const dining=bed('dining'),sculpture=bounds('trend-sculptural-pendant');
+assert.ok(sculpture.min.y>=2.0&&sculpture.max.y<=2.7,'Sculptural pendant must clear head height and ceiling');
+assert.ok(sculpture.min.x>=dining.x/1000&&sculpture.max.x<=(dining.x+dining.width)/1000,'Pendant must stay over the peninsula');
+assert.ok(sculpture.min.z>=dining.y/1000&&sculpture.max.z<=(dining.y+dining.depth)/1000,'Pendant must stay inside peninsula plan');
+assert.ok(decor.getObjectByName('trend-pendant-warm-pool')?.isRectAreaLight,'Missing pendant light layer');
+const kitchen=layout.furniture.find(o=>o.id==='fridge');
+const fridge=createFurniture(kitchen,m),integrated=fridge.getObjectByName('trend-integrated-fridge-front');
+assert.ok(integrated,'Handleless refrigerator front missing');
+const frontBounds=new THREE.Box3().setFromObject(integrated);
+assert.ok(frontBounds.min.x>=kitchen.x/1000-.001&&frontBounds.max.x<=(kitchen.x+kitchen.width)/1000+.001,'Fridge front extends outside appliance x footprint');
+assert.ok(frontBounds.min.z>=kitchen.y/1000-.001&&frontBounds.max.z<=(kitchen.y+kitchen.depth)/1000+.001,'Fridge front extends into appliance clearance');
+const bar=createFurniture(dining,{...m,darkStone:finish});
+assert.ok(bar.getObjectByName('trend-stone-peninsula-lip'),'Sculpted peninsula stone top missing');
+const kitchenFronts=[];decor.traverse(o=>{if(o.name==='trend-concealed-kitchen-front')kitchenFronts.push(o)});
+assert.equal(kitchenFronts.length,2,'Kitchen joinery panels should form one quiet concealed line');
+for(const panel of kitchenFronts){
+ const p=new THREE.Box3().setFromObject(panel);
+ assert.ok(p.max.z<.35&&p.min.y>1.7&&p.max.y<2.5,'Concealed kitchen doors must live on original overhead kitchen face');
+}
+const art=[];decor.traverse(o=>{if(o.name==='trend-entry-ceramic-relief')art.push(o)});
+assert.equal(art.length,3,'Expect a restrained trio of wall relief pieces');
+for(const piece of art){
+ const p=new THREE.Box3().setFromObject(piece);
+ assert.ok(p.min.x>=6.34&&p.max.x<=6.4,'Entry art must not block approach to exterior wall');
+ assert.ok(p.min.z>1.1&&p.min.y>.9,'Entry art must clear entrance aperture and low shoe cabinet');
+}
+console.log('L trend QA: integrated refrigerator, sculptural pendant, wall art and overhead storage remain out of circulation (passed)');
 console.log('L visual + furniture QA: mirrored entry, shoe cabinet envelope, bed-aligned panels, clear shelf (passed)');
