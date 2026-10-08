@@ -21,6 +21,7 @@ export function createPhotoLayout(base){
   referenceDerived:true,
   pros:[
    'Две спальни расположены у окон, а кухня-гостиная остаётся единой зоной в верхней левой части квартиры.',
+   'У входа оставлена свободная зона для открывания двери и прохода с сумками; большая часть хранения находится в гардеробной.',
    'Отдельная гардеробная разгружает спальни от части шкафов и создаёт самостоятельную зону хранения.',
    'Санузел по референсу близок к 2500 × 1810 мм, поэтому его можно сопоставлять с текущей моделью без переноса кухни на другую сторону.'
   ],
@@ -85,14 +86,17 @@ export function createPhotoLayout(base){
  move('sofa',{x:150,y:2850,width:2400,depth:850,rotation:0,front:'north',label:'Диван 2400 × 850 · по референсу'});
  l.furniture=l.furniture.filter(o=>!['media','tv','alice-wardrobe','adult-dresser','adult-nightstand','adult-nightstand-2','alice-toys'].includes(o.id));
 
- move('adult-bed',{x:1080,y:5050,width:1850,depth:2200,rotation:90,mattress:[1600,2000],front:'east',label:'Двуспальная кровать · матрас 1600 × 2000 · изголовье к правой стене'});
+ move('adult-bed',{x:1080,y:5290,width:1850,depth:2200,rotation:90,mattress:[1600,2000],front:'east',label:'Двуспальная кровать · матрас 1600 × 2000 · изголовье к правой стене'});
  move('adult-wardrobe',{x:0,y:4060,width:2200,depth:550,height:2400,rotation:0,front:'south',label:'Шкаф / хранение 2200 × 550'});
 
- move('alice-bed',{x:4750,y:4700,width:1300,depth:1900,rotation:90,mattress:[1200,1800],front:'east',label:'Односпальная / диван-кровать · спальное место 1200 × 1800 · изголовье к правой стене'});
- move('alice-desk',{x:3650,y:6880,width:2200,depth:500,height:740,rotation:0,front:'north',label:'Стол / консоль 2200 × 500 · у окна'});
- move('alice-chair',{x:3900,y:6250,width:500,depth:500,rotation:0,front:'south'});
+ move('alice-bed',{x:4750,y:4490,width:1300,depth:1900,rotation:90,mattress:[1200,1800],front:'east',label:'Односпальная / диван-кровать · спальное место 1200 × 1800 · изголовье к правой стене'});
+ move('alice-desk',{x:3650,y:6940,width:2200,depth:500,height:740,rotation:0,front:'north',label:'Стол / консоль 2200 × 500 · у окна'});
+ move('alice-chair',{x:5400,y:6330,width:500,depth:500,rotation:0,front:'south'});
 
- move('hall-wardrobe',{x:6020,y:200,width:380,depth:1900,height:2400,rotation:0,front:'west',label:'Прихожая · неглубокий встроенный шкаф'});
+ // The front door is on the east wall, y=100..1100. A tall closet here
+ // previously blocked the entire threshold (x=6020..6400, y=200..2100).
+ // Reserve a clear entry landing; coats go to the separate dressing room.
+ move('hall-wardrobe',{type:'storage',x:6060,y:1400,width:340,depth:700,height:900,rotation:0,front:'west',opening:'pull-out',label:'Прихожая · компактная обувница 700 × 340 · высота 900'});
  move('mirror',{x:5200,y:250,width:25,depth:750,height:1800,rotation:0,front:'east'});
 
  l.furniture.push(
@@ -101,8 +105,8 @@ export function createPhotoLayout(base){
  );
 
  l.routes={
-  entry:[5500,800],
-  storage:[5580,2050],
+  entry:[6150,600],
+  storage:[5560,1750],
   kitchen:[1400,1100],
   bar:[1700,2350],
   adult:[2820,4450],
@@ -110,7 +114,7 @@ export function createPhotoLayout(base){
   adultBed:[525,6200],
   adultWardrobe:[2600,4660],
   aliceBed:[3975,5400],
-  aliceDesk:[5000,6400],
+  aliceDesk:[4750,6520],
   bathroom:[3650,1350],
   fridge:[1940,1050],
   dishwasher:[950,1500],
@@ -120,27 +124,42 @@ export function createPhotoLayout(base){
   bathWasher:[3430,950],
   bathTub:[3900,1420],
   dressing:[5200,3050],
-  dressingRail:[5450,3500]
+  dressingRail:[5450,3500],
+  dressingShelves:[5400,3830]
  };
  l.routePairs=[
   ['entry','kitchen'],
+  ['entry','storage'],
+  ['entry','sofa'],
   ['entry','adult'],
   ['adult','adultBed'],
   ['entry','alice'],
   ['alice','aliceBed'],
   ['entry','bathroom'],
-  ['entry','dressing']
+  ['entry','dressing'],
+  ['adult','adultWardrobe'],
+  ['alice','aliceDesk'],
+  ['dressing','dressingRail'],
+  ['dressing','dressingShelves'],
+  ['bathroom','bathBasin'],
+  ['bathroom','bathToilet'],
+  ['bathroom','bathWasher'],
+  ['bathroom','bathTub'],
+  ['kitchen','fridge'],
+  ['kitchen','dishwasher']
  ];
 
  l.clearances=[
-  {id:'entry-aisle',label:'Между ванной и шкафом прихожей',value:960,unit:'мм',status:'good',x:5540,y:1500,axis:'x',length:960},
+  {id:'entry-aisle',label:'Между стеной ванной и обувницей у входа',value:1000,unit:'мм',status:'good',x:5560,y:1750,axis:'x',length:1000},
+  {id:'entry-landing',label:'Свободный входной проём без мебели',value:1000,unit:'мм',status:'good',x:6075,y:600,axis:'y',length:1000},
   {id:'bath-door-clear',label:'Проём ванной до коробки',value:850,unit:'мм',status:'good',x:3515,y:1870,axis:'x',length:850},
   {id:'adult-door-clear',label:'Проём спальни до коробки',value:850,unit:'мм',status:'good',x:2750,y:3940,axis:'x',length:850},
   {id:'child-door-clear',label:'Проём второй спальни до коробки',value:850,unit:'мм',status:'good',x:3925,y:4160,axis:'x',length:850},
   {id:'dressing-door',label:'Проём гардеробной до коробки',value:850,unit:'мм',status:'good',x:4925,y:2520,axis:'x',length:850},
   {id:'hall-neck',label:'Перешеек между ванной и гардеробной · модель',value:680,unit:'мм',status:'compact',x:4700,y:2270,axis:'y',length:680},
   {id:'adult-foot',label:'Основной боковой проход вдоль кровати',value:905,unit:'мм',status:'good',x:452.5,y:6200,axis:'x',length:905},
-  {id:'adult-window',label:'Свободное пространство до оконной стены',value:1225,unit:'мм',status:'good',x:1600,y:7687.5,axis:'y',length:1225},
+  {id:'adult-wardrobe-aisle',label:'Проход между шкафом и кроватью',value:855,unit:'мм',status:'compact',x:1500,y:5037.5,axis:'y',length:855},
+  {id:'adult-window',label:'Свободное пространство до оконной стены',value:985,unit:'мм',status:'good',x:1600,y:7807.5,axis:'y',length:985},
   {id:'dressing-aisle',label:'Проход перед хранением',value:830,unit:'мм',status:'compact',x:5385,y:3500,axis:'x',length:830}
  ];
 

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import geometry from '../src/data/geometry.json' with {type:'json'};
 import {wardrobeOptions} from '../src/data/wardrobe-options.js';
 import {layouts} from '../src/data/layout-variations.js';
-import {colliders,findRoute,insidePolygon} from '../src/interaction/collision.js';
+import {colliders,findRoute,insidePolygon,canStand} from '../src/interaction/collision.js';
 import {openingLeaf,operatorPoint} from '../src/interaction/appliances.js';
 
 const corners = o => {
@@ -43,6 +43,41 @@ for(const layout of layouts){
     assert.equal(layout.rooms.find(r=>r.id==='alice').area,9.21,'L: do not present image estimate as modeled area');
     assert.equal(layout.rooms.find(r=>r.id==='alice').referenceArea,10.41);
     assert.ok(!layout.furniture.some(f=>f.id==='adult-dresser'),'L: keep bedroom side route free');
+    const minY=item=>Math.min(...corners(item).map(p=>p[1]));
+    const maxY=item=>Math.max(...corners(item).map(p=>p[1]));
+    const adultCloset=layout.furniture.find(f=>f.id==='adult-wardrobe');
+    const adultAisle=minY(bed)-(adultCloset.y+adultCloset.depth);
+    const adultWindow=8300-maxY(bed);
+    assert.ok(adultAisle>=850,`L: bedroom wardrobe access only ${adultAisle} mm`);
+    assert.ok(adultWindow>=850,`L: bedroom window access only ${adultWindow} mm`);
+    assert.equal(layout.clearances.find(c=>c.id==='adult-wardrobe-aisle').value,adultAisle);
+    assert.equal(layout.clearances.find(c=>c.id==='adult-window').value,adultWindow);
+    const childDesk=layout.furniture.find(f=>f.id==='alice-desk');
+    const childBedToDesk=childDesk.y-maxY(child);
+    assert.ok(childBedToDesk>=800,`L: chair route at child desk only ${childBedToDesk} mm`);
+    // Unlike old tests, check the physical doorway, not just a waypoint already
+    // on the safe side of a cabinet. East-wall door: x=6400, y=100..1100.
+    const entry=geometry.entry,shoe=layout.furniture.find(f=>f.id==='hall-wardrobe');
+    assert.equal(entry.axis,'y');
+    assert.equal(entry.x,6400);
+    assert.equal(shoe.type,'storage','L: no floor-to-ceiling closet immediately behind the front door');
+    assert.ok(shoe.height<=1000&&shoe.width<=400&&shoe.y>=entry.y+entry.width+250,'L: low shoe cabinet must stay beyond the entry landing');
+    const bathEast=layout.partitions.find(w=>w.id==='d-bath-east');
+    const hallWidth=shoe.x-(bathEast.x+bathEast.width);
+    assert.ok(hallWidth>=950,`L: entrance storage reduces corridor to ${hallWidth} mm`);
+    assert.equal(layout.clearances.find(c=>c.id==='entry-aisle').value,hallWidth,'L: displayed entry aisle must match model geometry');
+    const landing={id:'entry-landing',x:5700,y:200,width:700,depth:900,height:2100,elevation:0,rotation:0};
+    const doorwayClashes=layout.furniture.filter(item=>overlap(item,landing));
+    assert.deepEqual(doorwayClashes.map(f=>f.id),[],'L: entrance landing must be empty of all furniture');
+    const physicalThreshold=[6150,600],actualObstacles=colliders(geometry,layout);
+    assert.ok(canStand(...physicalThreshold,geometry,actualObstacles,250),'L: avatar cannot enter through the front doorway');
+    for(const target of ['kitchen','storage','sofa','adult','alice','bathroom','dressing']){
+      const route=findRoute(physicalThreshold,layout.routes[target],geometry,actualObstacles,{radius:250});
+      assert.ok(route.ok&&route.endpointSnapMm.every(v=>v<=150),`L: front door → ${target} blocked, even though interior paths may work`);
+    }
+    for(const [id,room] of [['adult-bed','adult'],['adult-wardrobe','adult'],['alice-bed','alice'],['alice-desk','alice'],['l-dressing-rail','dressing'],['l-dressing-shelves','dressing']]){
+      assert.ok(layout.furniture.some(item=>item.id===id&&item.room===room),`L: missing ${id} in ${room}`);
+    }
   }
   if(layout.id==='W6'){
     const desk=layout.furniture.find(o=>o.id==='alice-desk');
