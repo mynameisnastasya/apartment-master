@@ -70,7 +70,8 @@ try{
  assert.equal(await page.evaluate(()=>window.apartment.layout.id),'F');
  await page.getByRole('button',{name:'План',exact:true}).click();await page.screenshot({path:'browser-reference-artifacts/plan-F.png'});
  await page.goto('http://127.0.0.1:4173/model.html?variant=L');await page.waitForFunction(()=>window.apartment?.ready);
- assert.ok(await page.evaluate(()=>{const l=window.apartment.layout;return l.id==='L'&&l.furniture.find(f=>f.id==='adult-bed').rotation===90&&l.rooms.find(r=>r.id==='alice').area===9.21;}));
+ assert.ok(await page.evaluate(()=>{const a=window.apartment,l=a.layout;return l.id==='L'&&a.state.style==='warm'&&l.furniture.find(f=>f.id==='adult-bed').rotation===90&&l.rooms.find(r=>r.id==='alice').area===9.21;}));
+ await page.locator('[data-room="living"]').click();assert.ok(await page.evaluate(()=>window.apartment.root.getObjectByName('warm-oak-fluting')!==undefined));await saveRender('browser-reference-artifacts/soft-modern-L-living.png');
  await page.getByRole('button',{name:'План',exact:true}).click();await page.screenshot({path:'browser-reference-artifacts/plan-L.png'});
  await page.locator('[data-variant="D"]').click();
  await page.getByRole('button',{name:'Прогулка',exact:true}).click();

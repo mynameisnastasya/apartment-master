@@ -17,7 +17,7 @@ export function createPhotoLayout(base){
   name:'По референсу',
   subtitle:'По фото: гостиная 18,85 · ванная 4,53 · гардеробная 3,04 м² · эскиз',
   recommended:false,
-  revision:'2026-10-08',
+  revision:'2026-10-08 · Warm Modern',
   referenceDerived:true,
   pros:[
    'Две спальни расположены у окон, а кухня-гостиная остаётся единой зоной в верхней левой части квартиры.',
@@ -83,11 +83,10 @@ export function createPhotoLayout(base){
  move('basin',{x:2460,y:0,width:600,depth:400,rotation:0,front:'south'});
 
  move('sofa',{x:150,y:2850,width:2400,depth:850,rotation:0,front:'north',label:'Диван 2400 × 850 · по референсу'});
- l.furniture=l.furniture.filter(o=>!['media','tv','alice-wardrobe','adult-dresser','adult-nightstand-2','alice-toys'].includes(o.id));
+ l.furniture=l.furniture.filter(o=>!['media','tv','alice-wardrobe','adult-dresser','adult-nightstand','adult-nightstand-2','alice-toys'].includes(o.id));
 
- move('adult-bed',{x:850,y:5050,width:1850,depth:2200,rotation:90,mattress:[1600,2000],front:'east',label:'Двуспальная кровать · матрас 1600 × 2000 · изголовье к правой стене'});
+ move('adult-bed',{x:1080,y:5050,width:1850,depth:2200,rotation:90,mattress:[1600,2000],front:'east',label:'Двуспальная кровать · матрас 1600 × 2000 · изголовье к правой стене'});
  move('adult-wardrobe',{x:0,y:4060,width:2200,depth:550,height:2400,rotation:0,front:'south',label:'Шкаф / хранение 2200 × 550'});
- move('adult-nightstand',{x:2900,y:5480,width:250,depth:320,height:460,rotation:0,front:'west',label:'Компактная прикроватная полка 250 × 320'});
 
  move('alice-bed',{x:4750,y:4700,width:1300,depth:1900,rotation:90,mattress:[1200,1800],front:'east',label:'Односпальная / диван-кровать · спальное место 1200 × 1800 · изголовье к правой стене'});
  move('alice-desk',{x:3650,y:6880,width:2200,depth:500,height:740,rotation:0,front:'north',label:'Стол / консоль 2200 × 500 · у окна'});
@@ -108,7 +107,7 @@ export function createPhotoLayout(base){
   bar:[1700,2350],
   adult:[2820,4450],
   alice:[3900,4550],
-  adultBed:[375,6200],
+  adultBed:[525,6200],
   adultWardrobe:[2600,4660],
   aliceBed:[3975,5400],
   aliceDesk:[5000,6400],
@@ -140,7 +139,7 @@ export function createPhotoLayout(base){
   {id:'child-door-clear',label:'Проём второй спальни до коробки',value:850,unit:'мм',status:'good',x:3925,y:4160,axis:'x',length:850},
   {id:'dressing-door',label:'Проём гардеробной до коробки',value:850,unit:'мм',status:'good',x:4925,y:2520,axis:'x',length:850},
   {id:'hall-neck',label:'Перешеек между ванной и гардеробной · модель',value:680,unit:'мм',status:'compact',x:4700,y:2270,axis:'y',length:680},
-  {id:'adult-foot',label:'Основной боковой проход вдоль кровати',value:675,unit:'мм',status:'compact',x:337.5,y:6200,axis:'x',length:675},
+  {id:'adult-foot',label:'Основной боковой проход вдоль кровати',value:905,unit:'мм',status:'good',x:452.5,y:6200,axis:'x',length:905},
   {id:'adult-window',label:'Свободное пространство до оконной стены',value:1225,unit:'мм',status:'good',x:1600,y:7687.5,axis:'y',length:1225},
   {id:'dressing-aisle',label:'Проход перед хранением',value:830,unit:'мм',status:'compact',x:5385,y:3500,axis:'x',length:830}
  ];

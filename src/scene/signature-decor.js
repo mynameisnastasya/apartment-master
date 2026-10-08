@@ -34,7 +34,33 @@ function bookStack(g,m,x,y,e){
  for(let i=0;i<3;i++)box(g,mats[i],x+i*4,y+i*3,150-i*8,105-i*6,18,e+i*19,3);
 }
 
+// Low-profile architectural details designed for the L photo-reference plan.
+// Every detail is outside bed/door circulation; this is visual furniture, not
+// another partition or a surrogate for measured built-in millwork.
+function createSoftModernDecor(layout,m){
+ const g=new THREE.Group();g.name='SOFT_MODERN_DETAILS';
+ // Fine oak battens behind the sofa; they catch oblique afternoon light.
+ for(let i=0;i<17;i++)box(g,m.joinery,20,2830+i*48,32,24,1120,1040,7).name='warm-oak-fluting';
+ // One slender bronze line follows the upper edge of the wainscot.
+ box(g,m.bronze,52,2820,7,830,8,2158,2);
+ box(g,m.lamp,51,2868,8,734,11,2125,3).name='warm-indirect-wall-light';
+ // Full-height walnut panel behind the rotated adult bed's headboard,
+ // aligned with the right partition, with a linen-light slit.
+ box(g,m.joinery,3121,5230,45,1660,1650,680,8).name='adult-walnut-headboard-panel';
+ box(g,m.bronze,3106,5280,12,1550,9,2175,2);
+ box(g,m.lamp,3102,5290,8,1530,8,2160,2).name='adult-headboard-light';
+ // A second oak datum gives the compact room the same language.
+ box(g,m.joinery,6361,4750,30,1500,1480,620,8).name='alice-oak-headboard-panel';
+ box(g,m.lamp,6352,4810,8,1380,9,2070,2);
+ // Slim vanity-like shelf in the large bedroom, raised above the floor.
+ box(g,m.marble,3090,7240,66,520,35,790,10).name='floating-stone-shelf';
+ // Travertine towel recess; works with either warm daylight or evening light.
+ box(g,m.marble,4923,850,13,530,1150,900,3).name='bath-travertine-inset';
+ return g;
+}
+
 export function createSignatureDecor(layout,m){
+ if(m.wall.userData.warmModern&&layout.id==='L')return createSoftModernDecor(layout,m);
  if(m.wall.userData.organic||layout.id==='W4'||layout.familyDesign)return createOrganicDecor(layout,m);
  const g=new THREE.Group();g.name='EDITORIAL_ARCHITECTURE';
  const byId=id=>layout.furniture.find(o=>o.id===id);

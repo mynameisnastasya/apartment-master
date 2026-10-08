@@ -79,6 +79,11 @@ export function createFurniture(o,m){
   // A padded headboard makes the sleeping direction legible in every camera,
   // including the rotated L reference beds. It stays within the bed footprint.
   b(m.upholstery,x+22,y+12,w-44,90,910,0,24).name='bed-upholstered-headboard';
+  if(m.wall.userData.warmModern){
+   // Narrow channels create readable, textile-padded relief in grazing light.
+   const count=Math.max(7,Math.round(w/200)),pitch=(w-70)/count;
+   for(let i=0;i<count;i++)b(m.upholstery,x+36+i*pitch,y+4,pitch-9,38,830,45,14).name='soft-modern-headboard-channel';
+  }
   b(m.joinery,x+34,y+98,w-68,18,135,0,8);
   b(m.shadow,x+50,y+70,w-100,d-120,68,48,22);
   b(m.upholstery,x+18,y+26,w-36,d-52,165,102,32);
