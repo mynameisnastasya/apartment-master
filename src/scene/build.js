@@ -26,7 +26,7 @@ export function createArchitecture(geometry,layout,m,{cut=true,plan=false,walls=
   const bathSouth=layout.partitions.find(o=>o.id==='d-bath-south-left').y;
   const bathFloor=box(root,m.bathFloor,2440,0,bathEast-2440,bathSouth,10,1,'bath-floor');bathFloor.castShadow=false;
   const sofa=layout.furniture.find(o=>o.id==='sofa');
-  if(sofa){const livingRug=['L','M'].includes(layout.id)?softBox(root,m.rug,120,2680,2420,1010,8,3,120):layout.familyDesign?softBox(root,m.rug,sofa.x+30,sofa.y-600,sofa.width-60,1400,8,3,120):layout.id==='W4'?softBox(root,m.rug,100,2600,1960,1060,8,3,120):softBox(root,m.rug,360,sofa.y+70,1910,1130,8,3,120);livingRug.name='living-rug';livingRug.castShadow=false;}
+  if(sofa){const livingRug=['L','M','N'].includes(layout.id)?softBox(root,m.rug,120,2680,2420,1010,8,3,120):layout.familyDesign?softBox(root,m.rug,sofa.x+30,sofa.y-600,sofa.width-60,1400,8,3,120):layout.id==='W4'?softBox(root,m.rug,100,2600,1960,1060,8,3,120):softBox(root,m.rug,360,sofa.y+70,1910,1130,8,3,120);livingRug.name='living-rug';livingRug.castShadow=false;}
  }
 
  const wallGroup=new THREE.Group();wallGroup.name='WALLS';root.add(wallGroup);wallGroup.visible=walls;
