@@ -1,3 +1,5 @@
+> **Новая планировка и розетки · 09.10.2026:** [открыть схему с мебелью и 48 точками электрики](docs/plan-2026-10-09/index.html) · [ведомость и важные ограничения](docs/plan-2026-10-09/README.md). Перерисовано по скриншоту; предварительное предложение, не рабочий ЭОМ.
+
 ## Вариант O · гардеробная Boutique (новая концепция)
 
 [**Открыть O в 3D**](https://mynameisnastasya.github.io/apartment-master/model.html?variant=O&style=warm&room=dressing) · [**План O**](https://mynameisnastasya.github.io/apartment-master/views/O-floor-plan.svg) · [Сравнить с N](https://mynameisnastasya.github.io/apartment-master/model.html?variant=N&style=warm&room=dressing)
