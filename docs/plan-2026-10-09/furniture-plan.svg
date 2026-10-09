@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1195" role="img" aria-label="Планировка квартиры с мебелью — реконструкция"><g font-family="Arial,Helvetica,sans-serif"><defs><pattern id="grain" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M0 7L7 0" stroke="#eee8de" stroke-width=".6"/></pattern><filter id="soft"><feDropShadow dx="0" dy="2" stdDeviation="5" flood-opacity=".09"/></filter></defs>
+<rect width="1200" height="1195" fill="#f9f7f3"/><text x="56" y="43" font-size="27" font-weight="750" fill="#243033">КВАРТИРА · ПЛАН С МЕБЕЛЬЮ</text><text x="56" y="68" font-size="14" fill="#747a77">Реконструкция по присланной схеме · 09.10.2026 · размеры уточняются обмером</text>
+<path d="M155 106 H862 V955 H534 V1027 H155 Z" fill="url(#grain)" stroke="#384548" stroke-width="14" stroke-linejoin="round"/>
+<path d="M432 146V353H707V146" fill="#eff4f3" stroke="#66716f" stroke-width="9"/>
+<path d="M433 357H708" stroke="#677273" stroke-width="6"/>
+<path d="M630 451 H837 V624 H630 Z" fill="#f2efe5" stroke="#64706d" stroke-width="8"/>
+<path d="M180 629 H496 V1019 H180 Z" fill="#f3f0ea" stroke="#737777" stroke-width="7"/>
+<path d="M530 629 H839 V946 H530 Z" fill="#f1f4ef" stroke="#737777" stroke-width="7"/>
+<path d="M496 631 V815" stroke="#737777" stroke-width="7"/>
+<path d="M528 630 H621" stroke="#737777" stroke-width="6"/>
+<path d="M650 622 H709" stroke="#737777" stroke-width="6"/>
+<path d="M840 166 V231" stroke="#f9f7f3" stroke-width="20"/><path d="M843 169 Q912 180 906 249" fill="none" stroke="#8c918b" stroke-width="2"/><path d="M840 168 L902 219" stroke="#8c918b" stroke-width="2"/>
+<path d="M429 343 Q501 348 500 419" stroke="#96a0a0" stroke-width="2" fill="none"/>
+<path d="M496 630 Q496 685 440 688" stroke="#96a0a0" stroke-width="2" fill="none"/>
+<path d="M530 629 Q587 635 587 683" stroke="#96a0a0" stroke-width="2" fill="none"/>
+<rect x="224" y="154" width="196" height="46" rx="4" fill="#be986e" stroke="#827763" stroke-width="2"/><rect x="232" y="159" width="48" height="36" rx="4" fill="#d2c4ad"/><rect x="243" y="165" width="28" height="26" rx="3" fill="#8d9a99"/><rect x="303" y="154" width="85" height="42" fill="#d4b18b"/><rect x="392" y="156" width="23" height="38" fill="#9e9d99"/>
+<rect x="180" y="438" width="224" height="102" rx="15" fill="#b9b9b4" stroke="#808783" stroke-width="3"/><path d="M185 473 H399M245 438 V540M327 438 V540" fill="none" stroke="#dedfda" stroke-width="3"/>
+<ellipse cx="277" cy="370" rx="56" ry="41" fill="#343639"/><ellipse cx="212" cy="370" rx="24" ry="42" fill="#c4b4aa" stroke="#998a84"/>
+<rect x="468" y="154" width="215" height="190" rx="2" fill="#e5e9e8"/><rect x="616" y="163" width="64" height="166" rx="27" fill="#f5f6f4" stroke="#afb7ba" stroke-width="3"/><ellipse cx="507" cy="184" rx="19" ry="16" fill="#fff" stroke="#b8c6c4"/><rect x="469" y="229" width="49" height="66" rx="5" fill="#d9dddb"/><circle cx="490" cy="262" r="13" fill="none" stroke="#a3adaa" stroke-width="3"/>
+<rect x="642" y="458" width="179" height="156" rx="3" fill="#e5e0d3"/><path d="M653 474 H808 M653 498 H808 M653 540 H808 M653 572 H808" stroke="#a29b8b" stroke-width="5"/>
+<rect x="201" y="675" width="273" height="263" rx="12" fill="#b5b0a7" stroke="#898982" stroke-width="3"/><rect x="235" y="680" width="230" height="253" rx="9" fill="#d1c8c1"/><rect x="236" y="701" width="50" height="93" rx="11" fill="#f0ebe6"/><rect x="236" y="806" width="50" height="93" rx="11" fill="#eee7e1"/><path d="M290 683 V931" stroke="#b5aaa2" stroke-width="2"/>
+<rect x="596" y="704" width="237" height="177" rx="13" fill="#c7c3bd" stroke="#858983" stroke-width="3"/><rect x="607" y="717" width="213" height="148" rx="7" fill="#ddd8d4"/><rect x="777" y="725" width="38" height="57" rx="8" fill="#f5f4f0"/><rect x="777" y="797" width="38" height="57" rx="8" fill="#d7d1cd"/>
+<rect x="535" y="891" width="293" height="43" fill="#9c806b" rx="3"/><rect x="551" y="899" width="264" height="21" fill="#af9380"/><rect x="189" y="1018" width="300" height="6" fill="#a2c1c6"/><rect x="570" y="944" width="245" height="6" fill="#a2c1c6"/>
+<g font-family="Arial,sans-serif" fill="#293437" font-weight="700" text-anchor="middle">
+<text x="355" y="283" font-size="19">КУХНЯ</text><text x="462" y="419" font-size="20">ГОСТИНАЯ · 19,24 м²</text>
+<text x="558" y="247" font-size="17">САНУЗЕЛ</text><text x="558" y="271" font-size="16">4,53 м²</text>
+<text x="745" y="375" font-size="16">ПРИХОЖАЯ</text><text x="741" y="557" font-size="16">ГАРДЕРОБ</text><text x="742" y="580" font-size="15">2,85 м²</text>
+<text x="350" y="966" font-size="18">СПАЛЬНЯ · 13,10 м²</text><text x="686" y="694" font-size="16">ВТОРАЯ · 8,84 м²</text></g><rect x="887" y="117" width="275" height="245" rx="12" fill="#ffffff" stroke="#d9dcd8"/><text x="909" y="152" font-size="20" font-weight="700" fill="#283436">Основа проекта</text><text x="909" y="186" font-size="15" fill="#54615d">19,24 м² · кухня-гостиная</text><text x="909" y="216" font-size="15" fill="#54615d">13,10 м² · спальня</text><text x="909" y="246" font-size="15" fill="#54615d">8,84 м² · вторая комната</text><text x="909" y="276" font-size="15" fill="#54615d">4,53 м² · санузел</text><text x="909" y="306" font-size="15" fill="#54615d">2,85 м² · гардероб</text><text x="909" y="339" font-size="12" fill="#a34d44">Эскиз, не обмерный план</text><text x="56" y="1154" font-size="14" fill="#5e6864">Источник: присланный план меблировки от 09.10.2026. Условная перерисовка; проверять по чертежам и на объекте.</text></g></svg>
