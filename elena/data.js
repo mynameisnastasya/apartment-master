@@ -38,7 +38,7 @@ export const walls=[
  {id:'balreturn',a:[2.76,7.76],b:[2.76,8.55],t:.18,kind:'fixed'}
 ];
 export const openings=[{name:'Вход',a:[6.17,2.75],b:[6.17,3.65],type:'door'},{name:'Санузел',a:[.83,1.95],b:[1.53,1.95],type:'door'},{name:'Комната',a:[2.25,2.6],b:[3.08,2.6],type:'door'},{name:'Кухня',a:[4.15,4.59],b:[5,4.59],type:'door'},{name:'Существующий проход',a:[.88,7.64],b:[2.1,7.64],type:'passage'},{name:'Окно кухни',a:[4.15,8.55],b:[5.55,8.55],type:'window'},{name:'Остекление балкона',a:[.2,9.59],b:[2.56,9.59],type:'window'}];
-export const item=(id,type,name,x,y,w,d,h=.8)=>({id,type,name,x,y,w,d,h});
+export const item=(id,type,name,x,y,w,d,h=.8)=>({id,type,name,x,y,w,d,h,front:x<1?'east':'west'});
 const common=[item('bath','bath','Ванна 170 × 70',.02,.05,1.64,.7,.55),item('wc','toilet','Унитаз',.17,1.15,.43,.65,.43),item('sinkbath','sink','Раковина',1.1,1.1,.5,.45,.85),item('kitchen','kitchen','Кухня вдоль стены · 285 см',5.52,4.88,.6,2.85,.9),item('fridge','fridge','Холодильник 60 × 60',5.52,7.8,.6,.6,2.0),item('hallward','wardrobe','Шкаф в прихожей · 150 × 60',2.72,.12,1.5,.6,2.4),item('laundry','washer','Стиральная машина в нише · подводы уточнить',1.89,.1,.6,.6,.85),item('shoe','cabinet','Обувница 100 × 30',5,2.49,1,.3,.55)];
 const bdesk=item('baldesk','desk','Стол на тёплом балконе · 140 × 55',.18,8.96,1.4,.55,.75);
 const dining=[item('table','table','Обеденный стол 100 × 60',4.02,6.15,1,.6,.75),item('chair1','chair','Стул',4.25,5.62,.46,.46,.8),item('chair2','chair','Стул',4.25,6.9,.46,.46,.8)];
