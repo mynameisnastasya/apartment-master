@@ -1,4 +1,5 @@
 import {chromium} from 'playwright';
+import {variants} from './data.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {spawn} from 'node:child_process';
@@ -13,7 +14,7 @@ try{
  assert.equal(await page.locator('.variant').count(),8);
  for(const id of ['1','2','3','4','5','6','7','8']){
   await page.locator(`.variant[data-id="${id}"]`).click();assert.equal((await page.evaluate(()=>elenaDebug.getState())).variant,id);assert.match(page.url(),new RegExp('variant='+id));
-  assert((await page.evaluate(()=>elenaDebug.getState())).meshCount>100);
+  assert.deepEqual((await page.evaluate(()=>elenaDebug.getState())).renderedItems.sort(),variants.find(v=>v.id===id).furniture.map(f=>f.id).sort(),`All furniture must render in variant ${id}`);
   await page.waitForTimeout(220);await page.locator('.viewer-panel').screenshot({path:`${out}/variant-${id}-3d.png`});
   await page.locator('#view2d').click();assert(await page.locator('#plan svg').isVisible());assert((await page.locator('#plan [data-item]').count())>=16);
   if(['2','6','7','8'].includes(id)){await page.locator('#ergonomics').check();assert((await page.evaluate(()=>elenaDebug.getState())).ergonomics);assert((await page.locator('#plan .ergo-zone').count())>=10);assert.equal(await page.locator('.comfort-metric').count(),3);await page.locator('.viewer-panel').screenshot({path:`${out}/variant-${id}-ergonomics.png`});await page.locator('#view3d').click();await page.locator('.viewer-panel').screenshot({path:`${out}/variant-${id}-ergonomics-3d.png`});await page.locator('#view2d').click();await page.locator('#ergonomics').uncheck()}else{assert(await page.locator('#ergonomics').isDisabled())}

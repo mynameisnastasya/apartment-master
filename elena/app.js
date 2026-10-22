@@ -61,4 +61,4 @@ $('view3d').onclick=()=>setView('3d');$('view2d').onclick=()=>setView('2d');$('c
 $('save-plan').onclick=()=>{const url=URL.createObjectURL(new Blob([svgPlan()],{type:'image/svg+xml;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=`elena-variant-${current.id}.svg`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
 $('share').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);$('share').textContent='Ссылка скопирована ✓'}catch{$('share').textContent='Ссылка на вариант — в адресной строке'}setTimeout(()=>{$('share').textContent='Скопировать ссылку на вариант ↗'},3000)};
 setVariant(current.id,false);init3d();setView(mode);
-window.elenaDebug={getState:()=>({ready,variant:current.id,mode,cutaway,furniture,sleep,ergonomics,selected,meshCount:meshes.length}),variants:variants.map(v=>v.id)};
+window.elenaDebug={getState:()=>({ready,variant:current.id,mode,cutaway,furniture,sleep,ergonomics,selected,meshCount:meshes.length,renderedItems:[...new Set(meshes.map(m=>m.userData.item.id))]}),variants:variants.map(v=>v.id)};
