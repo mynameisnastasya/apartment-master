@@ -1,0 +1,28 @@
+name: Elena apartment checks
+on:
+  push:
+    paths: ['elena/**', 'elena.html', '.github/workflows/elena.yml']
+  pull_request:
+    paths: ['elena/**', 'elena.html', '.github/workflows/elena.yml']
+permissions:
+  contents: read
+jobs:
+  elena:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node elena/qa.mjs
+      - run: node elena/build.mjs
+      - run: git diff --exit-code -- elena/app.bundle.js
+      - run: npx playwright install --with-deps chromium
+      - run: node elena/verify.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: elena-five-layouts
+          path: test-results/elena/
