@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {variants,walls,outline,openings,sleepEnvelope} from './data.js';
-assert.equal(variants.length,5);assert.equal(new Set(variants.map(v=>v.id)).size,5);
+assert.equal(variants.length,8);assert.equal(new Set(variants.map(v=>v.id)).size,8);
 const rect=f=>({x:f.x,y:f.y,w:f.w,d:f.d});
 const wallRect=w=>({x:Math.min(w.a[0],w.b[0])-w.t/2,y:Math.min(w.a[1],w.b[1])-w.t/2,w:Math.abs(w.a[0]-w.b[0])+w.t,d:Math.abs(w.a[1]-w.b[1])+w.t});
 const overlaps=(a,b,tol=.015)=>a.x+a.w>b.x+tol&&b.x+b.w>a.x+tol&&a.y+a.d>b.y+tol&&b.y+b.d>a.y+tol;
@@ -14,4 +14,4 @@ let checks=0;for(const v of variants){assert.equal(new Set(v.furniture.map(f=>f.
  }
 }
 assert.equal(openings.filter(o=>o.type==='window').length,2);
-console.log(`PASS: 5 variants, ${checks} furniture footprints, preserved walls/openings, day/night intersections, entry → living/kitchen/bath/balcony routes (50 cm test body, conceptual geometry).`);
+console.log(`PASS: 8 variants, ${checks} furniture footprints, preserved walls/openings, day/night intersections, entry → living/kitchen/bath/balcony routes (50 cm test body, conceptual geometry).`);

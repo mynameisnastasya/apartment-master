@@ -10,12 +10,13 @@ try{
  browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-angle=swiftshader','--enable-webgl']});
  const page=await browser.newPage({viewport:{width:1440,height:1080},deviceScaleFactor:1});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('http://127.0.0.1:4173/elena.html');await page.waitForFunction(()=>window.elenaDebug?.getState().ready);
- assert.equal(await page.locator('.variant').count(),5);
- for(const id of ['1','2','3','4','5']){
+ assert.equal(await page.locator('.variant').count(),8);
+ for(const id of ['1','2','3','4','5','6','7','8']){
   await page.locator(`.variant[data-id="${id}"]`).click();assert.equal((await page.evaluate(()=>elenaDebug.getState())).variant,id);assert.match(page.url(),new RegExp('variant='+id));
   assert((await page.evaluate(()=>elenaDebug.getState())).meshCount>100);
-  await page.screenshot({path:`${out}/variant-${id}-3d.png`,fullPage:false});
+  await page.waitForTimeout(220);await page.locator('.viewer-panel').screenshot({path:`${out}/variant-${id}-3d.png`});
   await page.locator('#view2d').click();assert(await page.locator('#plan svg').isVisible());assert((await page.locator('#plan [data-item]').count())>=16);
+  if(['2','6','7','8'].includes(id)){await page.locator('#ergonomics').check();assert((await page.evaluate(()=>elenaDebug.getState())).ergonomics);assert((await page.locator('#plan .ergo-zone').count())>=10);assert.equal(await page.locator('.comfort-metric').count(),3);await page.locator('.viewer-panel').screenshot({path:`${out}/variant-${id}-ergonomics.png`});await page.locator('#view3d').click();await page.locator('.viewer-panel').screenshot({path:`${out}/variant-${id}-ergonomics-3d.png`});await page.locator('#view2d').click();await page.locator('#ergonomics').uncheck()}else{assert(await page.locator('#ergonomics').isDisabled())}
   await page.locator('#plan [data-item]').first().click();assert.match(await page.locator('#selection').innerText(),/габариты модели/);
   if(id==='1'||id==='5'){await page.locator('#sleep').check();assert((await page.evaluate(()=>elenaDebug.getState())).sleep);await page.locator('#sleep').uncheck()}
   await page.locator('#view3d').click();
@@ -27,7 +28,8 @@ try{
  await page.screenshot({path:`${out}/desktop.png`,fullPage:true});
  await page.setViewportSize({width:390,height:844});await page.locator('.workspace').scrollIntoViewIfNeeded();await page.waitForTimeout(200);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:`${out}/mobile-3d.png`,fullPage:true});
  await page.locator('#view2d').click();await page.screenshot({path:`${out}/mobile-plan.png`,fullPage:true});
+ await page.locator('.variant[data-id="8"]').click();await page.locator('#ergonomics').check();await page.locator('.viewer-panel').screenshot({path:`${out}/mobile-new-8.png`});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await page.goto('http://127.0.0.1:4173/elena.html?variant=4');await page.waitForFunction(()=>window.elenaDebug?.getState().ready);assert.equal((await page.evaluate(()=>elenaDebug.getState())).variant,'4');
- await page.goto('http://127.0.0.1:4173/elena.html?variant=invalid');await page.waitForFunction(()=>window.elenaDebug?.getState().ready);assert.equal((await page.evaluate(()=>elenaDebug.getState())).variant,'2');
- assert.deepEqual(errors,[]);console.log('PASS: all 5 3D/2D variants, furniture, cutaway, sleep state, picking, camera controls, SVG download, deep links, mobile overflow, no runtime errors.');
+ await page.goto('http://127.0.0.1:4173/elena.html?variant=invalid');await page.waitForFunction(()=>window.elenaDebug?.getState().ready);assert.equal((await page.evaluate(()=>elenaDebug.getState())).variant,'6');
+ assert.deepEqual(errors,[]);console.log('PASS: all 8 3D/2D variants, furniture, cutaway, sleep state, picking, camera controls, SVG download, deep links, mobile overflow, no runtime errors.');
 }finally{await browser?.close();server.kill('SIGTERM')}
