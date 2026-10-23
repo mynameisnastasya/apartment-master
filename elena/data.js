@@ -73,3 +73,28 @@ variants.push(
 export const featuredIds=['6','7','8'];
 
 for(const v of variants){const widths={2:1.6,6:1.4,7:1.8,8:1.6};if(widths[v.id])v.furniture.find(f=>f.id==='bed').mattress={w:widths[v.id],d:2};}
+
+for(const v of variants){
+ v.furniture=v.furniture.map(f=>({...f}));
+ const by=id=>v.furniture.find(f=>f.id===id);
+ for(const [id,target,side] of [['chair1','table','north'],['chair2','table','south'],['balchair','baldesk','north'],['childchair','childdesk','north'],['workchair','workdesk','south'],['hallchair','halldesk','south']]){
+  const seat=by(id),table=by(target);if(!seat||!table)continue;
+  seat.x=table.x+(table.w-seat.w)/2;seat.y=side==='north'?table.y-seat.d-.07:table.y+table.d+.07;
+  seat.seating={kind:target==='table'?'dining':'task',target,side};
+ }
+ if(v.id==='8'){
+  Object.assign(by('coffee'),{x:1.02,y:2.98});
+  by('lounge1').seating={kind:'lounge',target:'coffee'};
+  by('lounge2').seating={kind:'lounge',target:'coffee'};
+ }
+ if(by('armchair')){
+  if(['3','7'].includes(v.id))Object.assign(by('armchair'),{x:1.85,y:3.3});
+  const pos={1:[.85,6.92],3:[1.85,4.03],5:[.92,6.82],7:[1.85,4.03]}[v.id];
+  v.furniture.push(item('readingtable','table','Столик у кресла для чтения',...pos,.32,.32,.48));
+  by('armchair').seating={kind:'lounge',target:'readingtable'};
+ }
+}
+export function seatPose(f,items){
+ const target=items.find(i=>i.id===f.seating?.target);if(!target)return null;
+ return {yaw:Math.atan2(target.x+target.w/2-f.x-f.w/2,target.y+target.d/2-f.y-f.d/2),target,kind:f.seating.kind};
+}

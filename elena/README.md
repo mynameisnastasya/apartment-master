@@ -58,3 +58,9 @@ node elena/verify.mjs
 - [NKBA Kitchen Planning Guidelines, guidelines 6–8](https://media.nkba.org/uploads/2022/05/Kitchen-Planning-Guidelines.pdf): рабочий проход около 107 см для одного и 122 см для нескольких готовящих. Это рекомендации по планированию, не подтверждение соблюдения российских норм.
 
 Браузерная проверка охватывает 8 вариантов, переключение эргономики, метрики, зоны в SVG, новые 3D-сцены и мобильный вид 390 px. Публикация — отдельная страница `/elena.html`, исходная квартира Лизы не меняется.
+
+## Detailed interior revision
+
+Every seat has an explicit table association and facing shared between 2D and 3D. Dining and task seats sit 7 cm from their table edge; lounge seats use upholstered geometry and reachable side tables. Reading groups in 3 and 7 preserve circulation. In 8, two armchairs face one shared table.
+
+Procedural oak and woven-fabric surfaces, rounded geometry, distinct dining/office/lounge chairs, grounded feet, desk and dining details, environment lighting, contact shading, and perspective camera presets replace the abstract presentation. The interior presets use the actual layout model. These remain concept models, not measured product models or photographic renders.
