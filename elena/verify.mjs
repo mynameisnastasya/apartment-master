@@ -23,8 +23,32 @@ try{
   await page.locator('.viewer-panel').screenshot({path:`${out}/variant-${v.id}-plan.png`});
   await page.locator('#view3d').click();await page.waitForFunction(()=>elenaDebug.getState().ready);
   assert.deepEqual((await page.evaluate(()=>elenaDebug.getState())).renderedItems.sort(),v.furniture.map(f=>f.id).sort());
-  await page.locator('#ergonomics').uncheck();await page.locator('.viewer-panel').screenshot({path:`${out}/variant-${v.id}-3d.png`});
+  await page.locator('#ergonomics').uncheck();await page.waitForFunction(()=>elenaDebug.getState().texturesReady);await page.locator('.viewer-panel').screenshot({path:`${out}/variant-${v.id}-3d.png`});
  }
+ // Eye-level cameras, lighting, and picking use the live 3D scene.
+ await page.locator('.variant[data-id="1"]').click();
+ for(const camera of ['living','kitchen','balcony']){
+  await page.locator(`[data-camera="${camera}"]`).click();
+  assert.equal((await page.evaluate(()=>elenaDebug.getState())).preset,camera);
+  assert.equal((await page.evaluate(()=>elenaDebug.getState())).cutaway,false);
+  await page.locator('#canvas-host').screenshot({path:`${out}/realistic-${camera}.png`});
+ }
+ await page.locator('[data-camera="living"]').click();
+ const r=await page.locator('#canvas-host').boundingBox();await page.mouse.click(r.x+r.width*.45,r.y+r.height*.73);
+ assert.equal((await page.evaluate(()=>elenaDebug.getState())).selected,'bed');
+ const day=await page.locator('#canvas-host').screenshot();await page.locator('#evening').check();
+ assert.equal((await page.evaluate(()=>elenaDebug.getState())).evening,true);
+ const night=await page.locator('#canvas-host').screenshot({path:`${out}/realistic-evening.png`});assert(!day.equals(night));await page.locator('#evening').uncheck();
+ await page.locator('[data-camera="overview"]').click();await page.locator('#canvas-host').screenshot();
+ const baseline=await page.evaluate(()=>elenaDebug.getState());
+ for(let i=0;i<3;i++){await page.locator('[data-camera="kitchen"]').click();await page.locator('[data-camera="overview"]').click()}
+ await page.locator('#canvas-host').screenshot();const finalMemory=await page.evaluate(()=>elenaDebug.getState());
+ assert(finalMemory.geometries<=baseline.geometries+2);assert(finalMemory.textures<=baseline.textures+2);
+ if(process.env.ELENA_TRACE_TEST==='1'){
+  await page.locator('#high-quality').check();await page.waitForFunction(()=>elenaDebug.getState().samples>=8,{},{timeout:180000});
+  assert((await page.evaluate(()=>elenaDebug.getState())).quality);await page.locator('#high-quality').uncheck();
+ }
+ await page.locator('.variant[data-id="5"]').click();
  await page.locator('#cutaway').uncheck();assert.equal((await page.evaluate(()=>elenaDebug.getState())).cutaway,false);await page.locator('#cutaway').check();
  await page.locator('#furniture').uncheck();assert.equal((await page.evaluate(()=>elenaDebug.getState())).meshCount,0);await page.locator('#furniture').check();
  for(const id of ['rotate','zoom-in','zoom-out','reset'])await page.locator('#'+id).click();
@@ -35,5 +59,5 @@ try{
  await page.goto('http://127.0.0.1:4173/elena.html?variant=4');await page.waitForFunction(()=>window.elenaDebug);assert.equal((await page.evaluate(()=>elenaDebug.getState())).variant,'4');
  await page.goto('http://127.0.0.1:4173/elena.html?variant=8');await page.waitForFunction(()=>window.elenaDebug);assert.equal((await page.evaluate(()=>elenaDebug.getState())).variant,'1');
  const fallback=await browser.newPage();await fallback.addInitScript(()=>{const original=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){return String(type).includes('webgl')?null:original.call(this,type,...args)}});await fallback.goto('http://127.0.0.1:4173/elena.html');await fallback.locator('#view3d').click();await fallback.waitForFunction(()=>elenaDebug.getState().mode==='2d');assert(await fallback.locator('#plan svg').isVisible());await fallback.locator('.variant[data-id="5"]').click();assert.equal((await fallback.evaluate(()=>elenaDebug.getState())).variant,'5');await fallback.close();
- assert.deepEqual(errors,[]);console.log('PASS: 5 images, all 3D/2D scenes, furniture picking, use zones, camera controls, SVG download, image modal, direct and obsolete links, 390px mobile, WebGL fallback, zero runtime errors.');
+ assert.deepEqual(errors,[]);console.log('PASS: 5 images, all 3D/2D scenes, furniture picking, use zones, camera controls, SVG download, image modal, direct and obsolete links, 390px mobile, WebGL fallback, eye-level cameras, day/evening light, 3D bed picking, texture loading, stable geometry memory, zero runtime errors.');
 }finally{await browser?.close();server.kill('SIGTERM')}
