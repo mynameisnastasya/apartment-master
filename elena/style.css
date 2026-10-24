@@ -4,5 +4,3 @@ th{position:relative}.sr-only{left:0;top:0}
 #plan{overflow:auto}#plan svg{max-width:none;max-height:none}
 
 #render-options{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--line)}.camera-presets{display:flex;gap:5px;flex-wrap:wrap}.camera-presets button{padding:7px 11px;font-size:12px;border:1px solid var(--line);border-radius:3px}.camera-presets button[aria-pressed=true]{color:#faf6ed;background:#625748;border-color:#625748}.light-toggle{font-size:12px;display:flex;align-items:center;gap:6px}.light-toggle input{accent-color:var(--accent)}@media(max-width:760px){#render-options{gap:10px}.camera-presets{gap:4px}.camera-presets button{font-size:11px;padding:8px}.light-toggle{min-height:32px}}
-
-#render-status{flex-basis:100%;margin:0;font-size:11px;color:var(--muted);line-height:1.4}

@@ -34,6 +34,7 @@ try{
   await page.locator('#canvas-host').screenshot({path:`${out}/realistic-${camera}.png`});
  }
  await page.locator('[data-camera="living"]').click();
+ await page.locator('#canvas-host').scrollIntoViewIfNeeded();
  const r=await page.locator('#canvas-host').boundingBox();await page.mouse.click(r.x+r.width*.45,r.y+r.height*.73);
  assert.equal((await page.evaluate(()=>elenaDebug.getState())).selected,'bed');
  const day=await page.locator('#canvas-host').screenshot();await page.locator('#evening').check();
@@ -44,10 +45,15 @@ try{
  for(let i=0;i<3;i++){await page.locator('[data-camera="kitchen"]').click();await page.locator('[data-camera="overview"]').click()}
  await page.locator('#canvas-host').screenshot();const finalMemory=await page.evaluate(()=>elenaDebug.getState());
  assert(finalMemory.geometries<=baseline.geometries+2);assert(finalMemory.textures<=baseline.textures+2);
- if(process.env.ELENA_TRACE_TEST==='1'){
-  await page.locator('#high-quality').check();await page.waitForFunction(()=>elenaDebug.getState().samples>=8,{},{timeout:180000});
-  assert((await page.evaluate(()=>elenaDebug.getState())).quality);await page.locator('#high-quality').uncheck();
- }
+ // Rendering must stop at rest and while another view is selected.
+ await page.waitForTimeout(700);const idle=await page.evaluate(()=>elenaDebug.getState().renderCount);
+ await page.waitForTimeout(1000);assert.equal(await page.evaluate(()=>elenaDebug.getState().renderCount),idle,'3D renders at rest');
+ await page.locator('#view2d').click();const hidden=await page.evaluate(()=>elenaDebug.getState());
+ await page.locator('.variant[data-id="4"]').click();await page.waitForTimeout(500);
+ const hiddenAfter=await page.evaluate(()=>elenaDebug.getState());assert.equal(hiddenAfter.buildCount,hidden.buildCount,'hidden scene rebuilt');assert.equal(hiddenAfter.renderCount,hidden.renderCount,'hidden scene rendered');
+ await page.locator('#view3d').click();assert.deepEqual((await page.evaluate(()=>elenaDebug.getState())).renderedItems.sort(),variants.find(v=>v.id==='4').furniture.map(f=>f.id).sort());
+ await page.locator('[data-camera="kitchen"]').click();const kitchenBuild=await page.evaluate(()=>elenaDebug.getState().buildCount);
+ await page.locator('[data-camera="living"]').click();assert.equal(await page.evaluate(()=>elenaDebug.getState().buildCount),kitchenBuild,'eye-level camera rebuilt furniture');
  await page.locator('.variant[data-id="5"]').click();
  await page.locator('#cutaway').uncheck();assert.equal((await page.evaluate(()=>elenaDebug.getState())).cutaway,false);await page.locator('#cutaway').check();
  await page.locator('#furniture').uncheck();assert.equal((await page.evaluate(()=>elenaDebug.getState())).meshCount,0);await page.locator('#furniture').check();
@@ -59,6 +65,9 @@ try{
  await page.locator('#view2d').click();await page.locator('#plan').screenshot({path:`${out}/mobile-plan.png`});await page.locator('#view3d').click();await page.locator('#canvas-host').screenshot({path:`${out}/mobile-3d.png`});
  await page.goto('http://127.0.0.1:4173/elena.html?variant=4');await page.waitForFunction(()=>window.elenaDebug);assert.equal((await page.evaluate(()=>elenaDebug.getState())).variant,'4');
  await page.goto('http://127.0.0.1:4173/elena.html?variant=8');await page.waitForFunction(()=>window.elenaDebug);assert.equal((await page.evaluate(()=>elenaDebug.getState())).variant,'1');
+ await page.goto('http://127.0.0.1:4173/elena.html?variant=1&view=3d&camera=living&quality=high');await page.waitForFunction(()=>elenaDebug.getState().ready&&elenaDebug.getState().texturesReady);
+ assert.equal(await page.locator('#high-quality').count(),0);assert(!new URL(page.url()).searchParams.has('quality'));assert.equal(await page.evaluate(()=>elenaDebug.getState().quality),undefined);
+ await page.waitForTimeout(700);const oldLinkFrames=await page.evaluate(()=>elenaDebug.getState().renderCount);await page.waitForTimeout(1000);assert.equal(await page.evaluate(()=>elenaDebug.getState().renderCount),oldLinkFrames);
  const fallback=await browser.newPage();await fallback.addInitScript(()=>{const original=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){return String(type).includes('webgl')?null:original.call(this,type,...args)}});await fallback.goto('http://127.0.0.1:4173/elena.html');await fallback.locator('#view3d').click();await fallback.waitForFunction(()=>elenaDebug.getState().mode==='2d');assert(await fallback.locator('#plan svg').isVisible());await fallback.locator('.variant[data-id="5"]').click();assert.equal((await fallback.evaluate(()=>elenaDebug.getState())).variant,'5');await fallback.close();
- assert.deepEqual(errors,[]);console.log('PASS: 5 images, all 3D/2D scenes, furniture picking, use zones, camera controls, SVG download, image modal, direct and obsolete links, 390px mobile, WebGL fallback, eye-level cameras, day/evening light, 3D bed picking, texture loading, stable geometry memory, zero runtime errors.');
+ assert.deepEqual(errors,[]);console.log('PASS: 5 images, all 3D/2D scenes, furniture picking, use zones, camera controls, SVG download, image modal, direct and obsolete links, 390px mobile, WebGL fallback, eye-level cameras, day/evening light, 3D bed picking, texture loading, stable geometry memory, no idle rendering, lazy hidden scenes, obsolete lighting URL disabled, zero runtime errors.');
 }finally{await browser?.close();server.kill('SIGTERM')}
