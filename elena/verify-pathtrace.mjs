@@ -13,9 +13,9 @@ try{
  const state=await page.evaluate(()=>elenaDebug.getState());assert.equal(state.quality,true);assert.equal(state.preset,'living');
  fs.mkdirSync('test-results/elena',{recursive:true});await page.locator('#canvas-host').screenshot({path:'test-results/elena/path-traced-bedroom.png'});
  await page.locator('#view2d').click();const paused=await page.evaluate(()=>elenaDebug.getState().samples);await page.waitForTimeout(750);assert.equal(await page.evaluate(()=>elenaDebug.getState().samples),paused);
- await page.locator('#view3d').click();await page.locator('[data-camera="kitchen"]').click();await page.waitForFunction(()=>elenaDebug.getState().samples>=4,{},{timeout:120000});
+ await page.locator('#view3d').click();await page.locator('[data-camera="kitchen"]').click();await page.waitForFunction(()=>elenaDebug.getState().samples<4,{},{timeout:60000});await page.waitForFunction(()=>elenaDebug.getState().samples>=4,{},{timeout:120000});
  assert.equal((await page.evaluate(()=>elenaDebug.getState())).preset,'kitchen');
- await page.locator('#evening').check();await page.waitForFunction(()=>elenaDebug.getState().samples>=4,{},{timeout:120000});assert((await page.evaluate(()=>elenaDebug.getState())).evening);
+ await page.locator('#evening').check();await page.waitForFunction(()=>elenaDebug.getState().samples<4,{},{timeout:60000});await page.waitForFunction(()=>elenaDebug.getState().samples>=4,{},{timeout:120000});assert((await page.evaluate(()=>elenaDebug.getState())).evening);
  await page.locator('#high-quality').uncheck();assert.equal((await page.evaluate(()=>elenaDebug.getState())).quality,false);
  assert.deepEqual(errors,[]);console.log(`PASS: actual path tracing reached ${state.samples} samples; all textures load; eye-level deep link; rendering pauses outside 3D; camera and lighting changes rebuild correctly; raster fallback works; no page errors.`);
 }finally{await browser.close()}
