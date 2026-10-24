@@ -48,7 +48,7 @@ function createMaterials(onLoad){
   }
   if(kind==='oak'||kind==='floor'){
    const asset=kind==='floor'?'wood_floor':'wood_table_001';
-   p.map=scanned(asset+'_diff_1k.jpg',true);p.normalMap=scanned(asset+'_nor_gl_1k.jpg');p.normalScale=new THREE.Vector2(.16,.16);p.bumpMap=null;p.roughness=.68;p.color=kind==='floor'?'#faf3e5':'#f0e4d2';
+   p.map=scanned(asset+'_diff_1k.jpg',true);p.normalMap=scanned(asset+'_nor_gl_1k.jpg');p.normalScale=new THREE.Vector2(.16,.16);p.bumpMap=null;p.roughness=.68;p.color=kind==='floor'?'#faf3e5':'#fff7e8';
   }
   if(kind==='linen'){p.normalMap=scanned('rough_linen_nor_gl_1k.jpg');p.normalScale=new THREE.Vector2(.18,.18);p.bumpMap=null;}
   if(kind==='metal')Object.assign(p,{metalness:.85,roughness:.28});
@@ -186,11 +186,38 @@ export function createApartmentViewer(host,{onSelect,onError}){
     b(-W*.34,f.h,-.12,.16,.025,.22,mat('plain','#b29b7c'),.003);
    }else if(f.h>.5){vase(group,0,f.h,0);for(const side of[-1,1]){const across=f.id==='table'&&options.variant.id==='5',x=across?side*W*.29:0,z=across?0:side*D*.29;cyl(group,x,f.h,z,.105,.007,white);cyl(group,x,f.h+.008,z,.075,.004,white)}}
    else{b(.03,f.h,-.015,W*.6,.025,D*.6,mat('plain','#aa9274'),.002);vase(group,-W*.2,f.h,0)}
+  }else if(f.type==='dresser'){
+   const finish=mat('plaster','#e4ded2');
+   b(0,.08,0,W,f.h-.08,D,finish,.012);b(0,f.h-.025,0,W+.005,.025,D+.005,stone,.008);
+   const columns=Math.max(1,Math.round(D/.6)),rowH=(f.h-.12)/3;
+   for(let col=0;col<columns;col++)for(let row=0;row<3;row++){
+    const z=-D/2+(col+.5)*D/columns,y=.1+row*rowH;
+    b(-W/2-.002,y,z,.016,rowH-.006,D/columns-.008,finish,.003);
+    b(-W/2-.013,y+rowH-.035,z,.012,.008,Math.min(.24,D/columns*.6),metal,.002);
+   }
+  }else if(f.type==='coatniche'){
+   // Existing walls enclose the niche; no full-height carcass or curtain box.
+   b(0,.08,0,W,.3,D,mat('plaster','#e5dfd4'),.008);b(0,.38,0,W,.035,D,oak,.008);
+   b(0,1.75,D*.12,W,.028,D*.68,mat('plaster','#e5dfd4'),.004);
+   rod(group,[-W*.4,1.58,.04],[W*.4,1.58,.04],.012,metal);
+   for(const x of[-W*.18,W*.18]){
+    tube(group,[[x-.08,1.43,.04],[x,1.55,.04],[x+.08,1.43,.04]],.006,metal);
+    b(x,.65,.04,.16,.76,.08,mat('linen',x<0?'#b8b5a9':'#d9cfc0'),.03);
+   }
   }else if(['wardrobe','cabinet','fridge','foldbed'].includes(f.type)){
-   b(0,.055,0,W,f.h-.055,D,oak,.007);const horizontal=['north','south'].includes(f.front),front=['south','east'].includes(f.front)?1:-1,length=horizontal?W:D,n=Math.max(1,Math.round(length/.55));
-   for(let i=0;i<n;i++){
+   const finish=mat('plaster','#e5dfd4');
+   if(f.doors==='open'){
+    b(-W/2+.01,.055,0,.02,f.h-.055,D,finish,.003);
+    for(const z of[-D/2+.01,0,D/2-.01])b(0,.055,z,W,f.h-.055,.02,finish,.003);
+    for(const y of[.055,f.h-.025])b(0,y,0,W,.025,D,finish,.003);
+    for(const y of[.48,.88,1.28,1.68,2.08])b(0,y,D*.25,W-.03,.02,D/2-.03,finish,.003);
+    rod(group,[0,1.8,-D/2+.05],[0,1.8,-.05],.012,metal);
+    for(let i=0;i<4;i++)b(0,.85,-D/2+.15+i*.13,W*.7,.8,.035,mat('linen',i%2?'#bcb6a9':'#d9d0c0'),.012);
+   }else b(0,.055,0,W,f.h-.055,D,finish,.007);
+   const horizontal=['north','south'].includes(f.front),front=['south','east'].includes(f.front)?1:-1,length=horizontal?W:D,n=f.doors==='sliding'?2:Math.max(1,Math.round(length/.55));
+   for(let i=0;f.doors!=='open'&&i<n;i++){
     const a=-length/2+(i+.5)*length/n;
-    const face=f.curtain?mat('linen','#d5cdbc'):f.type==='fridge'?mat('plain','#d8d3c6'):mat('plaster',options.variant.id==='3'?'#c5bcac':'#dcd4c5');
+    const face=f.curtain?mat('linen','#d5cdbc'):f.type==='fridge'?mat('plain','#d8d3c6'):mat('plaster','#e5dfd4');
     if(horizontal){b(a,.075,front*(D/2+.002),length/n-.004,f.h-.085,.018,face,.002);if(!f.curtain)b(a+length/n*.28,.82,front*(D/2+.016),.009,.22,.018,metal,.003)}
     else{b(front*(W/2+.002),.075,a,.018,f.h-.085,length/n-.004,face,.002);b(front*(W/2+.016),.82,a+length/n*.28,.018,.22,.009,metal,.003)}
    }
@@ -214,7 +241,15 @@ export function createApartmentViewer(host,{onSelect,onError}){
    tube(group,[[.23,.9,sz],[.23,1.14,sz],[.18,1.2,sz],[.04,1.2,sz],[.015,1.13,sz]],.012,mat('metal','#b9bab2'));
    const hob=moduleCenter('hob');b(0,.895,hob,.49,.012,.55,dark,.008);for(const x of[-.13,.13])for(const z of[hob-.15,hob+.15]){const r=mesh(group,new THREE.TorusGeometry(.076,.002,5,36),mat('metal','#727a74'),x,.909,z);r.rotation.x=Math.PI/2;}
    b(-W/2-.02,.18,hob,.026,.46,.49,dark,.008);b(-W/2-.04,.6,hob,.025,.018,.4,metal,.004);for(const z of[hob-.17,hob+.17]){const knob=cyl(group,-W/2-.043,.7,z,.018,.016,metal);knob.rotation.z=Math.PI/2;}
-   if(!options.cutaway){b(.17,.895,0,.018,.62,D,stone,.002);b(.07,1.56,0,.44,.91,D,mat('plaster','#ded7c8'),.006);for(let i=1;i<5;i++)b(-.155,1.57,-D/2+i*D/5,.003,.89,.004,metal,.001);b(-.13,1.545,0,.035,.009,D-.08,mat('glow','#ffdb9d'),.001)}
+   if(!options.cutaway){
+    b(W/2-.015,.895,0,.018,.62,D,stone,.002);
+    const u=f.upper,uz=-D/2+u.offset+u.width/2,ux=W/2-u.depth/2;
+    b(ux,u.bottom,uz,u.depth,u.height,u.width,mat('plaster','#e5dfd4'),.006);
+    b(ux-u.depth/2-.005,u.bottom+.01,uz,.008,u.height-.02,.003,metal,.001);
+    b(ux-u.depth/2+.025,u.bottom-.012,uz,.025,.008,u.width-.04,mat('glow','#ffdb9d'),.001);
+    b(.05,1.65,hob,.5,.1,.6,mat('plaster','#e5dfd4'),.008);
+    b(.18,1.75,hob,.22,.52,.27,mat('plaster','#e5dfd4'),.004);
+   }
   }else if(f.type==='bath'){
    b(0,.04,0,W,.49,D,white,.07);
    // Continuous bowl with a rolled rim and visible depth.
@@ -298,6 +333,9 @@ export function createApartmentViewer(host,{onSelect,onError}){
   else if(value==='living'){
    if(options?.variant.id==='5'){camera.position.set(2.95,1.55,5.17);controls.target.set(1.15,1.05,3.45)}
    else{camera.position.set(2.72,1.55,7.17);controls.target.set(.82,.98,5.3)}
+  }else if(value==='storage'){
+   if(options?.variant.id==='5'){camera.position.set(3.6,1.5,2.1);controls.target.set(3.4,1.1,.4)}
+   else{camera.position.set(.85,1.5,4.85);controls.target.set(3.3,.9,6.2)}
   }else if(value==='kitchen'){camera.position.set(4.25,1.55,8.1);controls.target.set(5.53,1.2,5.72)}
   else{camera.position.set(2.35,1.5,7.95);controls.target.set(.9,1.05,9.3)}
   ceilings.forEach(c=>c.visible=value!=='overview');controls.update();camera.updateMatrixWorld(true);render();

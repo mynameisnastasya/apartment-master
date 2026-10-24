@@ -10,7 +10,7 @@ try{
  browser=await chromium.launch({headless:true,executablePath:process.env.ELENA_BROWSER_PATH||undefined,args:['--no-sandbox','--use-angle=swiftshader','--enable-webgl']});
  const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('http://127.0.0.1:4173/elena.html');await page.waitForFunction(()=>window.elenaDebug);
- assert.equal(await page.locator('.variant').count(),5);assert.equal((await page.evaluate(()=>elenaDebug.getState())).mode,'photo');
+ assert.equal(await page.locator('.variant').count(),5);assert.equal((await page.evaluate(()=>elenaDebug.getState())).mode,'2d');
  await page.screenshot({path:`${out}/desktop.png`,fullPage:true});
  for(const v of variants){
   await page.locator(`.variant[data-id="${v.id}"]`).click();assert.equal((await page.evaluate(()=>elenaDebug.getState())).variant,v.id);
@@ -18,7 +18,7 @@ try{
   assert((await page.locator('#interior-image').getAttribute('src')).endsWith(v.image));
   await page.locator('#fullscreen-photo').click();assert(await page.locator('#image-dialog').isVisible());await page.keyboard.press('Escape');assert(!(await page.locator('#image-dialog').isVisible()));
   await page.locator('#view2d').click();assert(await page.locator('#plan svg').isVisible());assert.equal(await page.locator('#plan [data-item]').count(),v.furniture.length);
-  await page.locator('#ergonomics').check();assert(await page.locator('#plan .ergo-zone').count()>=10);assert.equal(await page.locator('.comfort-metric').count(),3);
+  await page.locator('#ergonomics').check();assert(await page.locator('#plan .ergo-zone').count()>=10);assert.equal(await page.locator('.comfort-metric').count(),3);assert.equal(await page.locator('#storage-plan > div').count(),4);
   await page.locator('#plan [data-item="bed"]').click();assert.match(await page.locator('#selection').innerText(),/габариты модели/);
   await page.locator('.viewer-panel').screenshot({path:`${out}/variant-${v.id}-plan.png`});
   await page.locator('#view3d').click();await page.waitForFunction(()=>elenaDebug.getState().ready);
@@ -27,7 +27,7 @@ try{
  }
  // Eye-level cameras, lighting, and picking use the live 3D scene.
  await page.locator('.variant[data-id="1"]').click();
- for(const camera of ['living','kitchen','balcony']){
+ for(const camera of ['living','storage','kitchen','balcony']){
   await page.locator(`[data-camera="${camera}"]`).click();
   assert.equal((await page.evaluate(()=>elenaDebug.getState())).preset,camera);
   assert.equal((await page.evaluate(()=>elenaDebug.getState())).cutaway,false);

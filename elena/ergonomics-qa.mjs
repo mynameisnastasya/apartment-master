@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {variants,walls,outline,wallsFor,slidingPanels} from './data.js';
+import {variants,walls,outline,wallsFor,slidingPanels,storagePlan} from './data.js';
 import {ergonomicStudy,refinedIds} from './ergonomics.js';
 const wr=w=>({x:Math.min(w.a[0],w.b[0])-w.t/2,y:Math.min(w.a[1],w.b[1])-w.t/2,w:Math.abs(w.a[0]-w.b[0])+w.t,d:Math.abs(w.a[1]-w.b[1])+w.t,id:w.id});
 const hits=(a,b)=>a.x+a.w>b.x+1e-6&&b.x+b.w>a.x+1e-6&&a.y+a.d>b.y+1e-6&&b.y+b.d>a.y+1e-6;
@@ -24,9 +24,25 @@ for(const id of refinedIds){const v=variants.find(v=>v.id===id),study=ergonomicS
  assert.deepEqual(modules.map(m=>m.id),['dishwasher','sink','prep','hob','drawers']);
  assert(Math.abs(modules.reduce((sum,m)=>sum+m.width,0)-kitchen.d)<1e-6);
  for(let i=1;i<modules.length;i++)assert(Math.abs(modules[i].offset-modules[i-1].offset-modules[i-1].width)<1e-6);
- assert(modules.find(m=>m.id==='prep').width>=.6);
+ assert(modules.find(m=>m.id==='prep').width>=.9-1e-6);
  assert.equal(v.furniture.find(f=>f.id==='fridge').front,'west');
- assert.equal(v.furniture.find(f=>f.id==='entryward').curtain,true);
+ assert.equal(v.furniture.find(f=>f.id==='entryward').type,'coatniche');
+ // The revision must actually remove bulk, not just repaint the original wardrobes.
+ const storage=storagePlan(v);assert.equal(storage.tallCount,id==='3'?2:1);
+ assert(!v.furniture.some(f=>f.type==='wardrobe'&&f.y>=4.4),'Tall wardrobe remains by bed');
+ for(const f of v.furniture.filter(f=>f.type==='wardrobe'))assert(f.h<=2.4&&Math.min(f.w,f.d)>=.58);
+ for(const f of v.furniture.filter(f=>f.type==='dresser')){
+  assert(f.h<=.8);const open=study.zones.find(z=>z.id==='dresser-open'),use=study.zones.find(z=>z.id==='dresser-use');
+  assert(!hits(open,use));assert(use.w>=.6);assert(open.w>=f.drawerTravel);
+ }
+ assert.equal(v.furniture.find(f=>f.id==='bed').storage,'lift');
+ if(id!=='5')assert(study.zones.find(z=>z.id==='bed-foot').w>=1-1e-6);
+ assert(kitchen.upper.width<=1.1&&kitchen.upper.depth<=.35);
+ if(id==='4'){
+  assert.equal(v.furniture.filter(f=>f.type==='desk').length,2);
+  const a=v.furniture.find(f=>f.id==='balchair'),b=v.furniture.find(f=>f.id==='balchair2');assert(b.x-a.x-a.w>=.75);
+  assert(!hits(study.zones.find(z=>z.id==='baldesk-use'),study.zones.find(z=>z.id==='baldesk2-use')));
+ }
  // Daily dishwasher loading remains independent of both dining chairs.
  const load=study.zones.find(z=>z.id==='dishwasher-load'),door=study.zones.find(z=>z.id==='dishwasher-open');
  assert(!hits(load,door));assert.equal(v.furniture.filter(f=>f.type==='shelf').length,2);
