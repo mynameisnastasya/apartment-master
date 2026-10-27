@@ -8,7 +8,7 @@ let browser;const out='test-results/elena';fs.mkdirSync(out,{recursive:true});
 try{
  for(let i=0;i<60;i++){try{if((await fetch('http://127.0.0.1:4173/elena.html')).ok)break}catch{}await new Promise(r=>setTimeout(r,200))}
  browser=await chromium.launch({headless:true,executablePath:process.env.ELENA_BROWSER_PATH||undefined,args:['--no-sandbox','--use-angle=swiftshader','--enable-webgl']});
- const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ let page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('http://127.0.0.1:4173/elena.html');await page.waitForFunction(()=>window.elenaDebug);
  assert.equal(await page.locator('.variant').count(),5);assert.equal((await page.evaluate(()=>elenaDebug.getState())).mode,'2d');
  await page.screenshot({path:`${out}/desktop.png`,fullPage:true});
@@ -61,8 +61,12 @@ try{
  await page.locator('#furniture').uncheck();assert.equal((await page.evaluate(()=>elenaDebug.getState())).meshCount,0);await page.locator('#furniture').check();
  for(const id of ['rotate','zoom-in','zoom-out','reset'])await page.locator('#'+id).click();
  const dp=page.waitForEvent('download');await page.locator('#save-plan').click();const dl=await dp;assert.equal(dl.suggestedFilename(),'elena-variant-5.svg');await dl.saveAs(`${out}/variant-5.svg`);
- // Capture the mobile viewport/canvas without expanding a WebGL page to its full scroll height.
- await page.setViewportSize({width:390,height:844});await page.locator('.variant[data-id="1"]').click();await page.locator('#viewphoto').click();await page.evaluate(()=>scrollTo(0,0));assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:`${out}/mobile.png`,fullPage:false});
+ // Release the desktop software-WebGL context before mobile screenshots. On CI,
+ // resizing that heavily exercised context can stall compositor readback.
+ await page.close();page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('http://127.0.0.1:4173/elena.html?variant=1');await page.waitForFunction(()=>window.elenaDebug);
+ await page.locator('#viewphoto').click();await page.waitForFunction(()=>document.getElementById('interior-image').complete&&document.getElementById('interior-image').naturalWidth>1000);
+ await page.evaluate(()=>scrollTo(0,0));assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:`${out}/mobile.png`,fullPage:false,timeout:60000});
  for(const v of variants){await page.locator(`.variant[data-id="${v.id}"]`).click();assert.equal((await page.evaluate(()=>elenaDebug.getState())).variant,v.id);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth))}
  await page.locator('#view2d').click();await page.locator('#plan').screenshot({path:`${out}/mobile-plan.png`});await page.locator('#view3d').click();await page.locator('#canvas-host').screenshot({path:`${out}/mobile-3d.png`});
  await page.goto('http://127.0.0.1:4173/elena.html?variant=4');await page.waitForFunction(()=>window.elenaDebug);assert.equal((await page.evaluate(()=>elenaDebug.getState())).variant,'4');
