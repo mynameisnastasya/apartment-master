@@ -19,6 +19,7 @@ try{
   await page.locator('#fullscreen-photo').click();assert(await page.locator('#image-dialog').isVisible());await page.keyboard.press('Escape');assert(!(await page.locator('#image-dialog').isVisible()));
   await page.locator('#view2d').click();assert(await page.locator('#plan svg').isVisible());assert.equal(await page.locator('#plan [data-item]').count(),v.furniture.length);
   await page.locator('#ergonomics').check();assert(await page.locator('#plan .ergo-zone').count()>=10);assert.equal(await page.locator('.comfort-metric').count(),3);assert.equal(await page.locator('#storage-plan > div').count(),4);
+  await page.locator('#plan [data-item="laundry"]').click();assert.match(await page.locator('#selection').innerText(),/Раковина над стиральной машиной/);assert.equal(await page.locator('#plan pattern#closed-hatch').count(),1);
   await page.locator('#plan [data-item="bed"]').click();assert.match(await page.locator('#selection').innerText(),/габариты модели/);
   await page.locator('.viewer-panel').screenshot({path:`${out}/variant-${v.id}-plan.png`});
   await page.locator('#view3d').click();await page.waitForFunction(()=>elenaDebug.getState().ready);
@@ -27,7 +28,7 @@ try{
  }
  // Eye-level cameras, lighting, and picking use the live 3D scene.
  await page.locator('.variant[data-id="1"]').click();
- for(const camera of ['living','storage','kitchen','balcony']){
+ for(const camera of ['bathroom','hall','living','storage','kitchen','balcony']){
   await page.locator(`[data-camera="${camera}"]`).click();
   assert.equal((await page.evaluate(()=>elenaDebug.getState())).preset,camera);
   assert.equal((await page.evaluate(()=>elenaDebug.getState())).cutaway,false);

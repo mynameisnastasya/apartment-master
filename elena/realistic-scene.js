@@ -8,7 +8,7 @@ import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
-import {outline,rooms,openingsFor,slidingPanels,wallsFor} from './data.js';
+import {outline,rooms,excludedAreas,openingsFor,slidingPanels,wallsFor} from './data.js';
 import {ergonomicStudy} from './ergonomics.js';
 
 // All surfaces are generated locally, in physical metres. No external model/texture CDN.
@@ -261,15 +261,39 @@ export function createApartmentViewer(host,{onSelect,onError}){
    ball(group,0,.823,0,W*.7,.025,D*.65,mat('ceramic','#c4cac2'));
    tube(group,[[0,.73,-D*.4],[0,.99,-D*.4],[0,.99,-D*.2],[0,.94,-D*.16]],.009,metal);
   }else if(f.type==='toilet'){
-   ball(group,0,.24,.06,W*.75,.42,D*.72,white);const seat=mesh(group,new THREE.TorusGeometry(1,.13,12,48),white,0,.43,.05);seat.rotation.x=Math.PI/2;seat.scale.set(W*.4,D*.37,.14);
-   b(0,.42,.05,W*.87,.025,D*.66,white,.012);b(0,.1,-D*.36,W*.85,.56,.15,white,.03);
-  }else if(f.type==='washer'){
-   b(0,.04,0,W,.8,D,white,.018);b(0,.71,D/2+.001,W-.04,.09,.01,mat('plain','#dedfd7'),.002);
-   const ring=mesh(group,new THREE.TorusGeometry(.185,.026,16,48),mat('metal','#a8aca7'),0,.405,D/2+.016);
-   const disc=mesh(group,new THREE.CircleGeometry(.159,48),dark,0,.405,D/2+.02);disc.castShadow=false;
-   const knob=cyl(group,W*.26,.75,D/2+.014,.025,.012,metal);knob.rotation.x=Math.PI/2;
-   for(let i=0;i<2;i++)b(-.04,.85+i*.045,0,.4,.04,.32,mat('linen',i?'#c0b6a1':'#ece7dc'),.015);
+   const depth=f.bowlDepth,back=-D/2+f.installation,cz=back+depth/2;
+   b(0,0,-D/2+f.installation/2,W,f.h,f.installation,stone,.006);
+   b(0,.92,back+.004,.18,.105,.012,metal,.006);
+   for(const [x,r] of [[-.035,.018],[.035,.025]]){const key=cyl(group,x,.974,back+.014,r,.006,white);key.rotation.x=Math.PI/2;}
+   ball(group,0,.30,cz,.36,.28,depth,white);
+   b(0,.425,cz,.36,.025,depth,white,.045);
+   b(0,.45,cz,.35,.018,depth-.02,white,.045);
+  }else if(f.type==='laundryvanity'){
+   const a=f.washer,z=-D/2+f.rearGap+a.d/2,front=z+a.d/2;
+   // Total appliance envelope includes protruding parts; plumbing reserve is additional.
+   b(0,.025,z-.016,a.w,a.h-.025,a.d-.032,white,.012);
+   b(0,.602,front-.025,a.w-.035,.073,.012,mat('plain','#dedfd7'),.003);
+   b(-.13,.62,front-.016,.15,.035,.012,white,.004);
+   b(.04,.62,front-.016,.09,.035,.012,dark,.003);
+   const knob=cyl(group,.17,.64,front-.008,.022,.012,metal);knob.rotation.x=Math.PI/2;
+   mesh(group,new THREE.TorusGeometry(.157,.022,12,48),mat('metal','#adb0a9'),0,.335,front-.022);
+   const disc=mesh(group,new THREE.CircleGeometry(.133,48),dark,0,.335,front+.001);disc.castShadow=false;
+   mesh(group,new THREE.TorusGeometry(.119,.006,8,40),metal,0,.335,front+.003);
+   // Independently wall-mounted shallow basin. No pedestal or worktop crossing the washer.
+   const bottom=f.sink.bottom,lip=f.sink.h;
+   b(0,bottom,-.235,W,lip,.13,white,.012);
+   b(0,bottom,.265,W,lip,.07,white,.012);
+   for(const x of[-.27,.27])b(x,bottom,.03,.06,lip,.4,white,.012);
+   b(0,bottom,.03,W-.1,.014,.42,white,.025);
+   const drain=cyl(group,.18,bottom+.014,-.15,.018,.003,metal);
+   tube(group,[[.13,f.h,-.24],[.13,1.035,-.24],[.13,1.035,-.12],[.13,1.01,-.12]],.009,metal);
+   for(const x of[-.23,.23]){b(x,.755,-.255,.025,.04,.08,metal,.002);b(x,.755,-.17,.025,.018,.23,metal,.002);}
+   tube(group,[[.18,.8,-.25],[.18,.74,-.25],[.18,.74,-.29]],.018,white);
+   const mirror=mat('metal','#cbd6d3');mirror.roughness=.09;mirror.metalness=.85;
+   b(0,1.1,-.286,.56,.85,.016,mirror,.025);
+   b(0,1.98,-.26,.5,.018,.035,mat('glow','#ffecd4'),.004);
   }
+
   // Merge only within a selectable object and material. This keeps ray picking intact
   // while avoiding hundreds of draw calls for chair backs, cabinet faces and textiles.
   consolidate(group);group.traverse(o=>{if(o.isMesh){o.userData.item=f;items.push(o)}});
@@ -289,7 +313,12 @@ export function createApartmentViewer(host,{onSelect,onError}){
   floor(outline,mat('stone','#b7ae9f'),-.04);
   for(const room of rooms){if(room.id==='main'||room.id==='balcony')woodFloor(room);else floor(room.poly,mat('stone',room.id==='bath'?'#c4c2b7':'#ded6c5'),.01);}
   for(const room of rooms){const s=new THREE.Shape();room.poly.forEach(([x,z],i)=>i?s.lineTo(x,-z):s.moveTo(x,-z));s.closePath();const geo=new THREE.ShapeGeometry(s);geo.rotateX(Math.PI/2);const ceil=mesh(root,geo,mat('plaster','#eee8dc'),0,2.6,0);ceil.scale.z=-1;ceil.material.side=THREE.DoubleSide;ceil.castShadow=true;ceil.visible=preset!=='overview';ceil.userData.ceiling=true;ceilings.push(ceil)}
+  for(const area of excludedAreas)box(root,area.x+area.w/2,0,area.y+area.d/2,area.w,options.cutaway?.7:2.6,area.d,mat('plaster','#b8b4aa'),.002);
   wallsFor(options.variant).forEach(wall);
+  // Warm large-format bathroom wall finish, kept inside the surveyed-room hypothesis.
+  const tile=mat('stone','#d9d1c3');
+  for(const z of[.004,1.946])box(root,.85,.02,z,1.7,options.cutaway?.64:1.12,.008,tile,.001);
+  box(root,.005,.02,.975,.01,options.cutaway?.64:1.12,1.95,tile,.001);
   for(const o of openingsFor(options.variant)){
    const len=Math.hypot(o.b[0]-o.a[0],o.b[1]-o.a[1]),g=new THREE.Group();g.position.set((o.a[0]+o.b[0])/2,0,(o.a[1]+o.b[1])/2);g.rotation.y=-Math.atan2(o.b[1]-o.a[1],o.b[0]-o.a[0]);root.add(g);
    if(o.type==='window'){
@@ -298,9 +327,9 @@ export function createApartmentViewer(host,{onSelect,onError}){
     for(let i=0;i<=3;i++)box(g,-len/2+i*len/3,.69,0,.045,1.77,.07,frame,.003);
     for(const y of[.69,2.42])box(g,0,y,0,len,.045,.07,frame,.003);
     if(!options.cutaway){box(g,0,2.46,0,len,.14,.18,mat('plaster','#e8e0d3'));for(const side of[-1,1])curtain(g.position.x+side*(len/2-.14),g.position.z-.17,.34);}
-   }else if(!options.cutaway){const frame=mat('oak','#d3c1a5');for(const x of[-len/2+.015,len/2-.015])box(g,x,0,0,.035,2.18,.15,frame,.003);box(g,0,2.17,0,len,.04,.15,frame,.003);box(g,0,2.22,0,len,.38,.12,mat('plaster','#e8e1d5'));}
+   }else if(!options.cutaway){const frame=o.name==='Санузел'?mat('plaster','#e7e0d4'):mat('oak','#d3c1a5');for(const x of[-len/2+.015,len/2-.015])box(g,x,0,0,.035,2.18,.15,frame,.003);box(g,0,2.17,0,len,.04,.15,frame,.003);box(g,0,2.22,0,len,.38,.12,mat('plaster','#e8e1d5'));}
   }
-  if(!options.cutaway){for(const p of slidingPanels(options.variant)){box(root,p.x+p.w/2,.03,p.y+p.d/2,p.w,2.1,p.d,mat('oak','#c6a982'),.003);box(root,p.x+p.w,2.18,p.y+p.d/2,p.w*2,.025,.04,mat('metal','#71624f'),.002)}}
+  if(!options.cutaway){for(const p of slidingPanels(options.variant)){box(root,p.x+p.w/2,.03,p.y+p.d/2,p.w,2.1,p.d,p.id==='door-Санузел'?mat('plaster','#e7e0d4'):mat('oak','#c6a982'),.003);box(root,p.w<p.d?p.x+p.w/2:p.x+p.w,2.18,p.w<p.d?p.y:p.y+p.d/2,p.w<p.d?.04:p.w*2,.025,p.w<p.d?p.d*2:.04,mat('metal','#71624f'),.002)}}
   if(!options.cutaway){
    // Window-facing wall art and a ceiling track anchor the eye-level scale.
    box(root,.014,1.08,3.58,.018,.7,.62,mat('oak','#a08d72'),.002);
@@ -310,7 +339,7 @@ export function createApartmentViewer(host,{onSelect,onError}){
    box(root,1.7,2.532,5.2,.027,.008,3.74,mat('glow','#ffe0a5'),.002);
   }
   // Real area emitters produce broad, soft illumination; shadows come from the sun.
-  for(const [x,z,w,d] of [[1.6,3.3,1.8,1.2],[1.7,5.3,2.5,3],[4.8,6.3,1.4,2],[3.4,1.4,1.5,1.5],[1.35,8.5,1.9,1]]){
+  for(const [x,z,w,d] of [[.85,1.05,1.2,1.2],[1.6,3.3,1.8,1.2],[1.7,5.3,2.5,3],[4.8,6.3,1.4,2],[3.4,1.4,1.5,1.5],[1.35,8.5,1.9,1]]){
    const light=new THREE.RectAreaLight('#ffe4b9',evening?3.8:1.1,w,d);light.position.set(x,2.53,z);light.rotation.x=-Math.PI/2;root.add(light);roomLights.push(light);
   }
   for(const [x,z,w] of [[1.38,9.42,2.2],[4.85,8.38,1.3]]){const light=new THREE.RectAreaLight('#e8f1ff',evening?.15:2,w,1.5);light.position.set(x,1.65,z);light.lookAt(x,1.3,z-3);light.userData.window=true;root.add(light);roomLights.push(light)}
@@ -336,7 +365,9 @@ export function createApartmentViewer(host,{onSelect,onError}){
   }else if(value==='storage'){
    if(options?.variant.id==='5'){camera.position.set(3.6,1.5,2.1);controls.target.set(3.4,1.1,.4)}
    else{camera.position.set(.85,1.5,4.85);controls.target.set(3.3,.9,6.2)}
-  }else if(value==='kitchen'){camera.position.set(4.25,1.55,8.1);controls.target.set(5.53,1.2,5.72)}
+  }else if(value==='bathroom'){camera.position.set(1.49,1.62,.83);controls.target.set(.55,.82,1.69)}
+  else if(value==='hall'){camera.position.set(3.65,1.6,2.08);controls.target.set(2.4,1.1,.85)}
+  else if(value==='kitchen'){camera.position.set(4.25,1.55,8.1);controls.target.set(5.53,1.2,5.72)}
   else{camera.position.set(2.35,1.5,7.95);controls.target.set(.9,1.05,9.3)}
   ceilings.forEach(c=>c.visible=value!=='overview');controls.update();camera.updateMatrixWorld(true);render();
  }

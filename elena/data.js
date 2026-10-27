@@ -2,12 +2,14 @@
 export const outline=[[0,0],[4.35,0],[4.35,2.42],[6.17,2.42],[6.17,8.55],[2.76,8.55],[2.76,9.59],[0,9.59]];
 export const rooms=[
  {id:'bath',name:'Санузел',area:'3,3 м²',poly:[[0,0],[1.7,0],[1.7,1.95],[0,1.95]],color:'#d3dedc'},
- {id:'hall',name:'Прихожая',area:'9,4 м² на фото',poly:[[1.82,0],[4.35,0],[4.35,2.42],[6.17,2.42],[6.17,4.53],[3.72,4.53],[3.27,4.06],[3.27,2.6],[0,2.6],[0,2.07],[1.82,2.07]],color:'#e6e1d5'},
+ {id:'hall',name:'Прихожая',area:'9,4 м² на фото',poly:[[1.82,0],[4.35,0],[4.35,2.42],[6.17,2.42],[6.17,4.53],[3.72,4.53],[3.27,4.06],[3.27,2.6],[1.82,2.6]],color:'#e6e1d5'},
  {id:'main',name:'Жилая комната',area:'17,9 м²',poly:[[0,2.6],[3.27,2.6],[3.27,4.06],[3.72,4.06],[3.72,7.58],[0,7.58]],color:'#d9c5a8'},
  {id:'kitchen',name:'Кухня',area:'9,1 м² на фото',poly:[[3.84,4.65],[6.17,4.65],[6.17,8.55],[2.76,8.55],[2.76,7.7],[3.84,7.7]],color:'#e1d7c6'},
  {id:'balcony',name:'Тёплый балкон',area:'5,4 м² на фото',poly:[[0,7.7],[2.76,7.7],[2.76,9.59],[0,9.59]],color:'#cfdbc9'}
 ];
-// Existing walls retain every modelled opening. Nothing labelled as verified load-bearing.
+// The closed strip below the bathroom is not circulation. Its purpose is unverified.
+export const excludedAreas=[{id:'service-zone',name:'Закрытая зона по фото · назначение уточнить',x:0,y:2.07,w:1.7,d:.47}];
+// Photo-derived shell; the east bathroom doorway is a proposal pending survey.
 export const walls=[
  {id:'north',a:[-.115,-.115],b:[4.45,-.115],t:.23,kind:'fixed'},
  {id:'west',a:[-.115,-.115],b:[-.115,7.7],t:.23,kind:'fixed'},
@@ -23,9 +25,9 @@ export const walls=[
  {id:'balcorner2',a:[2.56,9.69],b:[2.86,9.69],t:.18,kind:'fixed'},
  {id:'closet-side',a:[2.6,0],b:[2.6,1.0],t:.08,kind:'existing'},
  {id:'closet-east',a:[5.61,3.8],b:[5.61,4.53],t:.08,kind:'existing'},
- {id:'bath-east',a:[1.76,0],b:[1.76,1.95],t:.12,kind:'existing'},
- {id:'bath-south1',a:[0,1.95],b:[.83,1.95],t:.12,kind:'existing'},
- {id:'bath-south2',a:[1.53,1.95],b:[1.76,1.95],t:.12,kind:'existing'},
+ {id:'bath-east-top',a:[1.76,0],b:[1.76,.65],t:.12,kind:'proposed'},
+ {id:'bath-east-bottom',a:[1.76,1.58],b:[1.76,2.6],t:.12,kind:'proposed'},
+ {id:'bath-south',a:[0,2.01],b:[1.76,2.01],t:.12,kind:'existing'},
  {id:'living-north1',a:[0,2.6],b:[2.25,2.6],t:.12,kind:'existing'},
  {id:'living-north2',a:[3.08,2.6],b:[3.33,2.6],t:.12,kind:'existing'},
  {id:'living-step1',a:[3.33,2.6],b:[3.33,4.06],t:.12,kind:'existing'},
@@ -37,10 +39,10 @@ export const walls=[
  {id:'old-facade2',a:[2.1,7.64],b:[3.78,7.64],t:.24,kind:'fixed'},
  {id:'balreturn',a:[2.76,7.76],b:[2.76,8.55],t:.18,kind:'fixed'}
 ];
-export const openings=[{name:'Вход',a:[6.17,2.75],b:[6.17,3.65],type:'door'},{name:'Санузел',a:[.83,1.95],b:[1.53,1.95],type:'door'},{name:'Комната',a:[2.25,2.6],b:[3.08,2.6],type:'door'},{name:'Кухня',a:[4.15,4.59],b:[5,4.59],type:'door'},{name:'Существующий проход',a:[.88,7.64],b:[2.1,7.64],type:'passage'},{name:'Окно кухни',a:[4.15,8.55],b:[5.55,8.55],type:'window'},{name:'Остекление балкона',a:[.2,9.59],b:[2.56,9.59],type:'window'}];
+export const openings=[{name:'Вход',a:[6.17,2.75],b:[6.17,3.65],type:'door'},{name:'Санузел',a:[1.76,.65],b:[1.76,1.58],type:'door',sliding:true,panelX:1.855,proposed:true},{name:'Комната',a:[2.25,2.6],b:[3.08,2.6],type:'door'},{name:'Кухня',a:[4.15,4.59],b:[5,4.59],type:'door'},{name:'Существующий проход',a:[.88,7.64],b:[2.1,7.64],type:'passage'},{name:'Окно кухни',a:[4.15,8.55],b:[5.55,8.55],type:'window'},{name:'Остекление балкона',a:[.2,9.59],b:[2.56,9.59],type:'window'}];
 export const item=(id,type,name,x,y,w,d,h=.8)=>({id,type,name,x,y,w,d,h,front:w>=d?'south':x<1?'east':'west'});
 // Five entirely new couple-focused schemes. Fixed shell remains a photo-derived hypothesis.
-const common=[item('bath','bath','Ванна · 164 × 70',.02,.05,1.64,.7,.55),item('wc','toilet','Унитаз',.17,1.15,.43,.65,.43),item('sinkbath','sink','Раковина',1.1,1.1,.5,.45,.85),{...item('kitchen','kitchen','Кухня · ПММ → мойка → подготовка → плита',5.52,4.88,.6,2.85,.9),modules:[{id:'dishwasher',offset:0,width:.45},{id:'sink',offset:.45,width:.6},{id:'prep',offset:1.05,width:.9},{id:'hob',offset:1.95,width:.6},{id:'drawers',offset:2.55,width:.3}],upper:{offset:0,width:1.05,depth:.34,bottom:1.55,height:.72}},{...item('fridge','fridge','Холодильник · фасад к проходу',5.52,7.8,.6,.6,2.0),front:'west'},{...item('hallward','wardrobe','Общий шкаф · 150 × 68 · раздвижные фасады',2.72,.12,1.5,.68,2.36),doors:'sliding',purpose:'Две секции по 75 см: одежда на плечиках, полки и внутренние ящики.'},item('laundry','washer','Постирочная в нише · подводы уточнить',1.89,.1,.6,.6,.85),item('shoe','cabinet','Обувница со скамьёй · 100 × 30',5,2.43,1,.3,.45),{...item('entryward','coatniche','Открытая ниша · повседневные куртки и сумка',5.67,3.83,.46,.65,1.8),front:'north',purpose:'Только повседневная верхняя одежда; сезонные вещи — в общем шкафу.'}];
+const common=[item('bath','bath','Ванна · 164 × 70',.02,0,1.64,.7,.55),{...item('wc','toilet','Компактный унитаз · 62 см с инсталляцией',.99,1.33,.55,.62,1.12),yaw:Math.PI,front:'north',installation:.14,bowlDepth:.48,purpose:'48 см — чаша; ещё 14 см внутри санузла зарезервировано под инсталляцию и отделку. Точный монтаж проверить.'},{...item('laundry','laundryvanity','Раковина над стиральной машиной · 60 × 60',.04,1.35,.6,.6,.88),yaw:Math.PI,front:'north',washer:{w:.51,d:.475,bodyDepth:.43,h:.70},sink:{w:.6,d:.6,h:.08,bottom:.8},rearGap:.1,purpose:'Компактная машина высотой 70 см, специальная раковина на независимых кронштейнах на высоте 88 см. Задний слив и 10 см резерва под подключения; совместимость комплекта проверить по монтажным схемам.'},{...item('kitchen','kitchen','Кухня · ПММ → мойка → подготовка → плита',5.52,4.88,.6,2.85,.9),modules:[{id:'dishwasher',offset:0,width:.45},{id:'sink',offset:.45,width:.6},{id:'prep',offset:1.05,width:.9},{id:'hob',offset:1.95,width:.6},{id:'drawers',offset:2.55,width:.3}],upper:{offset:0,width:1.05,depth:.34,bottom:1.55,height:.72}},{...item('fridge','fridge','Холодильник · фасад к проходу',5.52,7.8,.6,.6,2.0),front:'west'},{...item('hallward','wardrobe','Общий шкаф · 150 × 68 · раздвижные фасады',2.72,.12,1.5,.68,2.36),doors:'sliding',purpose:'Две секции по 75 см: одежда на плечиках, полки и внутренние ящики.'},item('shoe','cabinet','Обувница со скамьёй · 100 × 30',5,2.43,1,.3,.45),{...item('entryward','coatniche','Открытая ниша · повседневные куртки и сумка',5.67,3.83,.46,.65,1.8),front:'north',purpose:'Только повседневная верхняя одежда; сезонные вещи — в общем шкафу.'}];
 const seat=(id,name,x,y,target)=>({...item(id,'chair',name,x,y,.46,.46,.82),target});
 const dining=[item('table','table','Стол на двоих · 60 × 90',3.9,6.1,.6,.9,.75),seat('chair1','Обеденный стул · лицом к столу',3.97,5.5,'table'),seat('chair2','Обеденный стул · лицом к столу',3.97,7.15,'table')];
 const office=[{...item('baldesk','desk','Стол у окна · 160 × 65',.14,8.86,1.6,.65,.75),yaw:Math.PI},{...seat('balchair','Рабочее кресло у стола',.69,8.05,'baldesk'),w:.55,d:.55,h:.95}];
@@ -80,6 +82,6 @@ for(const v of variants){
  b.name+=' · подъёмное основание';b.storage='lift';b.purpose='Постельное бельё и сезонный текстиль под матрасом; без боковых выдвижных ящиков.';
 }
 
-// Sliding leaves stay on the room side, preserving the narrow hall's footprint.
-export function openingsFor(v){return openings.map(o=>o.name==='Санузел'?{...o,sliding:true,panelY:1.865}:o.name==='Комната'&&v.id==='5'?{...o,sliding:true,panelY:2.695}:o)}
-export function slidingPanels(v){return openingsFor(v).filter(o=>o.sliding).map(o=>({id:'door-'+o.name,x:o.a[0]-(o.b[0]-o.a[0]),y:o.panelY-.015,w:o.b[0]-o.a[0],d:.03,h:2.1}))}
+// Only variant 5 needs a sliding bedroom door. Bathroom slides south along the hall side of its wall.
+export function openingsFor(v){return openings.map(o=>o.name==='Комната'&&v.id==='5'?{...o,sliding:true,panelY:2.695}:o)}
+export function slidingPanels(v){return openingsFor(v).filter(o=>o.sliding).map(o=>o.panelX!==undefined?{id:'door-'+o.name,x:o.panelX-.015,y:o.b[1],w:.03,d:o.b[1]-o.a[1],h:2.1}:{id:'door-'+o.name,x:o.a[0]-(o.b[0]-o.a[0]),y:o.panelY-.015,w:o.b[0]-o.a[0],d:.03,h:2.1})}
