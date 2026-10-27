@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {variants,walls,outline,excludedAreas,openingsFor,wallsFor,slidingPanels,storagePlan} from './data.js';
-import {ergonomicStudy,refinedIds} from './ergonomics.js';
+import {ergonomicStudy,refinedIds,furnitureAudit} from './ergonomics.js';
 const wr=w=>({x:Math.min(w.a[0],w.b[0])-w.t/2,y:Math.min(w.a[1],w.b[1])-w.t/2,w:Math.abs(w.a[0]-w.b[0])+w.t,d:Math.abs(w.a[1]-w.b[1])+w.t,id:w.id});
 const hits=(a,b)=>a.x+a.w>b.x+1e-6&&b.x+b.w>a.x+1e-6&&a.y+a.d>b.y+1e-6&&b.y+b.d>a.y+1e-6;
 const inside=(x,y)=>{let yes=false;for(let i=0,j=outline.length-1;i<outline.length;j=i++){const a=outline[i],b=outline[j];if((a[1]>y)!==(b[1]>y)&&x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0])yes=!yes}return yes};
@@ -28,7 +28,7 @@ for(const id of refinedIds){const v=variants.find(v=>v.id===id),study=ergonomicS
  assert.equal(v.furniture.find(f=>f.id==='fridge').front,'west');
  assert.equal(v.furniture.find(f=>f.id==='entryward').type,'coatniche');
  // The revision must actually remove bulk, not just repaint the original wardrobes.
- const storage=storagePlan(v);assert.equal(storage.tallCount,id==='3'?2:1);
+ const storage=storagePlan(v);assert.equal(storage.tallCount,id==='3'?3:2);
  assert(!v.furniture.some(f=>f.type==='wardrobe'&&f.y>=4.4),'Tall wardrobe remains by bed');
  for(const f of v.furniture.filter(f=>f.type==='wardrobe'))assert(f.h<=2.4&&Math.min(f.w,f.d)>=.58);
  for(const f of v.furniture.filter(f=>f.type==='dresser')){
@@ -58,6 +58,19 @@ for(const id of refinedIds){const v=variants.find(v=>v.id===id),study=ergonomicS
  const parked=slidingPanels(v).find(p=>p.id==='door-Санузел');assert(parked.x>=1.82&&parked.y+parked.d<=2.54);
  // Test every intermediate position of the sliding leaf against the shell and furniture.
  for(let i=0;i<=50;i++){const leaf={...parked,y:bathroomDoor.a[1]+(parked.y-bathroomDoor.a[1])*i/50};for(const o of[...ww,...v.furniture,...excludedAreas])assert(!hits(leaf,o),`${id} moving bathroom leaf hits ${o.id}`);}
+ // Every object has a purpose and at least one audited approach or activity zone.
+ const audit=furnitureAudit(v);assert.equal(audit.length,v.furniture.length);for(const row of audit)assert(row.covered,`${id}/${row.id} has no functional audit`);
+ assert.equal(v.furniture.find(f=>f.id==='shoe').type,'shoerack');
+ if(v.furniture.some(f=>f.id==='tv'))assert.equal(v.furniture.find(f=>f.id==='tv').type,'tvconsole');
+ const utility=v.furniture.find(f=>f.id==='utility');assert(utility.d<=.6&&utility.x>=1.89);assert(wallsFor(v).find(w=>w.id==='closet-side').b[1]<=.64);
+ const utilityOpen=study.zones.find(z=>z.id==='utility-open'),utilityUse=study.zones.find(z=>z.id==='utility-use');assert(!hits(utilityOpen,utilityUse));
+ // Both utility leaves clear the bathroom leaf in both open and closed positions.
+ for(const side of[-1,1])for(let angle=0;angle<=Math.PI/2;angle+=Math.PI/180)for(let radius=0;radius<=utility.w/2;radius+=.01){const hingeX=side<0?utility.x:utility.x+utility.w,x=hingeX-side*Math.cos(angle)*radius,y=utility.y+utility.d+.02+Math.sin(angle)*radius;for(const o of[...ww,...v.furniture.filter(f=>f.id!=='utility'),...slidingPanels(v),{...parked,y:bathroomDoor.a[1]}])assert(!hits({x:x-.008,y:y-.008,w:.016,d:.016},o),`${id} utility door hits ${o.id}`);}
+ for(const opening of openingsFor(v).filter(o=>o.sliding)){
+  const parked=slidingPanels(v).find(p=>p.id==='door-'+opening.name),vertical=opening.panelX!==undefined;
+  for(let i=0;i<=50;i++){const leaf={...parked,[vertical?'y':'x']:(vertical?opening.a[1]:opening.a[0])+(parked[vertical?'y':'x']-(vertical?opening.a[1]:opening.a[0]))*i/50};for(const o of[...ww,...v.furniture])assert(!hits(leaf,o),`${id} ${opening.name} moving leaf hits ${o.id}`);}
+  const closed={...parked,[vertical?'y':'x']:vertical?opening.a[1]:opening.a[0]};for(const z of study.zones.filter(z=>z.id.startsWith('bed-')))assert(!hits(closed,z),`${id} closed door reduces advertised bed approach`);
+ }
  // Daily dishwasher loading remains independent of both dining chairs.
  const load=study.zones.find(z=>z.id==='dishwasher-load'),door=study.zones.find(z=>z.id==='dishwasher-open');
  assert(!hits(load,door));assert.equal(v.furniture.filter(f=>f.type==='shelf').length,2);
@@ -76,6 +89,6 @@ for(const id of refinedIds){const v=variants.find(v=>v.id===id),study=ergonomicS
  const washSeen=new Uint8Array(nx*ny),washQ=[start];washSeen[start]=1;
  for(let n=0;n<washQ.length;n++){const a=washQ[n];for(const b of[a-1,a+1,a-nx,a+nx]){if(b<0||b>=valid.length||!valid[b]||washSeen[b])continue;const body={x:b%nx*step-r,y:Math.floor(b/nx)*step-r,w:r*2,d:r*2};if(hits(body,hatch))continue;washSeen[b]=1;washQ.push(b)}}
  assert(washQ.some(i=>Math.hypot(i%nx*step-(washing.x+washing.w/2),Math.floor(i/nx)*step-(washing.y+washing.d/2))<=.08),`${id} washer cannot be loaded with hatch open`);
- console.log(`PASS ${id}: bathroom unit, plumbing reserve, moving door and open-hatch loading; empty use/opening zones, both bed approaches ≥60 cm, bed foot ≥65/75 cm, compact kitchen ≥98 cm, connected 60 cm routes.`);
+ console.log(`PASS ${id}: ${audit.length} objects individually covered; utility and all partition leaves checked; bathroom unit, plumbing reserve, moving door and open-hatch loading; empty use/opening zones, both bed approaches ≥60 cm, bed foot ≥65/75 cm, compact kitchen ≥98 cm, connected 60 cm routes.`);
 }
 assert.equal(refinedIds.length,5);

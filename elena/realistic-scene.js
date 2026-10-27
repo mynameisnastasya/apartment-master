@@ -166,6 +166,11 @@ export function createApartmentViewer(host,{onSelect,onError}){
    for(let i=0;i<n;i++){const x=-W/2+.125+cw*(i+.5);b(x,.345,.055,cw-.014,.18,D-.23,linen,.065);const back=b(x,.46,-D/2+.135,cw-.014,.35,.21,linen,.07);back.rotation.x=-.12;}
    for(const x of[-W/2+.06,W/2-.06])b(x,.27,0,.12,.34,D-.035,linen,.05);
    pillow(group,-W*.27,.51,-D*.13,.35,.33,options.variant.color,-.8);pillow(group,W*.27,.51,-D*.14,.32,.3,'#b18c6e',-.65);
+   if(f.armTray){b(W/2-.12,.61,0,.2,.022,.36,oak,.008);cyl(group,W/2-.12,.632,.06,.035,.075,white);}
+  }else if(f.type==='chair'&&f.target?.startsWith('baldesk')){
+   cyl(group,0,.09,0,.035,.34,metal);for(let i=0;i<5;i++){const a=i*TAU/5,x=Math.sin(a)*.235,z=Math.cos(a)*.235;rod(group,[0,.14,0],[x,.075,z],.018,metal);ball(group,x,.052,z,.055,.065,.055,dark);}
+   b(0,.435,.015,W-.035,.075,D-.055,linen,.04);
+   b(0,.53,-D*.34,W-.05,.39,.075,linen,.04);rod(group,[0,.22,0],[0,.7,-D*.34],.022,metal);
   }else if(f.type==='chair'){
    for(const x of[-W*.31,W*.31])for(const z of[-D*.3,D*.3])leg(x,z,.43);
    b(0,.425,0,W-.03,.065,D-.035,mat('linen','#b7b49e'),.032);
@@ -174,7 +179,7 @@ export function createApartmentViewer(host,{onSelect,onError}){
    for(let i=0;i<curve.length-1;i++){const a=curve[i],c=curve[i+1];const slat=b((a.x+c.x)/2,.53,(a.y+c.y)/2,(c.x-a.x)+.004,.27,.055,mat('linen','#b7b49e'),.017);slat.rotation.y=-Math.atan2(c.y-a.y,c.x-a.x)}
    for(const x of[-W*.36,W*.36])rod(group,[x,.42,-D*.31],[x,.76,-D*.34],.014,oak);
   }else if(f.type==='shelf'){
-   b(0,f.h-.035,0,W,.035,D,oak,.012);
+   b(0,f.h-.035,0,W,.035,D,oak,.012);if(f.mount==='west')b(-W/2-.008,f.h-.15,0,.025,.12,D*.6,metal,.002);else if(f.mount==='north')b(0,f.h-.15,-D/2-.01,W*.6,.12,.03,metal,.002);else for(const x of[-W*.35,W*.35])for(const z of[-D*.35,D*.35])leg(x,z,f.h-.035);
   }else if(f.type==='table'||f.type==='desk'){
    const topMat=f.h<.5?stone:oak;b(0,f.h-.035,0,W,.035,D,topMat,.017);
    for(const x of[-W*.39,W*.39])for(const z of[-D*.34,D*.34])leg(x,z,f.h-.035);
@@ -195,6 +200,14 @@ export function createApartmentViewer(host,{onSelect,onError}){
     b(-W/2-.002,y,z,.016,rowH-.006,D/columns-.008,finish,.003);
     b(-W/2-.013,y+rowH-.035,z,.012,.008,Math.min(.24,D/columns*.6),metal,.002);
    }
+  }else if(f.type==='shoerack'){
+   const finish=mat('plaster','#e5dfd4');for(const x of[-W/2+.012,W/2-.012])b(x,.04,0,.024,f.h-.04,D,finish,.003);
+   for(const y of[.055,.235,f.h-.025])b(0,y,0,W,.025,D,finish,.004);
+   for(const x of[-.28,-.08,.18,.34])ball(group,x,.105,.02,.11,.09,.25,mat('linen','#a89f91'));
+  }else if(f.type==='tvconsole'){
+   b(0,f.h-.035,0,W,.035,D,oak,.005);
+   b(-W/2-.015,.75,0,.025,.52,D*.96,dark,.009);b(-W/2-.03,.765,0,.002,.48,D*.92,mat('screen','#333c3a'),.001);
+   b(0,f.h,-D*.28,W*.8,.025,.14,mat('plain','#b69773'),.003);
   }else if(f.type==='coatniche'){
    // Existing walls enclose the niche; no full-height carcass or curtain box.
    b(0,.08,0,W,.3,D,mat('plaster','#e5dfd4'),.008);b(0,.38,0,W,.035,D,oak,.008);
@@ -204,7 +217,7 @@ export function createApartmentViewer(host,{onSelect,onError}){
     tube(group,[[x-.08,1.43,.04],[x,1.55,.04],[x+.08,1.43,.04]],.006,metal);
     b(x,.65,.04,.16,.76,.08,mat('linen',x<0?'#b8b5a9':'#d9cfc0'),.03);
    }
-  }else if(['wardrobe','cabinet','fridge','foldbed'].includes(f.type)){
+  }else if(['wardrobe','utility','cabinet','fridge','foldbed'].includes(f.type)){
    const finish=mat('plaster','#e5dfd4');
    if(f.doors==='open'){
     b(-W/2+.01,.055,0,.02,f.h-.055,D,finish,.003);
@@ -214,12 +227,12 @@ export function createApartmentViewer(host,{onSelect,onError}){
     rod(group,[0,1.8,-D/2+.05],[0,1.8,-.05],.012,metal);
     for(let i=0;i<4;i++)b(0,.85,-D/2+.15+i*.13,W*.7,.8,.035,mat('linen',i%2?'#bcb6a9':'#d9d0c0'),.012);
    }else b(0,.055,0,W,f.h-.055,D,finish,.007);
-   const horizontal=['north','south'].includes(f.front),front=['south','east'].includes(f.front)?1:-1,length=horizontal?W:D,n=f.doors==='sliding'?2:Math.max(1,Math.round(length/.55));
+   const horizontal=['north','south'].includes(f.front),front=['south','east'].includes(f.front)?1:-1,length=horizontal?W:D,n=['sliding','hinged-pair'].includes(f.doors)?2:Math.max(1,Math.round(length/.55));
    for(let i=0;f.doors!=='open'&&i<n;i++){
     const a=-length/2+(i+.5)*length/n;
     const face=f.curtain?mat('linen','#d5cdbc'):f.type==='fridge'?mat('plain','#d8d3c6'):mat('plaster','#e5dfd4');
-    if(horizontal){b(a,.075,front*(D/2+.002),length/n-.004,f.h-.085,.018,face,.002);if(!f.curtain)b(a+length/n*.28,.82,front*(D/2+.016),.009,.22,.018,metal,.003)}
-    else{b(front*(W/2+.002),.075,a,.018,f.h-.085,length/n-.004,face,.002);b(front*(W/2+.016),.82,a+length/n*.28,.018,.22,.009,metal,.003)}
+    if(horizontal){b(a,.075,front*(D/2+.002),length/n-.004,f.h-.085,.018,face,.002);if(!f.curtain)b(a+length/n*.28,Math.min(.82,f.h-.24),front*(D/2+.016),.009,.22,.018,metal,.003)}
+    else{b(front*(W/2+.002),.075,a,.018,f.h-.085,length/n-.004,face,.002);b(front*(W/2+.016),Math.min(.82,f.h-.24),a+length/n*.28,.018,.22,.009,metal,.003)}
    }
    if(f.curtain){for(let x=-W/2+.025;x<W/2;x+=.045)b(x,.08,-D/2-.008,.028,f.h-.12,.024,linen,.01)}
    if(f.type==='fridge')b(-W/2-.015,.68,0,.005,.006,D-.02,metal,.001);
@@ -327,9 +340,9 @@ export function createApartmentViewer(host,{onSelect,onError}){
     for(let i=0;i<=3;i++)box(g,-len/2+i*len/3,.69,0,.045,1.77,.07,frame,.003);
     for(const y of[.69,2.42])box(g,0,y,0,len,.045,.07,frame,.003);
     if(!options.cutaway){box(g,0,2.46,0,len,.14,.18,mat('plaster','#e8e0d3'));for(const side of[-1,1])curtain(g.position.x+side*(len/2-.14),g.position.z-.17,.34);}
-   }else if(!options.cutaway){const frame=o.name==='Санузел'?mat('plaster','#e7e0d4'):mat('oak','#d3c1a5');for(const x of[-len/2+.015,len/2-.015])box(g,x,0,0,.035,2.18,.15,frame,.003);box(g,0,2.17,0,len,.04,.15,frame,.003);box(g,0,2.22,0,len,.38,.12,mat('plaster','#e8e1d5'));}
+   }else if(!options.cutaway){const frame=o.glass?mat('metal','#504c41'):o.name==='Санузел'?mat('plaster','#e7e0d4'):mat('oak','#d3c1a5');for(const x of[-len/2+.015,len/2-.015])box(g,x,0,0,.035,2.18,.15,frame,.003);box(g,0,2.17,0,len,.04,.15,frame,.003);box(g,0,2.22,0,len,.38,.12,mat('plaster','#e8e1d5'));}
   }
-  if(!options.cutaway){for(const p of slidingPanels(options.variant)){box(root,p.x+p.w/2,.03,p.y+p.d/2,p.w,2.1,p.d,p.id==='door-Санузел'?mat('plaster','#e7e0d4'):mat('oak','#c6a982'),.003);box(root,p.w<p.d?p.x+p.w/2:p.x+p.w,2.18,p.w<p.d?p.y:p.y+p.d/2,p.w<p.d?.04:p.w*2,.025,p.w<p.d?p.d*2:.04,mat('metal','#71624f'),.002)}}
+  if(!options.cutaway){for(const p of slidingPanels(options.variant)){if(p.glass){for(const x of[p.x,p.x+p.w])box(root,x,.03,p.y+p.d/2,.018,2.1,.035,mat('metal','#504c41'),.002);for(const y of[.03,2.1])box(root,p.x+p.w/2,y,p.y+p.d/2,p.w,.018,.035,mat('metal','#504c41'),.002);}box(root,p.x+p.w/2,.03,p.y+p.d/2,p.w,2.1,p.d,p.glass?mat('glass','#c6dad8'):mat('plaster','#e7e0d4'),.003);box(root,p.w<p.d?p.x+p.w/2:p.x+p.w,2.18,p.w<p.d?p.y:p.y+p.d/2,p.w<p.d?.04:p.w*2,.025,p.w<p.d?p.d*2:.04,mat('metal','#71624f'),.002)}}
   if(!options.cutaway){
    // Window-facing wall art and a ceiling track anchor the eye-level scale.
    box(root,.014,1.08,3.58,.018,.7,.62,mat('oak','#a08d72'),.002);
