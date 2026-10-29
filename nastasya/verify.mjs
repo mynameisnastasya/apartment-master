@@ -1,0 +1,44 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {spawn} from 'node:child_process';
+const server=spawn(process.execPath,['scripts/serve.mjs'],{stdio:'ignore'});let browser;
+const base='http://127.0.0.1:4173/nastasya.html';fs.mkdirSync('test-results/nastasya',{recursive:true});
+try{
+ let up=false;
+ for(let i=0;i<70;i++){try{if((await fetch(base)).ok){up=true;break}}catch{}await new Promise(r=>setTimeout(r,180))}
+ assert(up,'local server not ready');
+ browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-angle=swiftshader','--enable-webgl']});
+ let page=await browser.newPage({viewport:{width:1440,height:950},deviceScaleFactor:1});
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(base);await page.waitForFunction(()=>window.nastasyaDebug);
+ assert.equal((await page.evaluate(()=>nastasyaDebug.getState())).view,'2d');
+ assert.equal(await page.locator('#plan svg [data-piece]').count(),18);
+ assert.equal(await page.locator('#room-pills button').count(),9);
+ await page.locator('[data-room="bedroom"]').first().click();
+ assert.equal((await page.evaluate(()=>nastasyaDebug.getState())).room,'bedroom');
+ assert.match(await page.locator('#room-detail').innerText(),/160 × 200/);
+ const download=page.waitForEvent('download');
+ await page.locator('#download-plan').click();const file=await download;assert.equal(file.suggestedFilename(),'nastasya-apartment-plan.svg');
+ await page.locator('#toggle-furniture').uncheck();assert.equal(await page.locator('#plan svg [data-piece]').count(),0);
+ await page.locator('#toggle-furniture').check();
+ await page.locator('#toggle-proposal').uncheck();assert.equal(await page.locator('#plan svg .proposal').count(),0);
+ await page.locator('#toggle-proposal').check();
+ await page.locator('#tab-3d').click();await page.waitForFunction(()=>nastasyaDebug.getState().viewerReady,{timeout:35000});
+ assert.equal(await page.locator('#scene-shell canvas').count(),1);
+ await page.locator('#room-pills button[data-room="kitchen"]').click();
+ assert.equal((await page.evaluate(()=>nastasyaDebug.getState())).room,'kitchen');
+ await page.locator('#toggle-walls').uncheck();await page.locator('#zoom-in').click();await page.locator('#reset').click();
+ await page.locator('#toggle-walls').check();
+ await page.locator('#scene-shell').screenshot({path:'test-results/nastasya/3d-desktop.png'});
+ await page.locator('#tab-2d').click();assert(await page.locator('#plan svg').isVisible());
+ await page.locator('#plan-shell').screenshot({path:'test-results/nastasya/plan-desktop.png'});
+ await page.close();
+ page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(base+'?room=dressing');await page.waitForFunction(()=>window.nastasyaDebug);
+ assert.equal((await page.evaluate(()=>nastasyaDebug.getState())).room,'dressing');
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'mobile horizontal overflow');
+ await page.screenshot({path:'test-results/nastasya/mobile.png',fullPage:true});
+ assert.deepEqual(errors,[]);
+ console.log('PASS: Nastасья 2D, SVG export, room navigation, interactive 3D, camera controls, mobile 390px and error-free browser.');
+}finally{await browser?.close();server.kill('SIGTERM')}
