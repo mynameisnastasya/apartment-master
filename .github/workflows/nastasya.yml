@@ -1,0 +1,26 @@
+name: Nastасья apartment checks
+on:
+  push:
+    paths: ['nastasya/**','nastasya.html','.github/workflows/nastasya.yml']
+  pull_request:
+    paths: ['nastasya/**','nastasya.html','.github/workflows/nastasya.yml']
+permissions:
+  contents: read
+jobs:
+  apartment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node nastasya/qa.mjs
+      - run: npx playwright install --with-deps chromium
+      - run: node nastasya/verify.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nastasya-apartment-desktop-and-mobile
+          path: test-results/nastasya/
