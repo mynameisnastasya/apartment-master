@@ -15,7 +15,7 @@ try{
  assert.equal((await page.evaluate(()=>nastasyaDebug.getState())).view,'2d');
  assert.equal(await page.locator('#plan svg [data-piece]').count(),18);
  assert.equal(await page.locator('#room-pills button').count(),9);
- await page.locator('[data-room="bedroom"]').first().click();
+ await page.locator('#plan svg rect[data-room="bedroom"]').focus();await page.keyboard.press('Enter');
  assert.equal((await page.evaluate(()=>nastasyaDebug.getState())).room,'bedroom');
  assert.match(await page.locator('#room-detail').innerText(),/160 × 200/);
  const download=page.waitForEvent('download');
