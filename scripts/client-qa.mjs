@@ -17,9 +17,9 @@ try {
   await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:`browser-client-artifacts/case-${label}.png`,fullPage:true});
   await page.goto(base+'/engineering.html#E03');assert.equal(await page.locator('#sheet-caption').innerText(),'E03 / Функциональная схема групп и баланс нагрузок');
   await page.locator('[data-sheet="A01"]').click();assert.equal(new URL(page.url()).hash,'#A01');
-  await page.goBack();assert.equal(await page.locator('#sheet-caption').innerText(),'E03 / Функциональная схема групп и баланс нагрузок');
-  await page.goForward();assert.ok((await page.locator('#sheet-caption').innerText()).startsWith('A01 /'));
-  await page.evaluate(()=>{location.hash='#E04'});assert.ok((await page.locator('#sheet-caption').innerText()).startsWith('E04 /'));
+  await page.goBack();await page.waitForFunction(()=>document.querySelector('#sheet-caption').textContent==='E03 / Функциональная схема групп и баланс нагрузок');
+  await page.goForward();await page.waitForFunction(()=>document.querySelector('#sheet-caption').textContent.startsWith('A01 /'));
+  await page.evaluate(()=>{location.hash='#E04'});await page.waitForFunction(()=>document.querySelector('#sheet-caption').textContent.startsWith('E04 /'));
   const tabs=page.locator('[data-sheet]');assert.equal(await tabs.count(),22);
   for(const tab of await tabs.all()){await tab.click();await page.locator('#sheet-image').evaluate(i=>i.decode());}
   await page.locator('[data-sheet="A01"]').click();
