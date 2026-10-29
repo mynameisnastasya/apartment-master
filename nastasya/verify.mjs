@@ -24,7 +24,7 @@ try{
  await page.locator('#toggle-furniture').check();
  await page.locator('#toggle-proposal').uncheck();assert.equal(await page.locator('#plan svg .proposal').count(),0);
  await page.locator('#toggle-proposal').check();
- await page.locator('#tab-3d').click();await page.waitForFunction(()=>nastasyaDebug.getState().viewerReady,{timeout:35000});
+ await page.locator('#tab-3d').click();try{await page.waitForFunction(()=>nastasyaDebug.getState().viewerReady,null,{timeout:20000})}catch(e){console.error('3D STATUS:',await page.locator('#scene-shell').innerText(),'BROWSER ERRORS:',errors);throw e}
  assert.equal(await page.locator('#scene-shell canvas').count(),1);
  await page.locator('#room-pills button[data-room="kitchen"]').click();
  assert.equal((await page.evaluate(()=>nastasyaDebug.getState())).room,'kitchen');
