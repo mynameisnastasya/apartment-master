@@ -70,7 +70,7 @@ export function createViewer(host,{room='all',furniture=true,cutaway=true,propos
    if(len>1.4&&Math.abs(Z-z)<.01)box(g,(x+X)/2-.015,z-.035,.03,.07,settings.cutaway?.6:2.2,white);
   }
   if(settings.proposal){
-   const marker=new THREE.Mesh(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(2.17,.06,4.03),new THREE.Vector3(4.61,.06,4.03)]),new THREE.LineDashedMaterial({color:'#b57a55',dashSize:.15,gapSize:.09}));
+   const marker=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(2.17,.06,4.03),new THREE.Vector3(4.61,.06,4.03)]),new THREE.LineDashedMaterial({color:'#b57a55',dashSize:.15,gapSize:.09}));
    marker.computeLineDistances();g.add(marker);
   }
  }
