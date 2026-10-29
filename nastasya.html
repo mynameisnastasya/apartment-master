@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f2eee7">
+<meta name="description" content="Квартира Настасьи: интерактивная планировка 2D, меблированная объёмная 3D-модель, размеры и решения по комнатам. Эскиз по исходным скриншотам.">
+<title>Квартира Настасьи · Планировка и 3D</title>
+<link rel="stylesheet" href="nastasya/style.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"}}</script>
+<script type="module" src="nastasya/app.js"></script>
+</head>
+<body>
+<header class="top">
+ <a href="index.html" class="smallbrand" aria-label="Главная страница проектов">⌑ <span>ИНТЕРЬЕР / ПРОЕКТЫ</span></a>
+ <span class="projectflag">НАСТАСЬЯ / ИНТЕРАКТИВНЫЙ ЭСКИЗ</span>
+ <a class="repo" href="https://github.com/mynameisnastasya/apartment-master/tree/main/nastasya" target="_blank" rel="noopener">Исходники на GitHub ↗</a>
+</header>
+<main>
+ <section class="hero">
+  <div><p class="eyebrow">ЧАСТНЫЙ ИНТЕРЬЕР · КОНЦЕПЦИЯ</p>
+  <h1>Квартира <em>Настасьи.</em></h1>
+  <p class="lead">Логика пространства — без лишнего. Отдельная кухня, уютная гостиная, спокойная спальня, балкон и полноценная гардеробная.</p></div>
+  <div class="hero-aside"><span>ПЛАНИРОВКА ПО РЕФЕРЕНСУ</span><strong>2D <i>+</i> 3D</strong><small>Одна модель для плана и объёмной сцены</small></div>
+ </section>
+ <section class="workspace" aria-label="Интерактивная модель квартиры">
+  <div class="workspace-top">
+   <div><p class="eyebrow">01 / ПРОСТРАНСТВО</p><h2>Посмотрите каждый угол.</h2></div>
+   <div class="switch" aria-label="Режим просмотра">
+    <button id="tab-2d" type="button" aria-pressed="true">План 2D</button>
+    <button id="tab-3d" type="button" aria-pressed="false">Объёмная 3D-модель</button>
+   </div>
+  </div>
+  <div class="viewer">
+   <div class="viewer-main">
+    <div id="plan-shell" class="plan-shell" role="region" aria-label="План квартиры по изображению">
+      <div id="plan" class="plan"></div>
+    </div>
+    <div id="scene-shell" class="scene-shell" hidden role="region" aria-label="Объёмная 3D-модель квартиры"></div>
+    <div class="viewer-bottom">
+     <span id="view-hint">Выберите помещение на плане, чтобы рассмотреть детали</span>
+     <div class="zoom" aria-label="Управление моделью">
+      <button id="zoom-out" aria-label="Отдалить">−</button>
+      <button id="zoom-in" aria-label="Приблизить">+</button>
+      <button id="reset" aria-label="Вернуть общий вид">↺</button>
+     </div>
+    </div>
+   </div>
+   <aside class="inspector">
+    <p class="eyebrow">02 / ПОМЕЩЕНИЯ</p>
+    <h3>Выберите комнату</h3>
+    <div id="room-pills" class="room-pills"></div>
+    <div class="room-focus">
+     <span class="room-focus-top">СЕЙЧАС В ФОКУСЕ</span>
+     <h4 id="room-name">Вся квартира</h4>
+     <strong id="room-area">План по скриншоту</strong>
+     <p id="room-detail">Общий обзор. Выберите комнату справа или на плане для детального просмотра.</p>
+     <p id="room-furniture"></p>
+    </div>
+    <div class="toggle-group">
+      <label><input id="toggle-furniture" type="checkbox" checked> <span>Показать мебель</span></label>
+      <label><input id="toggle-walls" type="checkbox" checked> <span>Стены в разрезе <small>(только 3D)</small></span></label>
+      <label><input id="toggle-proposal" type="checkbox" checked> <span>Показать условное раскрытие гостиной</span></label>
+    </div>
+    <div class="downloads">
+      <button id="download-plan" type="button">↓ Скачать план SVG</button>
+      <button id="copy-link" type="button">↗ Скопировать ссылку</button>
+    </div>
+    <p class="precision"><span class="precision-dot"></span> Эскиз по присланным изображениям. Размерные цепочки, перегородки и сантехника требуют обмера и проверки перед ремонтом.</p>
+   </aside>
+  </div>
+ </section>
+ <section class="essentials">
+   <div class="eyebrow">03 / ПЛАНИРОВОЧНАЯ ЛОГИКА</div>
+   <div class="essentials-grid">
+    <article><span>01</span><h3>Отдельная кухня</h3><p>Рабочая линия без пересечений с диванной зоной. Сохранено её положение слева по исходному плану.</p></article>
+    <article><span>02</span><h3>Гостиная в центре</h3><p>Диван и ТВ друг напротив друга. Штриховая линия — идея раскрытия к прихожей, не согласованный снос стены.</p></article>
+    <article><span>03</span><h3>Спальня и балкон</h3><p>Кровать 160 × 200, компактные тумбы и балкон над спальней. Геометрия проёмов уточняется.</p></article>
+    <article><span>04</span><h3>Гардеробная</h3><p>Хранение 270 × 60 вдоль дальней стены. Для заказа важны фактические ширина прохода и монтажные зазоры.</p></article>
+   </div>
+ </section>
+ <footer><p>КОНЦЕПЦИЯ / 29.10.2026</p><p>Не обмерный чертёж · не рабочая документация · без подтверждённой конструктивной экспертизы</p><a href="#top" id="to-top">Наверх ↑</a></footer>
+</main>
+</body>
+</html>
