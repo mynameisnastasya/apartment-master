@@ -1,41 +1,42 @@
 import {createApartmentViewer} from './scene.js';
-import {outline,rooms,walls,removedWalls,openings,slidingPanels,furniture,zones,variant,cameras} from './data.js';
+import {outline,rooms,walls,removedWalls,openings,slidingPanels,furniture,zones,variant,cameras,furnitureFootprints} from './data.js';
 const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let mode='plan',viewer=null,preset='overview',cutaway=true,ergo=false,changes=true,planZoom=1,selected=null,sceneDirty=true,storageOpen=false;
 const line=(a,b,color,width,extra='')=>`<line x1="${a[0]*100}" y1="${a[1]*100}" x2="${b[0]*100}" y2="${b[1]*100}" stroke="${color}" stroke-width="${width}" ${extra}/>`;
-const text=(s,x,y,size=12,color='#4a5546')=>`<text x="${x*100}" y="${y*100}" text-anchor="middle" font-size="${size}" fill="${color}">${esc(s)}</text>`;
-const rect=(x,y,w,d,fill,stroke='#a09d8d',r=2)=>`<rect x="${x*100}" y="${y*100}" width="${w*100}" height="${d*100}" rx="${r}" fill="${fill}" stroke="${stroke}" stroke-width="1"/>`;
+const text=(s,x,y,size=12,color='#4a4d51')=>`<text x="${x*100}" y="${y*100}" text-anchor="middle" font-size="${size}" fill="${color}">${esc(s)}</text>`;
+const rect=(x,y,w,d,fill,stroke='#979a9e',r=2)=>`<rect x="${x*100}" y="${y*100}" width="${w*100}" height="${d*100}" rx="${r}" fill="${fill}" stroke="${stroke}" stroke-width="1"/>`;
 function svgPlan(){
- let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="-65 -65 945 820" role="img" aria-label="План квартиры: спальня справа, гостиная в центре, кухня слева"><style>text{font-family:Arial,sans-serif}.furn{cursor:pointer}.furn:focus{outline:none}.furn:focus>rect:first-of-type{stroke:#986c47;stroke-width:3}</style><defs><pattern id="wood" width="30" height="100" patternUnits="userSpaceOnUse"><rect width="30" height="100" fill="#ddcdb4"/><path d="M0 0V100M0 50H30M5 0V45M20 55V100" stroke="#baa98f" stroke-opacity=".23" stroke-width=".7"/></pattern><pattern id="tile" width="55" height="55" patternUnits="userSpaceOnUse"><rect width="55" height="55" fill="#e5dfd2"/><path d="M0 0H55V55" fill="none" stroke="#bfb9ac" stroke-opacity=".4" stroke-width=".6"/></pattern></defs>`;
- s+=`<polygon points="${outline.map(p=>p.map(n=>n*100).join(',')).join(' ')}" fill="#e4ded1"/>`;
+ let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="-65 -65 945 820" role="img" aria-label="План квартиры: спальня справа, гостиная в центре, кухня слева"><style>text{font-family:Arial,sans-serif}.furn{cursor:pointer}.furn:focus{outline:none}.furn:focus>rect:first-of-type{stroke:#6c6f73;stroke-width:3}</style><defs><pattern id="wood" width="120" height="120" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="120" height="120" fill="#b9c0c8"/>${Array.from({length:10},(_,i)=>[-1,0,1].map(k=>`<rect x="${i*12+k*120}" y="${i*12}" width="60" height="12" fill="${i%2?'#bdc3cc':'#b2bac4'}" stroke="#98a2ae" stroke-width=".35"/><rect x="${i*12}" y="${(i+1)*12+k*120}" width="12" height="60" fill="${i%2?'#c3c9d1':'#b7bec8'}" stroke="#98a2ae" stroke-width=".35"/>`).join('')).join('')}</pattern><pattern id="tile" width="55" height="55" patternUnits="userSpaceOnUse"><rect width="55" height="55" fill="#dbdee2"/><path d="M0 0H55V55" fill="none" stroke="#b5b8bc" stroke-opacity=".4" stroke-width=".6"/></pattern></defs>`;
+ s+=`<polygon points="${outline.map(p=>p.map(n=>n*100).join(',')).join(' ')}" fill="#dadde1"/>`;
  for(const r of rooms)s+=`<polygon points="${r.poly.map(p=>p.map(n=>n*100).join(',')).join(' ')}" fill="${['living','bedroom','wardrobe'].includes(r.id)?'url(#wood)':['bath','wc'].includes(r.id)?r.color:'url(#tile)'}"/>`;
- for(const f of furniture){s+=`<g class="furn" tabindex="0" role="button" aria-label="${esc(f.name)}" data-item="${f.id}"><title>${esc(f.name)}</title>`+rect(f.x,f.y,f.w,f.d,f.id===selected?'#e7d1ac':f.type==='bed'?'#f3efe6':f.type==='sofa'?'#bdc5ad':['wardrobe','utility'].includes(f.type)?'#d8cdb9':'#f6f2e9');
-  if(f.type==='bed'){s+=rect(f.x+.08,f.y+.08,f.w-.16,f.d-.16,'#f6f3eb');s+=rect(f.x+.12,f.y+.1,.6,f.d-.2,'#aeb89d');for(const yy of[f.y+.15,f.y+.91])s+=rect(f.x+f.w-.53,yy,.39,.60,'#fffdf7','#d5d0c5',7);s+=text('160 × 200',f.x+.95,f.y+.87,12);}
-  else if(f.type==='sofa'){s+=rect(f.x+.04,f.y+.08,.15,f.d-.16,'#a6b194');for(const yy of[f.y+.15,f.y+.93])s+=rect(f.x+.22,yy,.52,.68,'#c5ccb9','#a6ae9b',6);}
-  else if(f.type==='kitchen'){for(const m of f.modules){const y=f.y+f.d-m.offset-m.width;s+=line([f.x,y],[f.x+f.w,y],'#ad9f86',.8);if(m.id==='sink')s+=rect(f.x+.09,y+.08,.42,.44,'#b5c5bf','#85958b',6);if(m.id==='hob'){s+=rect(f.x+.06,y+.04,.48,.52,'#50594e','#50594e',2);for(const xx of[.18,.43])for(const yy of[.17,.42])s+=`<circle cx="${(f.x+xx)*100}" cy="${(y+yy)*100}" r="7" fill="none" stroke="#adb6a8"/>`;}}}
-  else if(f.type==='desk'){s+=rect(f.x+.35,f.y+.08,.5,.08,'#566356','#566356');s+=rect(f.x+.38,f.y+.28,.35,.1,'#d6d8ca');}
-  else if(f.type==='chair'){const t=furniture.find(t=>t.id===f.target),cx=f.x+f.w/2,cy=f.y+f.d/2,a=Math.atan2(t.x+t.w/2-cx,t.y+t.d/2-cy),dx=Math.sin(a),dy=Math.cos(a),r=.17;s+=line([cx-dx*r-dy*r,cy-dy*r+dx*r],[cx-dx*r+dy*r,cy-dy*r-dx*r],'#7d8b74',4);}
-  else if(f.type==='wardrobe'){let x=f.x;for(const bay of f.bays){s+=line([x,f.y],[x,f.y+f.d],'#a69983',1);if(bay.kind==='drawers'&&storageOpen)s+=rect(x+.02,f.y-f.drawerTravel,bay.width-.04,f.drawerTravel,'#e4d4b9','#a67c50',0);x+=bay.width;}s+=text('290 × 55',f.x+f.w/2,f.y+.36,11);}
-  else if(f.type==='shower'){s+=line([f.x,f.y+f.d],[f.x+f.w,f.y+f.d],'#8aaba5',3)+line([f.x+f.w,f.y],[f.x+f.w,f.y+f.d],'#8aaba5',3);s+=text('80 × 80',f.x+f.w/2,f.y+.46,10);}
-  else if(f.type==='laundryvanity'){s+=rect(f.x+.07,f.y+.1,.46,.33,'#d9e3dc','#acb9ad',7)+text('СМ + раковина',f.x+.3,f.y+.53,7);}
-  else if(f.type==='toilet'){s+=rect(f.x+.03,f.y+.03,.13,.36,'#d5caba')+rect(f.x+.19,f.y+.04,.4,.34,'#fffdf4','#aaa99a',14);}
-  else if(f.type==='table'){s+=`<circle cx="${(f.x+f.w/2)*100}" cy="${(f.y+f.d/2)*100}" r="11" fill="#fffef8" stroke="#d8d0bd"/>`;}
-  else if(f.type==='tvconsole')s+=line([f.x+.07,f.y+.1],[f.x+.07,f.y+f.d-.1],'#354336',5);
+ for(const f of furniture){s+=`<g class="furn" tabindex="0" role="button" aria-label="${esc(f.name)}" data-item="${f.id}"><title>${esc(f.name)}</title>`+furnitureFootprints(f).map(p=>rect(p.x,p.y,p.w,p.d,f.id===selected?'#cacdd1':f.type==='bed'?'#ebeef2':['sofa','sectional'].includes(f.type)?'#b8bbbf':['wardrobe','utility'].includes(f.type)?'#c8cbcf':'#eef1f5')).join('');
+  if(f.type==='bed'){s+=rect(f.x+.08,f.y+.08,f.w-.16,f.d-.16,'#eff2f6');s+=rect(f.x+.12,f.y+.1,.6,f.d-.2,'#aaadb1');for(const yy of[f.y+.15,f.y+.91])s+=rect(f.x+f.w-.53,yy,.39,.60,'#fafdff','#cccfd3',7);s+=text('160 × 200',f.x+.95,f.y+.87,12);}
+  else if(f.type==='sectional'){s+=rect(f.x+.04,f.y+.08,.15,f.d-.16,'#a2a5a9');s+=rect(f.x+.23,f.y+.12,f.w-.30,f.chaiseWidth-.24,'#c1c4c8','#a3a6aa',6);for(let i=0;i<2;i++)s+=rect(f.x+.23,f.y+f.chaiseWidth+.06+i*.64,f.mainDepth-.30,.60,'#c1c4c8','#a3a6aa',6);s+=text('230 × 151',f.x+.70,f.y+1.70,10);}
+  else if(f.type==='sofa'){s+=rect(f.x+.04,f.y+.08,.15,f.d-.16,'#a2a5a9');for(const yy of[f.y+.15,f.y+.93])s+=rect(f.x+.22,yy,.52,.68,'#c1c4c8','#a3a6aa',6);}
+  else if(f.type==='kitchen'){for(const m of f.modules){const y=f.y+f.d-m.offset-m.width;s+=line([f.x,y],[f.x+f.w,y],'#999ca0',.8);if(m.id==='sink')s+=rect(f.x+.09,y+.08,.42,m.width-.16,'#bcbfc3','#8a8d91',6);if(m.id==='hob'){s+=rect(f.x+.06,y+.04,.48,m.width-.08,'#505357','#505357',2);for(const xx of[.18,.43])for(const yy of(f.hobZones===2?[m.width/2]:[.17,.42]))s+=`<circle cx="${(f.x+xx)*100}" cy="${(y+yy)*100}" r="7" fill="none" stroke="#acafb3"/>`;}}}
+  else if(f.type==='desk'){s+=rect(f.x+.35,f.y+.08,.5,.08,'#585b5f','#585b5f');s+=rect(f.x+.38,f.y+.28,.35,.1,'#d1d4d8');}
+  else if(f.type==='chair'){const t=furniture.find(t=>t.id===f.target),cx=f.x+f.w/2,cy=f.y+f.d/2,a=Math.atan2(t.x+t.w/2-cx,t.y+t.d/2-cy),dx=Math.sin(a),dy=Math.cos(a),r=.17;s+=line([cx-dx*r-dy*r,cy-dy*r+dx*r],[cx-dx*r+dy*r,cy-dy*r-dx*r],'#7d8084',4);}
+  else if(f.type==='wardrobe'){let x=f.x;for(const bay of f.bays){s+=line([x,f.y],[x,f.y+f.d],'#94979b',1);if(bay.kind==='drawers'&&storageOpen)s+=rect(x+.02,f.y-f.drawerTravel,bay.width-.04,f.drawerTravel,'#ced1d5','#797c80',0);x+=bay.width;}s+=text('290 × 55',f.x+f.w/2,f.y+.36,11);}
+  else if(f.type==='shower'){s+=line([f.x,f.y+f.d],[f.x+f.w,f.y+f.d],'#9c9fa3',3)+line([f.x+f.w,f.y],[f.x+f.w,f.y+f.d],'#9c9fa3',3);s+=text('80 × 80',f.x+f.w/2,f.y+.46,10);}
+  else if(f.type==='laundryvanity'){s+=rect(f.x+.07,f.y+.1,.46,.33,'#dbdee2','#afb2b6',7)+text('СМ + раковина',f.x+.3,f.y+.53,7);}
+  else if(f.type==='toilet'){s+=rect(f.x+.03,f.y+.03,.13,.36,'#c6c9cd')+rect(f.x+.19,f.y+.04,.4,.34,'#f9fcff','#a2a5a9',14);}
+  else if(f.type==='table'){s+=`<circle cx="${(f.x+f.w/2)*100}" cy="${(f.y+f.d/2)*100}" r="11" fill="#fafdff" stroke="#cacdd1"/>`;}
+  else if(f.type==='tvconsole')s+=line([f.x+.07,f.y+.1],[f.x+.07,f.y+f.d-.1],'#383b3f',5);
   else if(f.type==='fridge')s+=text('Х',f.x+f.w/2,f.y+f.d/2+.05,15);
   else if(f.type==='coatniche')s+=text('Куртки',f.x+f.w/2,f.y+f.d/2+.05,8);
   else if(f.id==='existing3')s+=text('№ 3',f.x+f.w/2,f.y+f.d/2+.04,9);
   s+='</g>';
  }
- if(ergo)for(const z of zones)s+=`<g pointer-events="none"><title>${esc(z.label)}</title>`+rect(z.x,z.y,z.w,z.d,z.type==='open'?'#b4774930':'#5b908c30',z.type==='open'?'#b47749':'#5b908c',0)+'</g>';
- for(const w of walls)s+=line(w.a,w.b,w.kind==='new'?'#89956e':'#505c4f',w.t*100);
- if(changes)for(const w of removedWalls)s+=line(w.a,w.b,'#b2785b',4,'stroke-dasharray="7 5"');
- for(const o of openings){s+=line(o.a,o.b,o.type==='window'?'#8ab0ad':'#a99d84',o.type==='window'?4:1);if(o.hinge){const a=o.end,end=[o.hinge[0]+Math.cos(a)*o.radius,o.hinge[1]+Math.sin(a)*o.radius];s+=line(o.hinge,end,'#9f9b8a',1.6);if(ergo){const pts=[];for(let i=0;i<=25;i++){const t=o.start+(o.end-o.start)*i/25;pts.push([o.hinge[0]+Math.cos(t)*o.radius,o.hinge[1]+Math.sin(t)*o.radius]);}s+=`<path d="M${pts.map(p=>p.map(n=>n*100).join(',')).join(' L')}" fill="none" stroke="#b2785b" stroke-dasharray="4 3"/>`;}}}
- for(const p of slidingPanels())s+=rect(p.x,p.y,p.w,p.d,'#c9beaa','#b8ad97',0);
+ if(ergo)for(const z of zones)s+=`<g pointer-events="none"><title>${esc(z.label)}</title>`+rect(z.x,z.y,z.w,z.d,z.type==='open'?'#7a7d8130':'#5b908c30',z.type==='open'?'#7a7d81':'#5b908c',0)+'</g>';
+ for(const w of walls)s+=line(w.a,w.b,w.kind==='new'?'#828589':'#525559',w.t*100);
+ if(changes)for(const w of removedWalls)s+=line(w.a,w.b,'#808387',4,'stroke-dasharray="7 5"');
+ for(const o of openings){s+=line(o.a,o.b,o.type==='window'?'#8ab0ad':'#979a9e',o.type==='window'?4:1);if(o.hinge){const a=o.end,end=[o.hinge[0]+Math.cos(a)*o.radius,o.hinge[1]+Math.sin(a)*o.radius];s+=line(o.hinge,end,'#95989c',1.6);if(ergo){const pts=[];for(let i=0;i<=25;i++){const t=o.start+(o.end-o.start)*i/25;pts.push([o.hinge[0]+Math.cos(t)*o.radius,o.hinge[1]+Math.sin(t)*o.radius]);}s+=`<path d="M${pts.map(p=>p.map(n=>n*100).join(',')).join(' L')}" fill="none" stroke="#808387" stroke-dasharray="4 3"/>`;}}}
+ for(const p of slidingPanels())s+=rect(p.x,p.y,p.w,p.d,'#b9bcc0','#a7aaae',0);
  for(const [t,x,y] of [['Кухня · 6,1 м²',.9,2.73],['Гостиная · 9,8 м²',3.75,3.70],['Спальня',6.55,4.99],['Гардеробная',6.5,5.73],['Балкон',6.4,.65],['Прихожая',3.55,5.35]])s+=text(t,x,y,11);
- if(changes)s+=text('Открываем вход в гостиную',3.53,4.55,9,'#a36e50');s+=text('Вход ↑',2.95,6.05,11);
- for(const [a,b,t] of [[[0,-.43],[2.17,-.43],'2,17 м'],[[2.29,-.43],[4.73,-.43],'2,44 м'],[[4.85,-.43],[7.95,-.43],'3,10 м']])s+=line(a,b,'#a4ab9c',.9)+text(t,(a[0]+b[0])/2,a[1]-.08,11);
- s+=line([8.4,1.25],[8.4,6.85],'#a4ab9c',.9)+`<text x="855" y="405" transform="rotate(90 855 405)" text-anchor="middle" font-family="Arial" font-size="11" fill="#7d8978">5,60 м · размер с фото</text>`;
- s+=line([.15,6.65],[1.15,6.65],'#505c4f',3)+text('0',.15,6.87,9)+text('1 м',1.15,6.87,9)+text('Эскиз по фото · размеры уточнить обмером',2.0,7.25,10);
+ if(changes)s+=text('Открываем вход в гостиную',3.53,4.55,9,'#74777b');s+=text('Вход ↑',2.95,6.05,11);
+ for(const [a,b,t] of [[[0,-.43],[2.17,-.43],'2,17 м'],[[2.29,-.43],[4.73,-.43],'2,44 м'],[[4.85,-.43],[7.95,-.43],'3,10 м']])s+=line(a,b,'#a2a5a9',.9)+text(t,(a[0]+b[0])/2,a[1]-.08,11);
+ s+=line([8.4,1.25],[8.4,6.85],'#a2a5a9',.9)+`<text x="855" y="405" transform="rotate(90 855 405)" text-anchor="middle" font-family="Arial" font-size="11" fill="#7d8084">5,60 м · размер с фото</text>`;
+ s+=line([.15,6.65],[1.15,6.65],'#525559',3)+text('0',.15,6.87,9)+text('1 м',1.15,6.87,9)+text('Эскиз по фото · размеры уточнить обмером',2.0,7.25,10);
  return s+'</svg>';
 }
 function drawPlan(){$('plan').innerHTML=svgPlan();const svg=$('plan').firstElementChild;svg.style.width=planZoom*100+'%';svg.style.height=planZoom*100+'%';$('plan').querySelectorAll('[data-item]').forEach(el=>{const action=()=>select(furniture.find(f=>f.id===el.dataset.item));el.addEventListener('click',action);el.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();action();}})});}
@@ -61,14 +62,14 @@ window.soloDebug={getState:()=>({mode,preset,cutaway,selected,ergo,storageOpen,r
 
 function wardrobeElevation(){
  const f=furniture.find(x=>x.id==='dressing'),scale=100;let x=25;
- let s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 300" role="img" aria-label="Развёртка гардеробной: секции 80, 90, 60 и 60 сантиметров"><rect width="340" height="300" fill="#eee7d9"/>';
- s+='<line x1="25" y1="15" x2="315" y2="15" stroke="#86745c"/><text x="170" y="11" text-anchor="middle" font-size="8" fill="#5d614f">290 см · высота 236 см · глубина 55 см</text>';
- const box=(x,y,w,h,c)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}" stroke="#a08a6a" stroke-width="1"/>`;
- for(const bay of f.bays){const w=bay.width*scale;s+=box(x,25,w,236,'#c9b190');s+=box(x+2,27,w-4,26,'#ded1bd');
-  if(['long','double'].includes(bay.kind))for(const y of(bay.kind==='long'?[72]:[72,162])){s+=`<line x1="${x+5}" y1="${y}" x2="${x+w-5}" y2="${y}" stroke="#665642" stroke-width="2"/>`;for(let i=0;i<5;i++)s+=box(x+8+i*(w-16)/5,y+5,(w-21)/5,bay.kind==='long'?148:64,i%2?'#dbd3c2':'#8f957d');}
-  else if(bay.kind==='drawers'){for(let i=0;i<4;i++)s+=box(x+3,176+i*19,w-6,18,'#e6ddce');for(const y of[88,127,166])s+=box(x+2,y,w-4,2,'#a08a6a');s+=box(x+12,110,w-24,16,'#e8e0ce');}
-  else{for(const y of[88,124,160,196])s+=box(x+2,y,w-4,2,'#a08a6a');s+=box(x+9,208,w-18,42,'#b8a78a');for(const y of[144,181])for(const dx of[10,31])s+=box(x+dx,y,15,10,'#e5dcc9');}
-  s+=`<text x="${x+w/2}" y="275" text-anchor="middle" font-size="9" fill="#434b3b">${Math.round(w)} см</text>`;x+=w;
+ let s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 300" role="img" aria-label="Развёртка гардеробной: секции 80, 90, 60 и 60 сантиметров"><rect width="340" height="300" fill="#e3e6ea"/>';
+ s+='<line x1="25" y1="15" x2="315" y2="15" stroke="#707377"/><text x="170" y="11" text-anchor="middle" font-size="8" fill="#585b5f">290 см · высота 236 см · глубина 55 см</text>';
+ const box=(x,y,w,h,c)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}" stroke="#85888c" stroke-width="1"/>`;
+ for(const bay of f.bays){const w=bay.width*scale;s+=box(x,25,w,236,'#acafb3');s+=box(x+2,27,w-4,26,'#cdd0d4');
+  if(['long','double'].includes(bay.kind))for(const y of(bay.kind==='long'?[72]:[72,162])){s+=`<line x1="${x+5}" y1="${y}" x2="${x+w-5}" y2="${y}" stroke="#53565a" stroke-width="2"/>`;for(let i=0;i<5;i++)s+=box(x+8+i*(w-16)/5,y+5,(w-21)/5,bay.kind==='long'?148:64,i%2?'#ced1d5':'#898c90');}
+  else if(bay.kind==='drawers'){for(let i=0;i<4;i++)s+=box(x+3,176+i*19,w-6,18,'#d9dce0');for(const y of[88,127,166])s+=box(x+2,y,w-4,2,'#85888c');s+=box(x+12,110,w-24,16,'#dbdee2');}
+  else{for(const y of[88,124,160,196])s+=box(x+2,y,w-4,2,'#85888c');s+=box(x+9,208,w-18,42,'#a1a4a8');for(const y of[144,181])for(const dx of[10,31])s+=box(x+dx,y,15,10,'#d7dade');}
+  s+=`<text x="${x+w/2}" y="275" text-anchor="middle" font-size="9" fill="#414448">${Math.round(w)} см</text>`;x+=w;
  }
  return s+'</svg>';
 }
