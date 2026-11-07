@@ -21,6 +21,12 @@ function traverse(extra=[]){const valid=new Uint8Array(nx*ny),seen=new Uint8Arra
  const index=(x,y)=>Math.round((y-y0)/step)*nx+Math.round((x-x0)/step),start=index(3.0,5.25);assert(valid[start],'entry start blocked');const q=[start];seen[start]=1;for(let n=0;n<q.length;n++){const a=q[n],i=a%nx,j=Math.floor(a/nx);for(const [ii,jj] of [[i-1,j],[i+1,j],[i,j-1],[i,j+1]]){const b=jj*nx+ii;if(ii>=0&&ii<nx&&jj>=0&&jj<ny&&valid[b]&&!seen[b]){seen[b]=1;q.push(b)}}}
  return(x,y,t=.12)=>q.some(i=>Math.hypot(x0+i%nx*step-x,y0+Math.floor(i/nx)*step-y)<=t);
 }
-const reach=traverse();for(const [name,x,y] of [['living',4.12,3.55],['work approach',4.0,1.71],['kitchen',1.05,1.8],['WC',.9,3.5],['shower',1,4.45],['bed north',6.6,2.38],['bed south',6.6,4.74],['dressing',6.45,5.67],['balcony',6.4,.56]])assert(reach(x,y),'Route blocked: '+name);
+const reach=traverse();for(const [name,x,y] of [['living',4.12,3.55],['work approach',4.0,1.71],['kitchen',1.05,1.8],['WC',.9,3.5],['shower',1,4.45],['bed north',6.6,2.23],['bed south',6.6,4.74],['dressing',6.45,5.67],['balcony',6.4,.56]])assert(reach(x,y),'Route blocked: '+name);
+const dressing=furniture.find(f=>f.id==='dressing');
+assert(Math.abs(dressing.bays.reduce((s,b)=>s+b.width,0)-dressing.w)<1e-6);assert.equal(dressing.bays.filter(b=>b.kind==='drawers').length,1);
+assert(Math.abs(dressing.y-5.25-1)<1e-6,'Wardrobe aisle should be 100 cm');
+assert(dressing.y-5.25-dressing.drawerTravel>=.65-1e-6,'Insufficient space before open drawers');
+assert(traverse([getZone('dress-drawer-open')])(6.95,5.58),'Cannot reach open wardrobe drawer');
+assert(furniture.find(f=>f.id==='fridge').y>=1.4,'Fridge must not obstruct window');
 const loaded=traverse([getZone('washer-open')]);assert(loaded(.99,4.32),'Cannot stand to load open washer');
 console.log(`PASS: ${furniture.length} furniture objects, ${zones.length} use/opening zones, door sweeps, wardrobe sliding leaf, 60 cm connected routes to all rooms, washer loading with open hatch. Geometry is conceptual, not surveyed.`);

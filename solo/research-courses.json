@@ -1,0 +1,434 @@
+[
+  {
+    "id": 1,
+    "school": "UAL / Chelsea",
+    "title": "Дизайн интерьера: модуль 1",
+    "url": "https://www.arts.ac.uk/subjects/architecture-spatial-and-interior-design/short-courses/interior-design/interior-design-module-one-short-course-chelsea",
+    "focus": "Бриф, обмер, связи помещений",
+    "priority": "основа"
+  },
+  {
+    "id": 2,
+    "school": "UAL / Chelsea",
+    "title": "Дизайн интерьера: модуль 2",
+    "url": "https://www.arts.ac.uk/subjects/architecture-spatial-and-interior-design/short-courses/interior-design/interior-design-module-two-short-course-chelsea",
+    "focus": "Развитие проектного решения",
+    "priority": "основа"
+  },
+  {
+    "id": 3,
+    "school": "UAL / Chelsea",
+    "title": "Дизайн интерьера: модуль 3",
+    "url": "https://www.arts.ac.uk/subjects/architecture-spatial-and-interior-design/short-courses/interior-design/interior-design-module-three-short-course-chelsea",
+    "focus": "Проверка цельного проекта",
+    "priority": "основа"
+  },
+  {
+    "id": 4,
+    "school": "UAL / Chelsea",
+    "title": "Введение в интерьер: часть 1",
+    "url": "https://www.arts.ac.uk/subjects/architecture-spatial-and-interior-design/short-courses/interior-design/introduction-to-interior-design-part-1-short-course-chelsea",
+    "focus": "Масштаб и сочетание материалов",
+    "priority": "основа"
+  },
+  {
+    "id": 5,
+    "school": "UAL / Chelsea",
+    "title": "Интерьерный стайлинг",
+    "url": "https://www.arts.ac.uk/subjects/architecture-spatial-and-interior-design/short-courses/interior-design/interior-styling-online-short-course-chelsea",
+    "focus": "Композиция текстиля и предметов",
+    "priority": "дополнение"
+  },
+  {
+    "id": 6,
+    "school": "UAL / Chelsea",
+    "title": "Освещение жилых интерьеров",
+    "url": "https://www.arts.ac.uk/subjects/architecture-spatial-and-interior-design/short-courses/interior-design/lighting-for-residential-interiors-short-course-chelsea",
+    "focus": "Дневной, рабочий и вечерний свет",
+    "priority": "приоритет"
+  },
+  {
+    "id": 7,
+    "school": "UAL / Chelsea",
+    "title": "Планирование кухни и ванной",
+    "url": "https://www.arts.ac.uk/subjects/architecture-spatial-and-interior-design/short-courses/interior-design/kitchen-and-bathroom-planning-and-design-short-course-chelsea",
+    "focus": "Эргономика и инженерные ограничения",
+    "priority": "приоритет"
+  },
+  {
+    "id": 8,
+    "school": "UAL / Chelsea",
+    "title": "Управление интерьерным проектом",
+    "url": "https://www.arts.ac.uk/subjects/architecture-spatial-and-interior-design/short-courses/interior-design/interior-design-project-management-short-course-chelsea",
+    "focus": "Ограничения до выбора отделки",
+    "priority": "основа"
+  },
+  {
+    "id": 9,
+    "school": "UAL / Chelsea",
+    "title": "Пространственный дизайн",
+    "url": "https://www.arts.ac.uk/subjects/architecture-spatial-and-interior-design/short-courses/spatial-design/spatial-design-short-course-chelsea",
+    "focus": "Свет, ориентация, движение",
+    "priority": "дополнение"
+  },
+  {
+    "id": 10,
+    "school": "UAL / Chelsea",
+    "title": "Краткое введение в интерьер",
+    "url": "https://www.arts.ac.uk/subjects/architecture-spatial-and-interior-design/short-courses/interior-design/bite-sized-interior-design-online-short-course-chelsea",
+    "focus": "Ориентация в процессе",
+    "priority": "обзор"
+  },
+  {
+    "id": 11,
+    "school": "Parsons",
+    "title": "Основы планирования интерьера",
+    "url": "https://ww3.newschool.edu/parsons/interior-architecture-design-certificate/",
+    "focus": "Пропорции, мебель, сценарии",
+    "priority": "приоритет"
+  },
+  {
+    "id": 12,
+    "school": "Parsons",
+    "title": "Основы черчения",
+    "url": "https://ww3.newschool.edu/parsons/interior-architecture-design-certificate/",
+    "focus": "План в масштабе",
+    "priority": "основа"
+  },
+  {
+    "id": 13,
+    "school": "Parsons",
+    "title": "Теория цвета",
+    "url": "https://ww3.newschool.edu/parsons/interior-architecture-design-certificate/",
+    "focus": "Взаимодействие оттенков",
+    "priority": "основа"
+  },
+  {
+    "id": 14,
+    "school": "Parsons",
+    "title": "Перспектива интерьеров",
+    "url": "https://ww3.newschool.edu/parsons/interior-architecture-design-certificate/",
+    "focus": "Проверка пространства объёмом",
+    "priority": "дополнение"
+  },
+  {
+    "id": 15,
+    "school": "Parsons",
+    "title": "Коммерческие интерьеры",
+    "url": "https://ww3.newschool.edu/parsons/interior-architecture-design-certificate/",
+    "focus": "Связность концепции",
+    "priority": "дополнение"
+  },
+  {
+    "id": 16,
+    "school": "Parsons",
+    "title": "Жилые интерьеры",
+    "url": "https://ww3.newschool.edu/parsons/interior-architecture-design-certificate/",
+    "focus": "Быт и приватность",
+    "priority": "приоритет"
+  },
+  {
+    "id": 17,
+    "school": "RISD CE",
+    "title": "4424 · Введение в жилой интерьер",
+    "url": "https://cereg.risd.edu/srs/upload/risdce_certificate_interior_design.pdf",
+    "focus": "Последовательность проектирования",
+    "priority": "основа"
+  },
+  {
+    "id": 18,
+    "school": "RISD CE",
+    "title": "9051 · Чертежи интерьеров",
+    "url": "https://cereg.risd.edu/srs/upload/risdce_certificate_interior_design.pdf",
+    "focus": "Размерная дисциплина",
+    "priority": "основа"
+  },
+  {
+    "id": 19,
+    "school": "RISD CE",
+    "title": "9052 · Визуализация интерьеров",
+    "url": "https://cereg.risd.edu/srs/upload/risdce_certificate_interior_design.pdf",
+    "focus": "Материалы и масштаб",
+    "priority": "дополнение"
+  },
+  {
+    "id": 20,
+    "school": "RISD CE",
+    "title": "4431 · AutoCAD для интерьеров",
+    "url": "https://cereg.risd.edu/srs/upload/risdce_certificate_interior_design.pdf",
+    "focus": "Проверяемые чертежи",
+    "priority": "дополнение"
+  },
+  {
+    "id": 21,
+    "school": "RISD CE",
+    "title": "9019 · Концепция и идеи",
+    "url": "https://cereg.risd.edu/srs/upload/risdce_certificate_interior_design.pdf",
+    "focus": "Единый замысел",
+    "priority": "основа"
+  },
+  {
+    "id": 22,
+    "school": "RISD CE",
+    "title": "9020 · Планировка и спецификации",
+    "url": "https://cereg.risd.edu/srs/upload/risdce_certificate_interior_design.pdf",
+    "focus": "Размеры конкретных изделий",
+    "priority": "приоритет"
+  },
+  {
+    "id": 23,
+    "school": "RISD CE",
+    "title": "1039 · Материалы и конструкции",
+    "url": "https://cereg.risd.edu/srs/upload/risdce_certificate_interior_design.pdf",
+    "focus": "Стыки и реализация",
+    "priority": "основа"
+  },
+  {
+    "id": 24,
+    "school": "RISD CE",
+    "title": "1015 · Свет в интерьере",
+    "url": "https://cereg.risd.edu/srs/upload/risdce_certificate_interior_design.pdf",
+    "focus": "Световые сценарии",
+    "priority": "приоритет"
+  },
+  {
+    "id": 25,
+    "school": "RISD CE",
+    "title": "9370 · Студия кухни",
+    "url": "https://cereg.risd.edu/srs/upload/risdce_certificate_interior_design.pdf",
+    "focus": "Рабочая последовательность",
+    "priority": "приоритет"
+  },
+  {
+    "id": 26,
+    "school": "RISD CE",
+    "title": "9372 · Студия ванной",
+    "url": "https://cereg.risd.edu/srs/upload/risdce_certificate_interior_design.pdf",
+    "focus": "Компоновка оборудования",
+    "priority": "приоритет"
+  },
+  {
+    "id": 27,
+    "school": "RISD CE",
+    "title": "1047 · Управление жилым проектом",
+    "url": "https://cereg.risd.edu/srs/upload/risdce_certificate_interior_design.pdf",
+    "focus": "Бюджет и этапы",
+    "priority": "дополнение"
+  },
+  {
+    "id": 28,
+    "school": "RISD CE",
+    "title": "1060 · Итоговый жилой проект",
+    "url": "https://cereg.risd.edu/srs/upload/risdce_certificate_interior_design.pdf",
+    "focus": "Согласованность решений",
+    "priority": "основа"
+  },
+  {
+    "id": 29,
+    "school": "NYSID",
+    "title": "DE125 · Основы дизайна",
+    "url": "https://embed-rech-01.dialog.cm/nysid/docs/academic_catalog_2025-2026",
+    "focus": "Масштаб и баланс",
+    "priority": "основа"
+  },
+  {
+    "id": 30,
+    "school": "NYSID",
+    "title": "DE126 · Дизайн-мышление",
+    "url": "https://embed-rech-01.dialog.cm/nysid/docs/academic_catalog_2025-2026",
+    "focus": "Сначала потребности",
+    "priority": "основа"
+  },
+  {
+    "id": 31,
+    "school": "NYSID",
+    "title": "DE119 · Текстиль",
+    "url": "https://embed-rech-01.dialog.cm/nysid/docs/academic_catalog_2025-2026",
+    "focus": "Фактура и эксплуатация",
+    "priority": "основа"
+  },
+  {
+    "id": 32,
+    "school": "NYSID",
+    "title": "DE141 · Цвет интерьеров",
+    "url": "https://embed-rech-01.dialog.cm/nysid/docs/academic_catalog_2025-2026",
+    "focus": "Цельная палитра",
+    "priority": "основа"
+  },
+  {
+    "id": 33,
+    "school": "NYSID",
+    "title": "DE187 · Материалы и методы",
+    "url": "https://embed-rech-01.dialog.cm/nysid/docs/academic_catalog_2025-2026",
+    "focus": "Практичность отделки",
+    "priority": "основа"
+  },
+  {
+    "id": 34,
+    "school": "NYSID",
+    "title": "DE134 · Жилой проект A",
+    "url": "https://embed-rech-01.dialog.cm/nysid/docs/academic_catalog_2025-2026",
+    "focus": "Бытовые сценарии",
+    "priority": "приоритет"
+  },
+  {
+    "id": 35,
+    "school": "NYSID",
+    "title": "DE234 · Жилой проект B",
+    "url": "https://embed-rech-01.dialog.cm/nysid/docs/academic_catalog_2025-2026",
+    "focus": "Развитие планировки",
+    "priority": "приоритет"
+  },
+  {
+    "id": 36,
+    "school": "NYSID",
+    "title": "DE240 · Столярные детали",
+    "url": "https://embed-rech-01.dialog.cm/nysid/docs/academic_catalog_2025-2026",
+    "focus": "Устройство хранения",
+    "priority": "приоритет"
+  },
+  {
+    "id": 37,
+    "school": "NYSID",
+    "title": "DE283 · Освещение I",
+    "url": "https://embed-rech-01.dialog.cm/nysid/docs/academic_catalog_2025-2026",
+    "focus": "Рабочий свет",
+    "priority": "основа"
+  },
+  {
+    "id": 38,
+    "school": "NYSID",
+    "title": "LA165 · Среда и поведение",
+    "url": "https://embed-rech-01.dialog.cm/nysid/docs/academic_catalog_2025-2026",
+    "focus": "Приватность и привычки",
+    "priority": "основа"
+  },
+  {
+    "id": 39,
+    "school": "NYSID",
+    "title": "GR631 · Кухни и ванные",
+    "url": "https://embed-rech-01.dialog.cm/nysid/docs/academic_catalog_2025-2026",
+    "focus": "Сложные узлы",
+    "priority": "приоритет"
+  },
+  {
+    "id": 40,
+    "school": "NYSID",
+    "title": "GR644 · Проектирование мебели",
+    "url": "https://embed-rech-01.dialog.cm/nysid/docs/academic_catalog_2025-2026",
+    "focus": "Размеры предметов",
+    "priority": "основа"
+  },
+  {
+    "id": 41,
+    "school": "NYSID",
+    "title": "GR622 · Экологичный дизайн",
+    "url": "https://embed-rech-01.dialog.cm/nysid/docs/academic_catalog_2025-2026",
+    "focus": "Долговечность решений",
+    "priority": "дополнение"
+  },
+  {
+    "id": 42,
+    "school": "NYSID",
+    "title": "LT737 · Выбор источников света",
+    "url": "https://embed-rech-01.dialog.cm/nysid/docs/academic_catalog_2025-2026",
+    "focus": "Качество освещения",
+    "priority": "дополнение"
+  },
+  {
+    "id": 43,
+    "school": "Domestika",
+    "title": "Малые пространства — Enorme Studio",
+    "url": "https://www.domestika.org/en/courses/2650-introduction-to-the-design-of-small-spaces",
+    "focus": "Предметы под реальные ежедневные задачи",
+    "priority": "приоритет"
+  },
+  {
+    "id": 44,
+    "school": "Domestika",
+    "title": "Интерьер от начала до конца — Ana García",
+    "url": "https://www.domestika.org/en/courses/1112-interior-design-from-start-to-finish",
+    "focus": "Целостность материалов и функций",
+    "priority": "приоритет"
+  },
+  {
+    "id": 45,
+    "school": "Domestika",
+    "title": "Свет в интерьере — Mónica Vega",
+    "url": "https://www.domestika.org/en/courses/1759-lighting-design-for-interior-spaces",
+    "focus": "Иерархия и слои света",
+    "priority": "приоритет"
+  },
+  {
+    "id": 46,
+    "school": "Domestika",
+    "title": "Персональный интерьер — Dee Campling",
+    "url": "https://www.domestika.org/en/courses/2862-interior-styling-design-personalized-spaces",
+    "focus": "Работа и отдых в одной комнате",
+    "priority": "дополнение"
+  },
+  {
+    "id": 47,
+    "school": "Domestika",
+    "title": "Цветной интерьер — Geraldine Tan",
+    "url": "https://www.domestika.org/en/courses/1846-colorful-interior-design-styling-homes-with-personality",
+    "focus": "Личные акценты и цвет",
+    "priority": "дополнение"
+  },
+  {
+    "id": 48,
+    "school": "West Dean",
+    "title": "Процесс, планирование, презентация и проекты",
+    "url": "https://www.westdean.ac.uk/short-courses/d9h41209-the-interior-design-short-course-process-planning-presentation-and-projects-saturdays",
+    "focus": "Полная последовательность жилого проекта",
+    "priority": "основа"
+  },
+  {
+    "id": 49,
+    "school": "Детали",
+    "title": "Дизайн интерьера. Базовый курс",
+    "url": "https://details-moscow.ru/",
+    "focus": "Цельное интерьерное решение",
+    "priority": "дополнение"
+  },
+  {
+    "id": 50,
+    "school": "Детали",
+    "title": "Колористика интерьера",
+    "url": "https://details-moscow.ru/",
+    "focus": "Сочетания цвета",
+    "priority": "дополнение"
+  },
+  {
+    "id": 51,
+    "school": "Детали",
+    "title": "Интерьерное проектирование",
+    "url": "https://details-moscow.ru/",
+    "focus": "Планировочная логика",
+    "priority": "дополнение"
+  },
+  {
+    "id": 52,
+    "school": "Детали",
+    "title": "Декорирование интерьера",
+    "url": "https://details-moscow.ru/",
+    "focus": "Предметы и композиция",
+    "priority": "дополнение"
+  },
+  {
+    "id": 53,
+    "school": "Британка",
+    "title": "Дизайнер интерьера",
+    "url": "https://britishdesign.ru/courses/interior-design/",
+    "focus": "Проектирование и профессиональная подача",
+    "priority": "основа"
+  },
+  {
+    "id": 54,
+    "school": "National Design Academy",
+    "title": "Профессиональный диплом: интерьер",
+    "url": "https://www.nda.ac.uk/study/interior-design-courses/",
+    "focus": "Системная работа над интерьером",
+    "priority": "основа"
+  }
+]

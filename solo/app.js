@@ -1,7 +1,7 @@
 import {createApartmentViewer} from './scene.js';
 import {outline,rooms,walls,removedWalls,openings,slidingPanels,furniture,zones,variant,cameras} from './data.js';
 const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let mode='plan',viewer=null,preset='overview',cutaway=true,ergo=false,changes=true,planZoom=1,selected=null,sceneDirty=true;
+let mode='plan',viewer=null,preset='overview',cutaway=true,ergo=false,changes=true,planZoom=1,selected=null,sceneDirty=true,storageOpen=false;
 const line=(a,b,color,width,extra='')=>`<line x1="${a[0]*100}" y1="${a[1]*100}" x2="${b[0]*100}" y2="${b[1]*100}" stroke="${color}" stroke-width="${width}" ${extra}/>`;
 const text=(s,x,y,size=12,color='#4a5546')=>`<text x="${x*100}" y="${y*100}" text-anchor="middle" font-size="${size}" fill="${color}">${esc(s)}</text>`;
 const rect=(x,y,w,d,fill,stroke='#a09d8d',r=2)=>`<rect x="${x*100}" y="${y*100}" width="${w*100}" height="${d*100}" rx="${r}" fill="${fill}" stroke="${stroke}" stroke-width="1"/>`;
@@ -15,7 +15,7 @@ function svgPlan(){
   else if(f.type==='kitchen'){for(const m of f.modules){const y=f.y+f.d-m.offset-m.width;s+=line([f.x,y],[f.x+f.w,y],'#ad9f86',.8);if(m.id==='sink')s+=rect(f.x+.09,y+.08,.42,.44,'#b5c5bf','#85958b',6);if(m.id==='hob'){s+=rect(f.x+.06,y+.04,.48,.52,'#50594e','#50594e',2);for(const xx of[.18,.43])for(const yy of[.17,.42])s+=`<circle cx="${(f.x+xx)*100}" cy="${(y+yy)*100}" r="7" fill="none" stroke="#adb6a8"/>`;}}}
   else if(f.type==='desk'){s+=rect(f.x+.35,f.y+.08,.5,.08,'#566356','#566356');s+=rect(f.x+.38,f.y+.28,.35,.1,'#d6d8ca');}
   else if(f.type==='chair'){const t=furniture.find(t=>t.id===f.target),cx=f.x+f.w/2,cy=f.y+f.d/2,a=Math.atan2(t.x+t.w/2-cx,t.y+t.d/2-cy),dx=Math.sin(a),dy=Math.cos(a),r=.17;s+=line([cx-dx*r-dy*r,cy-dy*r+dx*r],[cx-dx*r+dy*r,cy-dy*r-dx*r],'#7d8b74',4);}
-  else if(f.type==='wardrobe'){for(let x=f.x+.45;x<f.x+f.w;x+=.45)s+=line([x,f.y],[x,f.y+f.d],'#a69983',1);s+=text('270 × 60',f.x+f.w/2,f.y+.36,11);}
+  else if(f.type==='wardrobe'){let x=f.x;for(const bay of f.bays){s+=line([x,f.y],[x,f.y+f.d],'#a69983',1);if(bay.kind==='drawers'&&storageOpen)s+=rect(x+.02,f.y-f.drawerTravel,bay.width-.04,f.drawerTravel,'#e4d4b9','#a67c50',0);x+=bay.width;}s+=text('290 × 55',f.x+f.w/2,f.y+.36,11);}
   else if(f.type==='shower'){s+=line([f.x,f.y+f.d],[f.x+f.w,f.y+f.d],'#8aaba5',3)+line([f.x+f.w,f.y],[f.x+f.w,f.y+f.d],'#8aaba5',3);s+=text('80 × 80',f.x+f.w/2,f.y+.46,10);}
   else if(f.type==='laundryvanity'){s+=rect(f.x+.07,f.y+.1,.46,.33,'#d9e3dc','#acb9ad',7)+text('СМ + раковина',f.x+.3,f.y+.53,7);}
   else if(f.type==='toilet'){s+=rect(f.x+.03,f.y+.03,.13,.36,'#d5caba')+rect(f.x+.19,f.y+.04,.4,.34,'#fffdf4','#aaa99a',14);}
@@ -40,19 +40,36 @@ function svgPlan(){
 }
 function drawPlan(){$('plan').innerHTML=svgPlan();const svg=$('plan').firstElementChild;svg.style.width=planZoom*100+'%';svg.style.height=planZoom*100+'%';$('plan').querySelectorAll('[data-item]').forEach(el=>{const action=()=>select(furniture.find(f=>f.id===el.dataset.item));el.addEventListener('click',action);el.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();action();}})});}
 function select(f){selected=f.id;$('selection').innerHTML=`<strong>${esc(f.name)}</strong><p class="dimensions">${[f.w,f.d,f.h].map(x=>Math.round(x*100)).join(' × ')} см · ширина × глубина × высота</p><p>${esc(f.purpose)}</p>`;if(mode==='plan')drawPlan();}
-function build(){if(viewer){viewer.build({variant,cutaway,furniture:true,ergonomics:ergo});sceneDirty=false;}}
+function build(){if(viewer){viewer.build({variant,cutaway,furniture:true,ergonomics:ergo,storageOpen});sceneDirty=false;}}
 function url(){const u=new URL(location.href);u.searchParams.set('view',mode);if(mode==='3d')u.searchParams.set('camera',preset);else u.searchParams.delete('camera');history.replaceState(null,'',u);}
 function fallback(){viewer?.setActive(false);mode='plan';$('canvas-host').hidden=true;$('plan').hidden=false;$('source').hidden=true;$('cutaway-label').hidden=true;$('evening-label').hidden=true;$('view-hint').textContent='3D недоступна в этом браузере. Размерный план остаётся доступен.';document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===mode));drawPlan();url();}
-function setView(next){mode=next;viewer?.setActive(mode==='3d');$('plan').hidden=mode!=='plan';$('canvas-host').hidden=mode!=='3d';$('source').hidden=mode!=='source';$('zoom').hidden=mode==='source';$('cutaway-label').hidden=mode!=='3d';$('evening-label').hidden=mode!=='3d';$('changes').disabled=mode!=='plan';$('ergonomics').disabled=mode==='source';document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===mode));
+function setView(next){mode=next;viewer?.setActive(mode==='3d');$('plan').hidden=mode!=='plan';$('canvas-host').hidden=mode!=='3d';$('source').hidden=mode!=='source';$('zoom').hidden=mode==='source';$('cutaway-label').hidden=mode!=='3d';$('evening-label').hidden=mode!=='3d';$('changes').disabled=mode!=='plan';$('ergonomics').disabled=mode==='source';$('storage-open').disabled=mode==='source';document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===mode));
  if(mode==='3d'){try{if(!viewer){viewer=createApartmentViewer($('canvas-host'),{onSelect:select,onError:fallback});}if(sceneDirty)build();viewer.setActive(true);viewer.setPreset(preset);viewer.resize();}catch(e){console.error(e);fallback();return;}}
  $('view-hint').textContent=mode==='3d'?'Вращайте модель мышью или пальцем. Нажмите на мебель, чтобы увидеть размеры.':mode==='source'?'Оригинальная фотография. Для расстановки выберите «План».':'Нажмите на мебель, чтобы увидеть её размеры и назначение.';url();}
 function setCamera(name){if(!cameras[name])name='overview';preset=name;const nextCutaway=name==='overview';if(cutaway!==nextCutaway)sceneDirty=true;cutaway=nextCutaway;$('cutaway').checked=cutaway;if(mode!=='3d'){setView('3d');if(mode!=='3d')return;}if(sceneDirty)build();viewer.setPreset(name);document.querySelectorAll('[data-camera]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.camera===name));url();}
 document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));document.querySelectorAll('[data-camera]').forEach(b=>b.addEventListener('click',()=>setCamera(b.dataset.camera)));
 $('show3d').onclick=()=>{setCamera('bedroom');$('stage').scrollIntoView({block:'center',behavior:'instant'});};
 $('ergonomics').onchange=e=>{ergo=e.target.checked;sceneDirty=true;drawPlan();if(mode==='3d'){build();viewer.setPreset(preset);}};
+$('storage-open').onchange=e=>{storageOpen=e.target.checked;sceneDirty=true;drawPlan();if(mode==='3d'){build();viewer.setPreset(preset);}};
+$('wardrobe-view').onclick=()=>{setCamera('storage');$('stage').scrollIntoView({block:'center',behavior:'instant'});};
 $('changes').onchange=e=>{changes=e.target.checked;drawPlan();};$('cutaway').onchange=e=>{cutaway=e.target.checked;build();viewer.setPreset(preset);};$('evening').onchange=e=>viewer?.setLighting(e.target.checked);
 function zoom(n){if(mode==='3d')viewer?.zoom(n);else{planZoom=Math.max(.8,Math.min(2.5,planZoom*n));drawPlan();}}$('zoom-in').onclick=()=>zoom(1.15);$('zoom-out').onclick=()=>zoom(1/1.15);$('reset').onclick=()=>{if(mode==='3d')setCamera('overview');else{planZoom=1;drawPlan();}};
 $('save-plan').onclick=()=>{const u=URL.createObjectURL(new Blob([svgPlan()],{type:'image/svg+xml'})),a=document.createElement('a');a.href=u;a.download='svoya-kvartira-plan.svg';a.click();setTimeout(()=>URL.revokeObjectURL(u),5000);};
 $('inventory').innerHTML=furniture.map(f=>`<div><dt>${esc(f.name)} · ${[f.w,f.d,f.h].map(x=>Math.round(x*100)).join(' × ')} см</dt><dd>${esc(f.purpose)}</dd></div>`).join('');
 drawPlan();const initial=new URL(location.href);preset=cameras[initial.searchParams.get('camera')]?initial.searchParams.get('camera'):'overview';cutaway=preset==='overview';$('cutaway').checked=cutaway;setView(['3d','source'].includes(initial.searchParams.get('view'))?initial.searchParams.get('view'):'plan');document.querySelectorAll('[data-camera]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.camera===preset));
-window.soloDebug={getState:()=>({mode,preset,cutaway,selected,ergo,ready:!!viewer,...viewer?.getState()}),svgPlan};
+window.soloDebug={getState:()=>({mode,preset,cutaway,selected,ergo,storageOpen,ready:!!viewer,...viewer?.getState()}),svgPlan};
+
+function wardrobeElevation(){
+ const f=furniture.find(x=>x.id==='dressing'),scale=100;let x=25;
+ let s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 300" role="img" aria-label="Развёртка гардеробной: секции 80, 90, 60 и 60 сантиметров"><rect width="340" height="300" fill="#eee7d9"/>';
+ s+='<line x1="25" y1="15" x2="315" y2="15" stroke="#86745c"/><text x="170" y="11" text-anchor="middle" font-size="8" fill="#5d614f">290 см · высота 236 см · глубина 55 см</text>';
+ const box=(x,y,w,h,c)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}" stroke="#a08a6a" stroke-width="1"/>`;
+ for(const bay of f.bays){const w=bay.width*scale;s+=box(x,25,w,236,'#c9b190');s+=box(x+2,27,w-4,26,'#ded1bd');
+  if(['long','double'].includes(bay.kind))for(const y of(bay.kind==='long'?[72]:[72,162])){s+=`<line x1="${x+5}" y1="${y}" x2="${x+w-5}" y2="${y}" stroke="#665642" stroke-width="2"/>`;for(let i=0;i<5;i++)s+=box(x+8+i*(w-16)/5,y+5,(w-21)/5,bay.kind==='long'?148:64,i%2?'#dbd3c2':'#8f957d');}
+  else if(bay.kind==='drawers'){for(let i=0;i<4;i++)s+=box(x+3,176+i*19,w-6,18,'#e6ddce');for(const y of[88,127,166])s+=box(x+2,y,w-4,2,'#a08a6a');s+=box(x+12,110,w-24,16,'#e8e0ce');}
+  else{for(const y of[88,124,160,196])s+=box(x+2,y,w-4,2,'#a08a6a');s+=box(x+9,208,w-18,42,'#b8a78a');for(const y of[144,181])for(const dx of[10,31])s+=box(x+dx,y,15,10,'#e5dcc9');}
+  s+=`<text x="${x+w/2}" y="275" text-anchor="middle" font-size="9" fill="#434b3b">${Math.round(w)} см</text>`;x+=w;
+ }
+ return s+'</svg>';
+}
+$('wardrobe-elevation').innerHTML=wardrobeElevation();
